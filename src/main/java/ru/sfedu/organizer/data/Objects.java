@@ -12,5 +12,3 @@ package ru.sfedu.organizer.data;
 public enum Objects {
     Aria, Composer, Libretto, Opera, Singer, Writer
 }
-
-6666
