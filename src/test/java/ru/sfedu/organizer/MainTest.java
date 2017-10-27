@@ -11,6 +11,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import ru.sfedu.organizer.data.Aria;
+import ru.sfedu.organizer.data.EntityTypes;
+
 
 /**
  *
@@ -42,6 +45,9 @@ public class MainTest {
         // TODO review the generated test code and remove the default call to fail.
         //fail("The test case is a prototype.");
         System.out.println("ololo");
+        Aria aria = new Aria();
+        aria.setType(EntityTypes.Aria);
+        System.out.print(aria.getType());
     }
     
 }
