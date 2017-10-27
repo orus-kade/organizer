@@ -13,10 +13,10 @@ public class Note {
   // Fields
   //
 
-  private int id;
+  private long id;
   private String description;
-  private int objectId;
-  private Objects objectType;
+  private long objectId;
+  private ObjectTypes objectType;
   
   //
   // Constructors
@@ -32,11 +32,11 @@ public class Note {
   // Accessor methods
   //
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 
@@ -48,21 +48,22 @@ public class Note {
         this.description = description;
     }
 
-    public int getObjectId() {
+    public long getObjectId() {
         return objectId;
     }
 
-    public void setObjectId(int objectId) {
+    public void setObjectId(long objectId) {
         this.objectId = objectId;
     }
 
-    public Objects getObjectType() {
+    public ObjectTypes getObjectType() {
         return objectType;
     }
 
-    public void setObjectType(Objects objectType) {
+    public void setObjectType(ObjectTypes objectType) {
         this.objectType = objectType;
     }
+
 
    
  

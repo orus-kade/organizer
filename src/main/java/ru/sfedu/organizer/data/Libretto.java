@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Class Libretto
  */
-public class Libretto extends Entity{
+public class Libretto extends Object{
 
   //
   // Fields

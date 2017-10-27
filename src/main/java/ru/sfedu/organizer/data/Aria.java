@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Class Aria
  */
-public class Aria extends Entity{
+public class Aria extends Object{
 
   //
   // Fields

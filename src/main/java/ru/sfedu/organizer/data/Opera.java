@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Class Opera
  */
-public class Opera extends Entity{
+public class Opera extends Object{
 
   //
   // Fields

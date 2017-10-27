@@ -12,7 +12,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import ru.sfedu.organizer.data.Aria;
-import ru.sfedu.organizer.data.EntityTypes;
+import ru.sfedu.organizer.data.ObjectTypes;
 
 
 /**
@@ -46,8 +46,8 @@ public class MainTest {
         //fail("The test case is a prototype.");
         System.out.println("ololo");
         Aria aria = new Aria();
-        aria.setType(EntityTypes.Aria);
-        System.out.print(aria.getType());
+        aria.setType(ObjectTypes.Aria);
+        System.out.println(aria.getType());
     }
     
 }
