@@ -15,7 +15,7 @@ public class Singer extends Human {
   //
 
   private Voices voice;
-  private List<Integer> aries;
+  private List<Object> aries;
   
   //
   // Constructors
@@ -39,13 +39,15 @@ public class Singer extends Human {
         this.voice = voice;
     }
 
-    public List<Integer> getAries() {
+    public List<Object> getAries() {
         return aries;
     }
 
-    public void setAries(List<Integer> aries) {
+    public void setAries(List<Object> aries) {
         this.aries = aries;
     }
+
+
 
   
 

@@ -14,9 +14,9 @@ public class Writer extends Human {
   // Fields
   //
 
-  private List<Opera> operas;
-  private List<Aria> aries;
-  private List<Libretto> librettos;
+  private List<Object> operas;
+  private List<Object> aries;
+  private List<Object> librettos;
   
   //
   // Constructors
@@ -32,56 +32,29 @@ public class Writer extends Human {
   // Accessor methods
   //
 
-  /**
-   * Set the value of operas
-   * @param newVar the new value of operas
-   */
-  private void setOperas (List<Opera> newVar) {
-    operas = newVar;
-  }
+    public List<Object> getOperas() {
+        return operas;
+    }
 
-  /**
-   * Get the value of operas
-   * @return the value of operas
-   */
-  private List<Opera> getOperas () {
-    return operas;
-  }
+    public void setOperas(List<Object> operas) {
+        this.operas = operas;
+    }
 
-  /**
-   * Set the value of aries
-   * @param newVar the new value of aries
-   */
-  private void setAries (List<Aria> newVar) {
-    aries = newVar;
-  }
+    public List<Object> getAries() {
+        return aries;
+    }
 
-  /**
-   * Get the value of aries
-   * @return the value of aries
-   */
-  private List<Aria> getAries () {
-    return aries;
-  }
+    public void setAries(List<Object> aries) {
+        this.aries = aries;
+    }
 
-  /**
-   * Set the value of librettos
-   * @param newVar the new value of librettos
-   */
-  private void setLibrettos (List<Libretto> newVar) {
-    librettos = newVar;
-  }
+    public List<Object> getLibrettos() {
+        return librettos;
+    }
 
-  /**
-   * Get the value of librettos
-   * @return the value of librettos
-   */
-  private List<Libretto> getLibrettos () {
-    return librettos;
-  }
+    public void setLibrettos(List<Object> librettos) {
+        this.librettos = librettos;
+    }
 
-  //
-  // Other methods
-  //
-
+ 
 }

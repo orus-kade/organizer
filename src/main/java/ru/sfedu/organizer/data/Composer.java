@@ -13,8 +13,8 @@ public class Composer extends Human {
   // Fields
   //
 
-  private List<Integer> operas;
-  private List<Integer> aries;
+  private List<Object> operas;
+  private List<Object> aries;
   
   //
   // Constructors
@@ -30,21 +30,23 @@ public class Composer extends Human {
   // Accessor methods
   //
 
-    public List<Integer> getOperas() {
+    public List<Object> getOperas() {
         return operas;
     }
 
-    public void setOperas(List<Integer> operas) {
+    public void setOperas(List<Object> operas) {
         this.operas = operas;
     }
 
-    public List<Integer> getAries() {
+    public List<Object> getAries() {
         return aries;
     }
 
-    public void setAries(List<Integer> aries) {
+    public void setAries(List<Object> aries) {
         this.aries = aries;
     }
+
+
 
   
 }

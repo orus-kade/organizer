@@ -15,8 +15,7 @@ public class Note {
 
   private long id;
   private String description;
-  private long objectId;
-  private ObjectTypes objectType;
+  private Object object;
   
   //
   // Constructors
@@ -48,24 +47,13 @@ public class Note {
         this.description = description;
     }
 
-    public long getObjectId() {
-        return objectId;
+    public Object getObject() {
+        return object;
     }
 
-    public void setObjectId(long objectId) {
-        this.objectId = objectId;
+    public void setObject(Object object) {
+        this.object = object;
     }
 
-    public ObjectTypes getObjectType() {
-        return objectType;
-    }
-
-    public void setObjectType(ObjectTypes objectType) {
-        this.objectType = objectType;
-    }
-
-
-   
- 
 
 }

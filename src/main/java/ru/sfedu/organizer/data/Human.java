@@ -14,10 +14,10 @@ public class Human  extends Object{
   // Fields
   //
 
-  protected String name;
-  protected String biography;
-  protected LocalDate birthDate;
-  protected LocalDate deathDate;
+  private String name;
+  private String biography;
+  private LocalDate birthDate;
+  private LocalDate deathDate;
   
   //
   // Constructors

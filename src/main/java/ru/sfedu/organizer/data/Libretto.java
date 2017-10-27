@@ -14,8 +14,8 @@ public class Libretto extends Object{
   //
 
   private Opera opera;
-  private List<Integer> writers;
-  private List<Integer> famousSingers;
+  private List<Object> writers;
+  private List<Object> famousSingers;
   
   //
   // Constructors
@@ -39,21 +39,23 @@ public class Libretto extends Object{
         this.opera = opera;
     }
 
-    public List<Integer> getWriters() {
+    public List<Object> getWriters() {
         return writers;
     }
 
-    public void setWriters(List<Integer> writers) {
+    public void setWriters(List<Object> writers) {
         this.writers = writers;
     }
 
-    public List<Integer> getFamousSingers() {
+    public List<Object> getFamousSingers() {
         return famousSingers;
     }
 
-    public void setFamousSingers(List<Integer> famousSingers) {
+    public void setFamousSingers(List<Object> famousSingers) {
         this.famousSingers = famousSingers;
     }
+
+    
 
   
 }

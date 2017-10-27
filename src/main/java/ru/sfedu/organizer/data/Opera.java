@@ -14,10 +14,10 @@ public class Opera extends Object{
   //
 
   private String title;
-  private List<Integer> composers;
-  private List<Integer> writers;
+  private List<Object> composers;
+  private List<Object> writers;
   private String history;
-  private List<Integer> aries;
+  private List<Object> aries;
   private Libretto libretto;
   
   //
@@ -42,19 +42,19 @@ public class Opera extends Object{
         this.title = title;
     }
 
-    public List<Integer> getComposers() {
+    public List<Object> getComposers() {
         return composers;
     }
 
-    public void setComposers(List<Integer> composers) {
+    public void setComposers(List<Object> composers) {
         this.composers = composers;
     }
 
-    public List<Integer> getWriters() {
+    public List<Object> getWriters() {
         return writers;
     }
 
-    public void setWriters(List<Integer> writers) {
+    public void setWriters(List<Object> writers) {
         this.writers = writers;
     }
 
@@ -66,11 +66,11 @@ public class Opera extends Object{
         this.history = history;
     }
 
-    public List<Integer> getAries() {
+    public List<Object> getAries() {
         return aries;
     }
 
-    public void setAries(List<Integer> aries) {
+    public void setAries(List<Object> aries) {
         this.aries = aries;
     }
 
@@ -82,6 +82,5 @@ public class Opera extends Object{
         this.libretto = libretto;
     }
 
-  
-
+    
 }
