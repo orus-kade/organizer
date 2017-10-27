@@ -5,6 +5,7 @@
  */
 package ru.sfedu.organizer;
 
+import com.opencsv.CSVWriter;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -47,7 +48,13 @@ public class MainTest {
         System.out.println("ololo");
         Aria aria = new Aria();
         aria.setType(ObjectTypes.Aria);
-        System.out.println(aria.getType());
+        aria.setId(12);
+        aria.setTitle("title");
+        aria.setText("some text \n text");
+        CSVWriter writer = new FileWriter("yourfile.csv");
+        StatefulBeanToCsvBuilder beanToCsv = StatefulBeanToCsvBuilder(writer).build();
+        beanToCsv.write(beans);
+        writer.close();
     }
     
 }

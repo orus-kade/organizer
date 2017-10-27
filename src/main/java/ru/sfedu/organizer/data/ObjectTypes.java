@@ -10,5 +10,5 @@ package ru.sfedu.organizer.data;
  * @author sterie
  */
 public enum ObjectTypes {
-    Aria, Composer, Libretto, Opera, Singer, Writer
+    ARIA, COMPOSER, LIBRETTO, OPERA, SINGER, WRITER
 }

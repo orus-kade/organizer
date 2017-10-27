@@ -10,5 +10,5 @@ package ru.sfedu.organizer.data;
  * @author sterie
  */
 public enum Voices {
-    Soprano, Mezzo_soprano, Contralto, Countertenor, Tenor, Baritone, Bass 
+    SOPRANPO, MEZZO_SOPRANPO, CONTRALTO, COUNTERTENOR, TENOR, BARITONE, BASS
 }
