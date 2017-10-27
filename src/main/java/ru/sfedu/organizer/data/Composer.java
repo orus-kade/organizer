@@ -1,3 +1,5 @@
+package ru.sfedu.organizer.data;
+
 
 import java.util.*;
 
@@ -11,8 +13,8 @@ public class Composer extends Human {
   // Fields
   //
 
-  private List<Opera> operas;
-  private List<Aria> aries;
+  private List<Integer> operas;
+  private List<Integer> aries;
   
   //
   // Constructors
@@ -28,40 +30,21 @@ public class Composer extends Human {
   // Accessor methods
   //
 
-  /**
-   * Set the value of operas
-   * @param newVar the new value of operas
-   */
-  private void setOperas (List<Opera> newVar) {
-    operas = newVar;
-  }
+    public List<Integer> getOperas() {
+        return operas;
+    }
 
-  /**
-   * Get the value of operas
-   * @return the value of operas
-   */
-  private List<Opera> getOperas () {
-    return operas;
-  }
+    public void setOperas(List<Integer> operas) {
+        this.operas = operas;
+    }
 
-  /**
-   * Set the value of aries
-   * @param newVar the new value of aries
-   */
-  private void setAries (List<Aria> newVar) {
-    aries = newVar;
-  }
+    public List<Integer> getAries() {
+        return aries;
+    }
 
-  /**
-   * Get the value of aries
-   * @return the value of aries
-   */
-  private List<Aria> getAries () {
-    return aries;
-  }
+    public void setAries(List<Integer> aries) {
+        this.aries = aries;
+    }
 
-  //
-  // Other methods
-  //
-
+  
 }

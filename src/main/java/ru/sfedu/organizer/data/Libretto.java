@@ -1,3 +1,5 @@
+package ru.sfedu.organizer.data;
+
 
 import java.util.*;
 
@@ -5,15 +7,15 @@ import java.util.*;
 /**
  * Class Libretto
  */
-public class Libretto extends Object{
+public class Libretto extends Entity{
 
   //
   // Fields
   //
 
   private Opera opera;
-  private List<Writer> writers;
-  private List<Singer> famousSingers;
+  private List<Integer> writers;
+  private List<Integer> famousSingers;
   
   //
   // Constructors
@@ -29,56 +31,29 @@ public class Libretto extends Object{
   // Accessor methods
   //
 
-  /**
-   * Set the value of opera
-   * @param newVar the new value of opera
-   */
-  private void setOpera (Opera newVar) {
-    opera = newVar;
-  }
+    public Opera getOpera() {
+        return opera;
+    }
 
-  /**
-   * Get the value of opera
-   * @return the value of opera
-   */
-  private Opera getOpera () {
-    return opera;
-  }
+    public void setOpera(Opera opera) {
+        this.opera = opera;
+    }
 
-  /**
-   * Set the value of writers
-   * @param newVar the new value of writers
-   */
-  private void setWriters (List<Writer> newVar) {
-    writers = newVar;
-  }
+    public List<Integer> getWriters() {
+        return writers;
+    }
 
-  /**
-   * Get the value of writers
-   * @return the value of writers
-   */
-  private List<Writer> getWriters () {
-    return writers;
-  }
+    public void setWriters(List<Integer> writers) {
+        this.writers = writers;
+    }
 
-  /**
-   * Set the value of famousSingers
-   * @param newVar the new value of famousSingers
-   */
-  private void setFamousSingers (List<Singer> newVar) {
-    famousSingers = newVar;
-  }
+    public List<Integer> getFamousSingers() {
+        return famousSingers;
+    }
 
-  /**
-   * Get the value of famousSingers
-   * @return the value of famousSingers
-   */
-  private List<Singer> getFamousSingers () {
-    return famousSingers;
-  }
+    public void setFamousSingers(List<Integer> famousSingers) {
+        this.famousSingers = famousSingers;
+    }
 
-  //
-  // Other methods
-  //
-
+  
 }

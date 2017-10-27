@@ -1,3 +1,5 @@
+package ru.sfedu.organizer.data;
+
 
 import java.util.*;
 
@@ -13,7 +15,8 @@ public class Note {
 
   private int id;
   private String description;
-  private Object object;
+  private int objectId;
+  private Objects objectType;
   
   //
   // Constructors
@@ -29,56 +32,39 @@ public class Note {
   // Accessor methods
   //
 
-  /**
-   * Set the value of id
-   * @param newVar the new value of id
-   */
-  private void setId (int newVar) {
-    id = newVar;
-  }
+    public int getId() {
+        return id;
+    }
 
-  /**
-   * Get the value of id
-   * @return the value of id
-   */
-  private int getId () {
-    return id;
-  }
+    public void setId(int id) {
+        this.id = id;
+    }
 
-  /**
-   * Set the value of description
-   * @param newVar the new value of description
-   */
-  private void setDescription (String newVar) {
-    description = newVar;
-  }
+    public String getDescription() {
+        return description;
+    }
 
-  /**
-   * Get the value of description
-   * @return the value of description
-   */
-  private String getDescription () {
-    return description;
-  }
-  
-  /**
-   * Set the value of object
-   * @param newVar the new value of object
-   */
-  private void setObject (int newVar) {
-    object = newVar;
-  }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 
-  /**
-   * Get the value of id
-   * @return the value of id
-   */
-  private Object getObject () {
-    return object;
-  }
+    public int getObjectId() {
+        return objectId;
+    }
 
-  //
-  // Other methods
-  //
+    public void setObjectId(int objectId) {
+        this.objectId = objectId;
+    }
+
+    public Objects getObjectType() {
+        return objectType;
+    }
+
+    public void setObjectType(Objects objectType) {
+        this.objectType = objectType;
+    }
+
+   
+ 
 
 }

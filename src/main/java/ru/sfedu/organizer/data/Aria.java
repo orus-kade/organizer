@@ -1,3 +1,5 @@
+package ru.sfedu.organizer.data;
+
 
 import java.util.*;
 
@@ -5,7 +7,7 @@ import java.util.*;
 /**
  * Class Aria
  */
-public class Aria extends Object{
+public class Aria extends Entity{
 
   //
   // Fields
@@ -13,9 +15,9 @@ public class Aria extends Object{
 
   private String title;
   private String text;
-  private List<Composer> composers;
-  private List<Writer> writers;
-  private List<Singer> famousSingers;
+  private List<Integer> composers;
+  private List<Integer> writers;
+  private List<Integer> famousSingers;
   
   //
   // Constructors
@@ -30,89 +32,45 @@ public class Aria extends Object{
   //
   // Accessor methods
   //
+   
+    public String getTitle() {
+        return title;
+    }
 
-  /**
-   * Set the value of title
-   * @param newVar the new value of title
-   */
-  private void setTitle (String newVar) {
-    title = newVar;
-  }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-  /**
-   * Get the value of title
-   * @return the value of title
-   */
-  private String getTitle () {
-    return title;
-  }
+    public String getText() {
+        return text;
+    }
 
-  /**
-   * Set the value of text
-   * @param newVar the new value of text
-   */
-  private void setText (String newVar) {
-    text = newVar;
-  }
+    public void setText(String text) {
+        this.text = text;
+    }
 
-  /**
-   * Get the value of text
-   * @return the value of text
-   */
-  private String getText () {
-    return text;
-  }
+    public List<Integer> getComposers() {
+        return composers;
+    }
 
-  /**
-   * Set the value of composers
-   * @param newVar the new value of composers
-   */
-  private void setComposers (List<Composer> newVar) {
-    composers = newVar;
-  }
+    public void setComposers(List<Integer> composers) {
+        this.composers = composers;
+    }
 
-  /**
-   * Get the value of composers
-   * @return the value of composers
-   */
-  private List<Composer> getComposers () {
-    return composers;
-  }
+    public List<Integer> getWriters() {
+        return writers;
+    }
 
-  /**
-   * Set the value of writers
-   * @param newVar the new value of writers
-   */
-  private void setWriters (List<Writer> newVar) {
-    writers = newVar;
-  }
+    public void setWriters(List<Integer> writers) {
+        this.writers = writers;
+    }
 
-  /**
-   * Get the value of writers
-   * @return the value of writers
-   */
-  private List<Writer> getWriters () {
-    return writers;
-  }
+    public List<Integer> getFamousSingers() {
+        return famousSingers;
+    }
 
-  /**
-   * Set the value of famousSingers
-   * @param newVar the new value of famousSingers
-   */
-  private void setFamousSingers (List<Singer> newVar) {
-    famousSingers = newVar;
-  }
-
-  /**
-   * Get the value of famousSingers
-   * @return the value of famousSingers
-   */
-  private List<Singer> getFamousSingers () {
-    return famousSingers;
-  }
-
-  //
-  // Other methods
-  //
+    public void setFamousSingers(List<Integer> famousSingers) {
+        this.famousSingers = famousSingers;
+    } 
 
 }

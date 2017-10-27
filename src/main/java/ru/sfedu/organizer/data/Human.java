@@ -1,3 +1,5 @@
+package ru.sfedu.organizer.data;
+
 
 import java.time.LocalDate;
 import java.util.*;
@@ -6,16 +8,16 @@ import java.util.*;
 /**
  * Class Human
  */
-public class Human  extends Object{
+public class Human  extends Entity{
 
   //
   // Fields
   //
 
-  private String name;
-  private String biography;
-  private LocalDate birthDate;
-  private LocalDate deathDate;
+  protected String name;
+  protected String biography;
+  protected LocalDate birthDate;
+  protected LocalDate deathDate;
   
   //
   // Constructors
@@ -31,72 +33,38 @@ public class Human  extends Object{
   // Accessor methods
   //
 
-  /**
-   * Set the value of name
-   * @param newVar the new value of name
-   */
-  private void setName (String newVar) {
-    name = newVar;
-  }
+    public String getName() {
+        return name;
+    }
 
-  /**
-   * Get the value of name
-   * @return the value of name
-   */
-  private String getName () {
-    return name;
-  }
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  /**
-   * Set the value of biography
-   * @param newVar the new value of biography
-   */
-  private void setBiography (String newVar) {
-    biography = newVar;
-  }
+    public String getBiography() {
+        return biography;
+    }
 
-  /**
-   * Get the value of biography
-   * @return the value of biography
-   */
-  private String getBiography () {
-    return biography;
-  }
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
 
-  /**
-   * Set the value of birthDate
-   * @param newVar the new value of birthDate
-   */
-  private void setBirthDate (LocalDate newVar) {
-    birthDate = newVar;
-  }
+    public LocalDate getBirthDate() {
+        return birthDate;
+    }
 
-  /**
-   * Get the value of birthDate
-   * @return the value of birthDate
-   */
-  private LocalDate getBirthDate () {
-    return birthDate;
-  }
+    public void setBirthDate(LocalDate birthDate) {
+        this.birthDate = birthDate;
+    }
 
-  /**
-   * Set the value of deathDate
-   * @param newVar the new value of deathDate
-   */
-  private void setDeathDate (LocalDate newVar) {
-    deathDate = newVar;
-  }
+    public LocalDate getDeathDate() {
+        return deathDate;
+    }
 
-  /**
-   * Get the value of deathDate
-   * @return the value of deathDate
-   */
-  private LocalDate getDeathDate () {
-    return deathDate;
-  }
+    public void setDeathDate(LocalDate deathDate) {
+        this.deathDate = deathDate;
+    }
 
-  //
-  // Other methods
-  //
+  
 
 }

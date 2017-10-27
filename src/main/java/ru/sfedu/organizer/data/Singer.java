@@ -1,3 +1,5 @@
+package ru.sfedu.organizer.data;
+
 
 import java.util.*;
 import ru.sfedu.organizer.data.Voices;
@@ -13,7 +15,7 @@ public class Singer extends Human {
   //
 
   private Voices voice;
-  private List<Aria> aries;
+  private List<Integer> aries;
   
   //
   // Constructors
@@ -29,40 +31,22 @@ public class Singer extends Human {
   // Accessor methods
   //
 
-  /**
-   * Set the value of voice
-   * @param newVar the new value of voice
-   */
-  private void setVoice (Voices newVar) {
-    voice = newVar;
-  }
+    public Voices getVoice() {
+        return voice;
+    }
 
-  /**
-   * Get the value of voice
-   * @return the value of voice
-   */
-  private Voices getVoice () {
-    return voice;
-  }
+    public void setVoice(Voices voice) {
+        this.voice = voice;
+    }
 
-  /**
-   * Set the value of aries
-   * @param newVar the new value of aries
-   */
-  private void setAries (List<Aria> newVar) {
-    aries = newVar;
-  }
+    public List<Integer> getAries() {
+        return aries;
+    }
 
-  /**
-   * Get the value of aries
-   * @return the value of aries
-   */
-  private List<Aria> getAries () {
-    return aries;
-  }
+    public void setAries(List<Integer> aries) {
+        this.aries = aries;
+    }
 
-  //
-  // Other methods
-  //
+  
 
 }

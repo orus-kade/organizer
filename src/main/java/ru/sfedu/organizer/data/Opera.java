@@ -1,3 +1,5 @@
+package ru.sfedu.organizer.data;
+
 
 import java.util.*;
 
@@ -5,17 +7,17 @@ import java.util.*;
 /**
  * Class Opera
  */
-public class Opera extends Object{
+public class Opera extends Entity{
 
   //
   // Fields
   //
 
   private String title;
-  private List<Composer> composers;
-  private List<Writer> writers;
+  private List<Integer> composers;
+  private List<Integer> writers;
   private String history;
-  private List<Aria> aries;
+  private List<Integer> aries;
   private Libretto libretto;
   
   //
@@ -32,104 +34,54 @@ public class Opera extends Object{
   // Accessor methods
   //
 
-  /**
-   * Set the value of title
-   * @param newVar the new value of title
-   */
-  private void setTitle (String newVar) {
-    title = newVar;
-  }
+    public String getTitle() {
+        return title;
+    }
 
-  /**
-   * Get the value of title
-   * @return the value of title
-   */
-  private String getTitle () {
-    return title;
-  }
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
-  /**
-   * Set the value of composers
-   * @param newVar the new value of composers
-   */
-  private void setComposers (List<Composer> newVar) {
-    composers = newVar;
-  }
+    public List<Integer> getComposers() {
+        return composers;
+    }
 
-  /**
-   * Get the value of composers
-   * @return the value of composers
-   */
-  private List<Composer> getComposers () {
-    return composers;
-  }
+    public void setComposers(List<Integer> composers) {
+        this.composers = composers;
+    }
 
-  /**
-   * Set the value of writers
-   * @param newVar the new value of writers
-   */
-  private void setWriters (List<Writer> newVar) {
-    writers = newVar;
-  }
+    public List<Integer> getWriters() {
+        return writers;
+    }
 
-  /**
-   * Get the value of writers
-   * @return the value of writers
-   */
-  private List<Writer> getWriters () {
-    return writers;
-  }
+    public void setWriters(List<Integer> writers) {
+        this.writers = writers;
+    }
 
-  /**
-   * Set the value of history
-   * @param newVar the new value of history
-   */
-  private void setHistory (String newVar) {
-    history = newVar;
-  }
+    public String getHistory() {
+        return history;
+    }
 
-  /**
-   * Get the value of history
-   * @return the value of history
-   */
-  private String getHistory () {
-    return history;
-  }
+    public void setHistory(String history) {
+        this.history = history;
+    }
 
-  /**
-   * Set the value of aries
-   * @param newVar the new value of aries
-   */
-  private void setAries (List<Aria> newVar) {
-    aries = newVar;
-  }
+    public List<Integer> getAries() {
+        return aries;
+    }
 
-  /**
-   * Get the value of aries
-   * @return the value of aries
-   */
-  private List<Aria> getAries () {
-    return aries;
-  }
+    public void setAries(List<Integer> aries) {
+        this.aries = aries;
+    }
 
-  /**
-   * Set the value of libretto
-   * @param newVar the new value of libretto
-   */
-  private void setLibretto (Libretto newVar) {
-    libretto = newVar;
-  }
+    public Libretto getLibretto() {
+        return libretto;
+    }
 
-  /**
-   * Get the value of libretto
-   * @return the value of libretto
-   */
-  private Libretto getLibretto () {
-    return libretto;
-  }
+    public void setLibretto(Libretto libretto) {
+        this.libretto = libretto;
+    }
 
-  //
-  // Other methods
-  //
+  
 
 }
