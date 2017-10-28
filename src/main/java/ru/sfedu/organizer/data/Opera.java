@@ -7,17 +7,17 @@ import java.util.*;
 /**
  * Class Opera
  */
-public class Opera extends Object{
+public class Opera extends Entity{
 
   //
   // Fields
   //
 
   private String title;
-  private List<Object> composers;
-  private List<Object> writers;
+  private List<Entity> composers;
+  private List<Entity> writers;
   private String history;
-  private List<Object> aries;
+  private List<Entity> aries;
   private Libretto libretto;
   
   //
@@ -42,19 +42,19 @@ public class Opera extends Object{
         this.title = title;
     }
 
-    public List<Object> getComposers() {
+    public List<Entity> getComposers() {
         return composers;
     }
 
-    public void setComposers(List<Object> composers) {
+    public void setComposers(List<Entity> composers) {
         this.composers = composers;
     }
 
-    public List<Object> getWriters() {
+    public List<Entity> getWriters() {
         return writers;
     }
 
-    public void setWriters(List<Object> writers) {
+    public void setWriters(List<Entity> writers) {
         this.writers = writers;
     }
 
@@ -66,11 +66,11 @@ public class Opera extends Object{
         this.history = history;
     }
 
-    public List<Object> getAries() {
+    public List<Entity> getAries() {
         return aries;
     }
 
-    public void setAries(List<Object> aries) {
+    public void setAries(List<Entity> aries) {
         this.aries = aries;
     }
 

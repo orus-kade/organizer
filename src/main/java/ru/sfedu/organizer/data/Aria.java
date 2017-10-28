@@ -7,7 +7,7 @@ import java.util.*;
 /**
  * Class Aria
  */
-public class Aria extends Object{
+public class Aria extends Entity{
 
   //
   // Fields
@@ -15,9 +15,9 @@ public class Aria extends Object{
 
   private String title;
   private String text;
-  private List<Object> composers;
-  private List<Object> writers;
-  private List<Object> famousSingers;
+  private List<Entity> composers;
+  private List<Entity> writers;
+  private List<Entity> famousSingers;
   
   //
   // Constructors
@@ -49,27 +49,27 @@ public class Aria extends Object{
         this.text = text;
     }
 
-    public List<Object> getComposers() {
+    public List<Entity> getComposers() {
         return composers;
     }
 
-    public void setComposers(List<Object> composers) {
+    public void setComposers(List<Entity> composers) {
         this.composers = composers;
     }
 
-    public List<Object> getWriters() {
+    public List<Entity> getWriters() {
         return writers;
     }
 
-    public void setWriters(List<Object> writers) {
+    public void setWriters(List<Entity> writers) {
         this.writers = writers;
     }
 
-    public List<Object> getFamousSingers() {
+    public List<Entity> getFamousSingers() {
         return famousSingers;
     }
 
-    public void setFamousSingers(List<Object> famousSingers) {
+    public void setFamousSingers(List<Entity> famousSingers) {
         this.famousSingers = famousSingers;
     }
 

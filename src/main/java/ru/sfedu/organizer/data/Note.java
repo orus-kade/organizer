@@ -15,7 +15,7 @@ public class Note {
 
   private long id;
   private String description;
-  private Object object;
+  private Entity object;
   
   //
   // Constructors
@@ -47,11 +47,11 @@ public class Note {
         this.description = description;
     }
 
-    public Object getObject() {
+    public Entity getObject() {
         return object;
     }
 
-    public void setObject(Object object) {
+    public void setObject(Entity object) {
         this.object = object;
     }
 

@@ -7,15 +7,15 @@ import java.util.*;
 /**
  * Class Libretto
  */
-public class Libretto extends Object{
+public class Libretto extends Entity{
 
   //
   // Fields
   //
 
   private Opera opera;
-  private List<Object> writers;
-  private List<Object> famousSingers;
+  private List<Entity> writers;
+  private List<Entity> famousSingers;
   
   //
   // Constructors
@@ -39,19 +39,19 @@ public class Libretto extends Object{
         this.opera = opera;
     }
 
-    public List<Object> getWriters() {
+    public List<Entity> getWriters() {
         return writers;
     }
 
-    public void setWriters(List<Object> writers) {
+    public void setWriters(List<Entity> writers) {
         this.writers = writers;
     }
 
-    public List<Object> getFamousSingers() {
+    public List<Entity> getFamousSingers() {
         return famousSingers;
     }
 
-    public void setFamousSingers(List<Object> famousSingers) {
+    public void setFamousSingers(List<Entity> famousSingers) {
         this.famousSingers = famousSingers;
     }
 

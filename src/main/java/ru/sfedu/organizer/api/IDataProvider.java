@@ -1,12 +1,12 @@
 
 package ru.sfedu.organizer.api;
 
-import ru.sfedu.organizer.data.Object;
+import ru.sfedu.organizer.data.Entity;
 
 
 public interface IDataProvider {
-    public int saveRecord(Object obj);
-    public int deleteRecord(Object obj);
-    public Object getRecordById(long id);
+    public int saveRecord(Entity obj);
+    public int deleteRecord(Entity obj);
+    public Entity getRecordById(long id);
     public int initDataSource();
 }

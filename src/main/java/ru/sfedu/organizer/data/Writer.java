@@ -14,9 +14,9 @@ public class Writer extends Human {
   // Fields
   //
 
-  private List<Object> operas;
-  private List<Object> aries;
-  private List<Object> librettos;
+  private List<Entity> operas;
+  private List<Entity> aries;
+  private List<Entity> librettos;
   
   //
   // Constructors
@@ -32,27 +32,27 @@ public class Writer extends Human {
   // Accessor methods
   //
 
-    public List<Object> getOperas() {
+    public List<Entity> getOperas() {
         return operas;
     }
 
-    public void setOperas(List<Object> operas) {
+    public void setOperas(List<Entity> operas) {
         this.operas = operas;
     }
 
-    public List<Object> getAries() {
+    public List<Entity> getAries() {
         return aries;
     }
 
-    public void setAries(List<Object> aries) {
+    public void setAries(List<Entity> aries) {
         this.aries = aries;
     }
 
-    public List<Object> getLibrettos() {
+    public List<Entity> getLibrettos() {
         return librettos;
     }
 
-    public void setLibrettos(List<Object> librettos) {
+    public void setLibrettos(List<Entity> librettos) {
         this.librettos = librettos;
     }
 

@@ -13,6 +13,10 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import ru.sfedu.organizer.api.CsvDataProvider;
+import ru.sfedu.organizer.data.Aria;
+import ru.sfedu.organizer.data.EntityTypes;
+
 import ru.sfedu.organizer.utils.ConfigurationUtil;
 
 /**
@@ -47,7 +51,10 @@ public class ClientTest {
     }
     @Test
     public void test1() throws IOException{
-        System.out.println(ConfigurationUtil.getConfigurationEntry("some_prop"));
-        System.out.println(ConfigurationUtil.getConfigurationEntry(Constants.SOME_PROP));
+        CsvDataProvider pr = new CsvDataProvider();
+        pr.initDataSource();
+        Aria aria = new Aria();
+        aria.setType(EntityTypes.ARIA);
+        pr.saveRecord(aria);
     }
 }

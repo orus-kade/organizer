@@ -2,9 +2,9 @@
 package ru.sfedu.organizer.data;
 
 
-public class Object {
+public class Entity {
     private long id;
-    private ObjectTypes type;
+    private EntityTypes type;
     
     public long getId() {
         return id;
@@ -14,11 +14,11 @@ public class Object {
         this.id = id;
     }
 
-    public ObjectTypes getType() {
+    public EntityTypes getType() {
         return type;
     }
 
-    public void setType(ObjectTypes type) {
+    public void setType(EntityTypes type) {
         this.type = type;
     }
     

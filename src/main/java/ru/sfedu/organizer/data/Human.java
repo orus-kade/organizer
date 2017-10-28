@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * Class Human
  */
-public class Human  extends Object{
+public class Human  extends Entity{
 
   //
   // Fields
