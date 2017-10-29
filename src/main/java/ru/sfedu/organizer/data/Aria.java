@@ -73,5 +73,10 @@ public class Aria extends Entity{
         this.famousSingers = famousSingers;
     }
 
+    @Override
+    public String toString() {
+        return "Aria{" + "title=" + title + ", text=" + text + ", composers=" + composers + ", writers=" + writers + ", famousSingers=" + famousSingers + '}';
+    }
+
 
 }

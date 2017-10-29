@@ -21,5 +21,10 @@ public class Entity {
     public void setType(EntityTypes type) {
         this.type = type;
     }
+
+    @Override
+    public String toString() {
+        return "Entity{" + "id=" + id + ", type=" + type + '}';
+    }
     
 }
