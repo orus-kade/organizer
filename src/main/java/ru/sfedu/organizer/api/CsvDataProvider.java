@@ -45,13 +45,14 @@ public class CsvDataProvider implements IDataProvider{
     public Generic getRecordById(Generic obj) {
         try {
             Types type = obj.getType();
-            CSVReader reader = new CSVReader(new FileReader(getFileName(obj)));
-            ColumnPositionMappingStrategy<Generic> beanStrategy = new ColumnPositionMappingStrategy<Generic>();            
+            CSVReader reader = new CSVReader(new FileReader(getFileName(obj)), ';');
+            ColumnPositionMappingStrategy<Generic> beanStrategy = new ColumnPositionMappingStrategy<Generic>();           
             beanStrategy.setType(type.getClassName());
             beanStrategy.setColumnMapping(type.getFields());
             CsvFilter filter = new CsvFilter(beanStrategy, obj.getId());
             CsvToBean<Generic> csvToBean = new CsvToBean<Generic>();
             List<Generic> list = csvToBean.parse(beanStrategy, reader, filter);
+            
             if (list.isEmpty()) return null;
             return list.get(0);
             

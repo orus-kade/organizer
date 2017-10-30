@@ -2,7 +2,8 @@ package ru.sfedu.organizer.model;
 
 
 import java.util.*;
-import static ru.sfedu.organizer.model.;
+
+import static ru.sfedu.organizer.model.Types.COMPOSER;
 
 /**
  * Class Composer

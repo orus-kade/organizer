@@ -1,5 +1,5 @@
 
-package ru.sfedu.organizer.model.*;
+package ru.sfedu.organizer.model;
 
 import static ru.sfedu.organizer.Constants.*;
 

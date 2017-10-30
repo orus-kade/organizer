@@ -50,9 +50,9 @@ public class ClientTest {
     public void test2() throws IOException {
         CsvDataProvider p = new CsvDataProvider();
         Aria a = new Aria();
-        //p.saveRecord(a);
-       // System.out.println(p.getFile(a));
-       System.out.println("dfsfd");
+        a.setId(4);        
+        System.out.println(p.getRecordById(a));     
+       
     }
     
 
