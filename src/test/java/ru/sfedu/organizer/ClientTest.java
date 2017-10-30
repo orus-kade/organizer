@@ -14,8 +14,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import ru.sfedu.organizer.api.CsvDataProvider;
-import ru.sfedu.organizer.data.Aria;
-import ru.sfedu.organizer.data.EntityTypes;
+import ru.sfedu.organizer.model.Aria;
+import ru.sfedu.organizer.model.EntityTypes;
 
 import ru.sfedu.organizer.utils.ConfigurationUtil;
 
@@ -54,7 +54,7 @@ public class ClientTest {
         CsvDataProvider pr = new CsvDataProvider();
         pr.initDataSource();
         Aria aria = new Aria();
-        aria.setType(EntityTypes.ARIA);
+        aria.setType(EntityTypes.ARI);
         pr.saveRecord(aria);
     }
 }

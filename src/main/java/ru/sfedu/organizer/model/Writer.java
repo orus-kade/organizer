@@ -1,7 +1,8 @@
-package ru.sfedu.organizer.data;
+package ru.sfedu.organizer.model;
 
 
 import java.util.*;
+import static ru.sfedu.organizer.model.EntityTypes.*;
     
 
 
@@ -21,7 +22,9 @@ public class Writer extends Human {
   //
   // Constructors
   //
-  public Writer () { };
+  public Writer () {
+      super(WRI);
+  };
   
   //
   // Methods

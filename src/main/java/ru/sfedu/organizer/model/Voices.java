@@ -3,12 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ru.sfedu.organizer.data;
+package ru.sfedu.organizer.model;
 
 /**
  *
  * @author sterie
  */
-public enum EntityTypes {
-    ARIA, COMPOSER, LIBRETTO, OPERA, SINGER, WRITER
+public enum Voices {
+    SOPRANPO, 
+    MEZZO_SOPRANPO, 
+    CONTRALTO, 
+    COUNTERTENOR, 
+    TENOR, 
+    BARITONE, 
+    BASS
 }

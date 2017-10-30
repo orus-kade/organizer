@@ -1,7 +1,7 @@
 
 package ru.sfedu.organizer.api;
 
-import ru.sfedu.organizer.data.Entity;
+import ru.sfedu.organizer.model.Entity;
 
 
 public interface IDataProvider {

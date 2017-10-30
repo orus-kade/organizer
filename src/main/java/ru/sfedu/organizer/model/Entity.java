@@ -1,10 +1,14 @@
 
-package ru.sfedu.organizer.data;
+package ru.sfedu.organizer.model;
 
 
 public class Entity {
     private long id;
     private EntityTypes type;
+
+    public Entity(EntityTypes type) {
+        this.type = type;
+    }    
     
     public long getId() {
         return id;

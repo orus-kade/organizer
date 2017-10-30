@@ -1,8 +1,8 @@
-package ru.sfedu.organizer.data;
+package ru.sfedu.organizer.model;
 
 
 import java.util.*;
-
+import static ru.sfedu.organizer.model.EntityTypes.*;
 
 /**
  * Class Composer
@@ -19,7 +19,9 @@ public class Composer extends Human {
   //
   // Constructors
   //
-  public Composer () { };
+  public Composer () { 
+      super(COM);
+  };
   
   //
   // Methods

@@ -5,6 +5,9 @@
  */
 package ru.sfedu.organizer;
 
+import ru.sfedu.organizer.model.Entity;
+import ru.sfedu.organizer.model.EntityTypes;
+import ru.sfedu.organizer.model.Aria;
 import com.opencsv.CSVReader;
 import java.util.*;
 import com.opencsv.CSVWriter;
@@ -17,7 +20,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import ru.sfedu.organizer.data.*;
 import ru.sfedu.organizer.utils.ConfigurationUtil;
 
 
@@ -59,7 +61,7 @@ public class MainTest {
                     List<Entity> objs;
                     Aria aria = new Aria();
                     aria.setId(Long.parseLong(record[0]));
-                    aria.setType(EntityTypes.ARIA);
+                    aria.setType(EntityTypes.ARI);
                     aria.setTitle(record[1]);
                     aria.setText(record[2]);
                     List<String> strlist = Arrays.asList(record[3].split(","));
@@ -67,7 +69,7 @@ public class MainTest {
                     for(String str: strlist){
                         obj = new Entity();
                         obj.setId(Long.parseLong(str));
-                        obj.setType(EntityTypes.COMPOSER);
+                        obj.setType(EntityTypes.COM);
                         objs.add(obj);
                     }
                     aria.setComposers(objs);
@@ -76,7 +78,7 @@ public class MainTest {
                     for(String str: strlist){
                         obj = new Entity();
                         obj.setId(Long.parseLong(str));
-                        obj.setType(EntityTypes.WRITER);
+                        obj.setType(EntityTypes.WRI);
                         objs.add(obj);
                     }
                     aria.setWriters(objs);
@@ -86,7 +88,7 @@ public class MainTest {
                     for(String str: strlist){
                         obj = new Entity();
                         obj.setId(Long.parseLong(str));
-                        obj.setType(EntityTypes.SINGER);
+                        obj.setType(EntityTypes.SIN);
                         objs.add(obj);
                     }
                     aria.setFamousSingers(objs);
@@ -104,40 +106,40 @@ public class MainTest {
             //fail("The test case is a prototype.");
             System.out.println("ololo");
             Aria aria = new Aria();
-            aria.setType(EntityTypes.ARIA);
+            aria.setType(EntityTypes.ARI);
             aria.setId(12);
             aria.setTitle("title");
             aria.setText("some text text");
             List<Entity> list = new ArrayList<>();
             Entity obj = new Entity();
             obj.setId(1);
-            obj.setType(EntityTypes.COMPOSER);
+            obj.setType(EntityTypes.COM);
             list.add(obj);
             obj = new Entity();
             obj.setId(2);
-            obj.setType(EntityTypes.COMPOSER);
+            obj.setType(EntityTypes.COM);
             list.add(obj);
             aria.setComposers(list);
             
             list = new ArrayList<>();
             obj = new Entity();
             obj.setId(1);
-            obj.setType(EntityTypes.WRITER);
+            obj.setType(EntityTypes.WRI);
             list.add(obj);
             obj = new Entity();
             obj.setId(2);
-            obj.setType(EntityTypes.WRITER);
+            obj.setType(EntityTypes.WRI);
             list.add(obj);
             aria.setWriters(list);
             
             list = new ArrayList<>();
             obj = new Entity();
             obj.setId(1);
-            obj.setType(EntityTypes.SINGER);
+            obj.setType(EntityTypes.SIN);
             list.add(obj);
             obj = new Entity();
             obj.setId(2);
-            obj.setType(EntityTypes.SINGER);
+            obj.setType(EntityTypes.SIN);
             list.add(obj);
             aria.setFamousSingers(list);
             

@@ -1,7 +1,9 @@
-package ru.sfedu.organizer.data;
+package ru.sfedu.organizer.model;
 
 
 import java.util.*;
+import static ru.sfedu.organizer.model.EntityTypes.*;
+
 
 
 /**
@@ -22,7 +24,9 @@ public class Aria extends Entity{
   //
   // Constructors
   //
-  public Aria () { };
+  public Aria () { 
+      super(ARI);
+  };
   
   //
   // Methods

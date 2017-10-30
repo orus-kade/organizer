@@ -1,8 +1,8 @@
-package ru.sfedu.organizer.data;
+package ru.sfedu.organizer.model;
 
 
 import java.util.*;
-
+import static ru.sfedu.organizer.model.EntityTypes.*;
 
 /**
  * Class Libretto
@@ -20,7 +20,9 @@ public class Libretto extends Entity{
   //
   // Constructors
   //
-  public Libretto () { };
+  public Libretto () {
+      super(LIB);
+  };
   
   //
   // Methods

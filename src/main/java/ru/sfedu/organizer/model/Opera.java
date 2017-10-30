@@ -1,7 +1,8 @@
-package ru.sfedu.organizer.data;
+package ru.sfedu.organizer.model;
 
 
 import java.util.*;
+import static ru.sfedu.organizer.model.EntityTypes.*;
 
 
 /**
@@ -23,7 +24,9 @@ public class Opera extends Entity{
   //
   // Constructors
   //
-  public Opera () { };
+  public Opera () {
+      super(OPE);
+  };
   
   //
   // Methods

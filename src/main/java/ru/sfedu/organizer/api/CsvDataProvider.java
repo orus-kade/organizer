@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import ru.sfedu.organizer.Constants;
-import ru.sfedu.organizer.data.Entity;
-import ru.sfedu.organizer.data.EntityTypes;
+import ru.sfedu.organizer.model.Entity;
+import ru.sfedu.organizer.model.EntityTypes;
 import ru.sfedu.organizer.utils.ConfigurationUtil;
 
 

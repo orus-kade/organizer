@@ -1,8 +1,9 @@
-package ru.sfedu.organizer.data;
+package ru.sfedu.organizer.model;
 
 
 import java.util.*;
-import ru.sfedu.organizer.data.Voices;
+import ru.sfedu.organizer.model.Voices;
+import static ru.sfedu.organizer.model.EntityTypes.*;
 
 
 /**
@@ -20,7 +21,9 @@ public class Singer extends Human {
   //
   // Constructors
   //
-  public Singer () { };
+  public Singer () {
+      super(SIN);
+  };
   
   //
   // Methods

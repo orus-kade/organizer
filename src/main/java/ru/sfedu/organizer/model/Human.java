@@ -1,4 +1,4 @@
-package ru.sfedu.organizer.data;
+package ru.sfedu.organizer.model;
 
 
 import java.time.LocalDate;
@@ -22,7 +22,9 @@ public class Human  extends Entity{
   //
   // Constructors
   //
-  public Human () { };
+  public Human (EntityTypes type) { 
+      super(type);
+  };
   
   //
   // Methods
