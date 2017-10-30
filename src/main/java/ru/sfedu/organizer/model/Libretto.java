@@ -2,7 +2,7 @@ package ru.sfedu.organizer.model;
 
 
 import java.util.*;
-import static ru.sfedu.organizer.model.ClassType.*;
+import static ru.sfedu.organizer.model.Types.*;
 
 /**
  * Class Libretto
@@ -13,7 +13,7 @@ public class Libretto extends Generic{
   // Fields
   //
 
-  private Opera opera;
+  private long opera;
   private List<Generic> writers;
   private List<Generic> famousSingers;
   
@@ -21,7 +21,7 @@ public class Libretto extends Generic{
   // Constructors
   //
   public Libretto () {
-      super(LIB);
+      super(LIBRETTO);
   };
   
   //
@@ -33,11 +33,11 @@ public class Libretto extends Generic{
   // Accessor methods
   //
 
-    public Opera getOpera() {
+    public long getOpera() {
         return opera;
     }
 
-    public void setOpera(Opera opera) {
+    public void setOpera(long opera) {
         this.opera = opera;
     }
 

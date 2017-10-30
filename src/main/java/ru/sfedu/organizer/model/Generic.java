@@ -4,9 +4,9 @@ package ru.sfedu.organizer.model;
 
 public class Generic {
     private long id;
-    private ClassType type;
+    private Types type;
 
-    public Generic(ClassType type) {
+    public Generic(Types type) {
         this.type = type;
     }    
     
@@ -18,11 +18,11 @@ public class Generic {
         this.id = id;
     }
 
-    public ClassType getType() {
+    public Types getType() {
         return type;
     }
 
-    public void setType(ClassType type) {
+    public void setType(Types type) {
         this.type = type;
     }
 

@@ -16,13 +16,13 @@ public class Human  extends Generic{
 
   private String name;
   private String biography;
-  private LocalDate birthDate;
-  private LocalDate deathDate;
+  private String birthDate;
+  private String deathDate;
   
   //
   // Constructors
   //
-  public Human (ClassType type) { 
+  public Human (Types type) { 
       super(type);
   };
   
@@ -51,19 +51,19 @@ public class Human  extends Generic{
         this.biography = biography;
     }
 
-    public LocalDate getBirthDate() {
+    public String getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
+    public void setBirthDate(String birthDate) {
         this.birthDate = birthDate;
     }
 
-    public LocalDate getDeathDate() {
+    public String getDeathDate() {
         return deathDate;
     }
 
-    public void setDeathDate(LocalDate deathDate) {
+    public void setDeathDate(String deathDate) {
         this.deathDate = deathDate;
     }
 

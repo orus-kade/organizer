@@ -2,7 +2,7 @@ package ru.sfedu.organizer.model;
 
 
 import java.util.*;
-import static ru.sfedu.organizer.model.ClassType.*;
+import static ru.sfedu.organizer.model.Types.*;
 
 
 /**
@@ -19,13 +19,13 @@ public class Opera extends Generic{
   private List<Generic> writers;
   private String history;
   private List<Generic> aries;
-  private Libretto libretto;
+  private long libretto;
   
   //
   // Constructors
   //
   public Opera () {
-      super(OPE);
+      super(OPERA);
   };
   
   //
@@ -77,11 +77,11 @@ public class Opera extends Generic{
         this.aries = aries;
     }
 
-    public Libretto getLibretto() {
+    public long getLibretto() {
         return libretto;
     }
 
-    public void setLibretto(Libretto libretto) {
+    public void setLibretto(long libretto) {
         this.libretto = libretto;
     }
 

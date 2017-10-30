@@ -2,7 +2,7 @@ package ru.sfedu.organizer.model;
 
 
 import java.util.*;
-import static ru.sfedu.organizer.model.ClassType.*;
+import static ru.sfedu.organizer.model.Types.*;
     
 
 
@@ -23,7 +23,7 @@ public class Writer extends Human {
   // Constructors
   //
   public Writer () {
-      super(WRI);
+      super(WRITER);
   };
   
   //

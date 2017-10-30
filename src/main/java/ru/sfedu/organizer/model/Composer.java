@@ -2,7 +2,7 @@ package ru.sfedu.organizer.model;
 
 
 import java.util.*;
-import static ru.sfedu.organizer.model.ClassType.*;
+import static ru.sfedu.organizer.model.;
 
 /**
  * Class Composer
@@ -20,7 +20,7 @@ public class Composer extends Human {
   // Constructors
   //
   public Composer () { 
-      super(COM);
+      super(COMPOSER);
   };
   
   //

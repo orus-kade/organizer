@@ -2,7 +2,7 @@ package ru.sfedu.organizer.model;
 
 
 import java.util.*;
-import static ru.sfedu.organizer.model.ClassType.*;
+import static ru.sfedu.organizer.model.Types.*;
 
 
 
@@ -20,12 +20,13 @@ public class Aria extends Generic{
   private List<Generic> composers;
   private List<Generic> writers;
   private List<Generic> famousSingers;
+  private long libretto;
   
   //
   // Constructors
   //
   public Aria () { 
-      super(ARI);
+      super(ARIA);
   };
   
   //
@@ -77,9 +78,17 @@ public class Aria extends Generic{
         this.famousSingers = famousSingers;
     }
 
+    public long getLibretto() {
+        return libretto;
+    }
+
+    public void setLibretto(long libretto) {
+        this.libretto = libretto;
+    }
+
     @Override
     public String toString() {
-        return "Aria{" +  "id=" + getId() + ", type=" + getType()  + ", title=" + title + ", text=" + text + ", composers=" + composers + ", writers=" + writers + ", famousSingers=" + famousSingers + '}';
+        return "Aria{" +  "id=" + getId() + ", type=" + getType()  + ", title=" + title + ", text=" + text + ", composers=" + composers + ", writers=" + writers + ", famousSingers=" + famousSingers + ", libretto=" + getLibretto() + '}';
     }
 
 

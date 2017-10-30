@@ -3,7 +3,7 @@ package ru.sfedu.organizer.model;
 
 import java.util.*;
 import ru.sfedu.organizer.model.Voices;
-import static ru.sfedu.organizer.model.ClassType.*;
+import static ru.sfedu.organizer.model.Types.*;
 
 
 /**
@@ -15,14 +15,14 @@ public class Singer extends Human {
   // Fields
   //
 
-  private Voices voice;
+  private long voice;
   private List<Generic> aries;
   
   //
   // Constructors
   //
   public Singer () {
-      super(SIN);
+      super(SINGER);
   };
   
   //
@@ -34,11 +34,11 @@ public class Singer extends Human {
   // Accessor methods
   //
 
-    public Voices getVoice() {
+    public long getVoice() {
         return voice;
     }
 
-    public void setVoice(Voices voice) {
+    public void setVoice(long voice) {
         this.voice = voice;
     }
 

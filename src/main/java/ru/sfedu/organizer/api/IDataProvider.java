@@ -9,6 +9,6 @@ public interface IDataProvider {
     
     public int deleteRecord(Generic obj);
     
-    public Generic getRecordById(long id);
+    public Generic getRecordById(Generic obj);
    
 }

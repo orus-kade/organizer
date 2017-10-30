@@ -2,11 +2,15 @@
 package ru.sfedu.organizer;
 
 import com.opencsv.*;
+import com.opencsv.bean.ColumnPositionMappingStrategy;
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 import java.io.*;
 import java.util.*;
 import org.junit.*;
 import static org.junit.Assert.*;
 import ru.sfedu.organizer.api.CsvDataProvider;
+import ru.sfedu.organizer.api.CsvFilter;
 import ru.sfedu.organizer.model.*;
 import ru.sfedu.organizer.utils.*;
 
@@ -46,7 +50,9 @@ public class ClientTest {
     public void test2() throws IOException {
         CsvDataProvider p = new CsvDataProvider();
         Aria a = new Aria();
+        //p.saveRecord(a);
        // System.out.println(p.getFile(a));
+       System.out.println("dfsfd");
     }
     
 
@@ -75,7 +81,7 @@ public class ClientTest {
                     List<Generic> objs;
                     Aria aria = new Aria();
                     aria.setId(Long.parseLong(record[0]));
-                    aria.setType(ClassType.ARI);
+                    aria.setType(Types.ARIA);
                     aria.setTitle(record[1]);
                     aria.setText(record[2]);
                     List<String> strlist = Arrays.asList(record[3].split(","));
@@ -83,7 +89,7 @@ public class ClientTest {
                     for(String str: strlist){
                         obj = new Generic();
                         obj.setId(Long.parseLong(str));
-                        obj.setType(ClassType.COM);
+                        obj.setType(Types.COMPOSER);
                         objs.add(obj);
                     }
                     aria.setComposers(objs);
@@ -92,7 +98,7 @@ public class ClientTest {
                     for(String str: strlist){
                         obj = new Generic();
                         obj.setId(Long.parseLong(str));
-                        obj.setType(ClassType.WRI);
+                        obj.setType(Types.WRITER);
                         objs.add(obj);
                     }
                     aria.setWriters(objs);
@@ -102,7 +108,7 @@ public class ClientTest {
                     for(String str: strlist){
                         obj = new Generic();
                         obj.setId(Long.parseLong(str));
-                        obj.setType(ClassType.SIN);
+                        obj.setType(Types.SINGER);
                         objs.add(obj);
                     }
                     aria.setFamousSingers(objs);
@@ -114,61 +120,15 @@ public class ClientTest {
     
     
     @Test
-    public void test1() {
+    public void test1() throws IOException {
+        CSVReader reader = new CSVReader(new FileReader(ConfigurationUtil.getConfigurationEntry(Constants.CSV_PATH)+"Aria.csv"), ';');
+	HeaderColumnNameMappingStrategy<Aria> beanStrategy = new HeaderColumnNameMappingStrategy<Aria>();		
+	beanStrategy.setType(Aria.class);
+        CsvFilter filter = new CsvFilter(beanStrategy, 2);
+	CsvToBean<Aria> csvToBean = new CsvToBean<Aria>();		
+	List<Aria> a = csvToBean.parse(beanStrategy, reader, filter);		
+	System.out.println(a);  
+                      
 
-            // TODO review the generated test code and remove the default call to fail.
-            //fail("The test case is a prototype.");
-            System.out.println("ololo");
-            Aria aria = new Aria();
-            aria.setType(ClassType.ARI);
-            aria.setId(12);
-            aria.setTitle("title");
-            aria.setText("some text text");
-            List<Generic> list = new ArrayList<>();
-            Generic obj = new Generic();
-            obj.setId(1);
-            obj.setType(ClassType.COM);
-            list.add(obj);
-            obj = new Generic();
-            obj.setId(2);
-            obj.setType(ClassType.COM);
-            list.add(obj);
-            aria.setComposers(list);
-            
-            list = new ArrayList<>();
-            obj = new Generic();
-            obj.setId(1);
-            obj.setType(ClassType.WRI);
-            list.add(obj);
-            obj = new Generic();
-            obj.setId(2);
-            obj.setType(ClassType.WRI);
-            list.add(obj);
-            aria.setWriters(list);
-            
-            list = new ArrayList<>();
-            obj = new Generic();
-            obj.setId(1);
-            obj.setType(ClassType.SIN);
-            list.add(obj);
-            obj = new Generic();
-            obj.setId(2);
-            obj.setType(ClassType.SIN);
-            list.add(obj);
-            aria.setFamousSingers(list);
-            
-            System.out.println(aria);
-            
-            String str = aria.getId() + ";";
-            str += aria.getTitle() + ";";
-            
-            CSVWriter writer = new CSVWriter(new FileWriter(Constants.CSV_ARIA_PATH), '#');
-            
-            
-            
-            //writer.writeNext(nextLine);
-        
-            
-
-    
+    }
 }
