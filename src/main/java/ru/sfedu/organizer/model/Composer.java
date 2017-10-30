@@ -2,7 +2,7 @@ package ru.sfedu.organizer.model;
 
 
 import java.util.*;
-import static ru.sfedu.organizer.model.EntityTypes.*;
+import static ru.sfedu.organizer.model.ClassType.*;
 
 /**
  * Class Composer
@@ -13,8 +13,8 @@ public class Composer extends Human {
   // Fields
   //
 
-  private List<Entity> operas;
-  private List<Entity> aries;
+  private List<Generic> operas;
+  private List<Generic> aries;
   
   //
   // Constructors
@@ -32,19 +32,19 @@ public class Composer extends Human {
   // Accessor methods
   //
 
-    public List<Entity> getOperas() {
+    public List<Generic> getOperas() {
         return operas;
     }
 
-    public void setOperas(List<Entity> operas) {
+    public void setOperas(List<Generic> operas) {
         this.operas = operas;
     }
 
-    public List<Entity> getAries() {
+    public List<Generic> getAries() {
         return aries;
     }
 
-    public void setAries(List<Entity> aries) {
+    public void setAries(List<Generic> aries) {
         this.aries = aries;
     }
 

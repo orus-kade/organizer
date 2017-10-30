@@ -2,14 +2,14 @@ package ru.sfedu.organizer.model;
 
 
 import java.util.*;
-import static ru.sfedu.organizer.model.EntityTypes.*;
+import static ru.sfedu.organizer.model.ClassType.*;
 
 
 
 /**
  * Class Aria
  */
-public class Aria extends Entity{
+public class Aria extends Generic{
 
   //
   // Fields
@@ -17,9 +17,9 @@ public class Aria extends Entity{
 
   private String title;
   private String text;
-  private List<Entity> composers;
-  private List<Entity> writers;
-  private List<Entity> famousSingers;
+  private List<Generic> composers;
+  private List<Generic> writers;
+  private List<Generic> famousSingers;
   
   //
   // Constructors
@@ -53,27 +53,27 @@ public class Aria extends Entity{
         this.text = text;
     }
 
-    public List<Entity> getComposers() {
+    public List<Generic> getComposers() {
         return composers;
     }
 
-    public void setComposers(List<Entity> composers) {
+    public void setComposers(List<Generic> composers) {
         this.composers = composers;
     }
 
-    public List<Entity> getWriters() {
+    public List<Generic> getWriters() {
         return writers;
     }
 
-    public void setWriters(List<Entity> writers) {
+    public void setWriters(List<Generic> writers) {
         this.writers = writers;
     }
 
-    public List<Entity> getFamousSingers() {
+    public List<Generic> getFamousSingers() {
         return famousSingers;
     }
 
-    public void setFamousSingers(List<Entity> famousSingers) {
+    public void setFamousSingers(List<Generic> famousSingers) {
         this.famousSingers = famousSingers;
     }
 

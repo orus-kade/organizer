@@ -2,20 +2,20 @@ package ru.sfedu.organizer.model;
 
 
 import java.util.*;
-import static ru.sfedu.organizer.model.EntityTypes.*;
+import static ru.sfedu.organizer.model.ClassType.*;
 
 /**
  * Class Libretto
  */
-public class Libretto extends Entity{
+public class Libretto extends Generic{
 
   //
   // Fields
   //
 
   private Opera opera;
-  private List<Entity> writers;
-  private List<Entity> famousSingers;
+  private List<Generic> writers;
+  private List<Generic> famousSingers;
   
   //
   // Constructors
@@ -41,19 +41,19 @@ public class Libretto extends Entity{
         this.opera = opera;
     }
 
-    public List<Entity> getWriters() {
+    public List<Generic> getWriters() {
         return writers;
     }
 
-    public void setWriters(List<Entity> writers) {
+    public void setWriters(List<Generic> writers) {
         this.writers = writers;
     }
 
-    public List<Entity> getFamousSingers() {
+    public List<Generic> getFamousSingers() {
         return famousSingers;
     }
 
-    public void setFamousSingers(List<Entity> famousSingers) {
+    public void setFamousSingers(List<Generic> famousSingers) {
         this.famousSingers = famousSingers;
     }
 

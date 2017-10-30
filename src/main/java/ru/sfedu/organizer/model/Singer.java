@@ -3,7 +3,7 @@ package ru.sfedu.organizer.model;
 
 import java.util.*;
 import ru.sfedu.organizer.model.Voices;
-import static ru.sfedu.organizer.model.EntityTypes.*;
+import static ru.sfedu.organizer.model.ClassType.*;
 
 
 /**
@@ -16,7 +16,7 @@ public class Singer extends Human {
   //
 
   private Voices voice;
-  private List<Entity> aries;
+  private List<Generic> aries;
   
   //
   // Constructors
@@ -42,11 +42,11 @@ public class Singer extends Human {
         this.voice = voice;
     }
 
-    public List<Entity> getAries() {
+    public List<Generic> getAries() {
         return aries;
     }
 
-    public void setAries(List<Entity> aries) {
+    public void setAries(List<Generic> aries) {
         this.aries = aries;
     }
 

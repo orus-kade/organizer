@@ -2,23 +2,23 @@ package ru.sfedu.organizer.model;
 
 
 import java.util.*;
-import static ru.sfedu.organizer.model.EntityTypes.*;
+import static ru.sfedu.organizer.model.ClassType.*;
 
 
 /**
  * Class Opera
  */
-public class Opera extends Entity{
+public class Opera extends Generic{
 
   //
   // Fields
   //
 
   private String title;
-  private List<Entity> composers;
-  private List<Entity> writers;
+  private List<Generic> composers;
+  private List<Generic> writers;
   private String history;
-  private List<Entity> aries;
+  private List<Generic> aries;
   private Libretto libretto;
   
   //
@@ -45,19 +45,19 @@ public class Opera extends Entity{
         this.title = title;
     }
 
-    public List<Entity> getComposers() {
+    public List<Generic> getComposers() {
         return composers;
     }
 
-    public void setComposers(List<Entity> composers) {
+    public void setComposers(List<Generic> composers) {
         this.composers = composers;
     }
 
-    public List<Entity> getWriters() {
+    public List<Generic> getWriters() {
         return writers;
     }
 
-    public void setWriters(List<Entity> writers) {
+    public void setWriters(List<Generic> writers) {
         this.writers = writers;
     }
 
@@ -69,11 +69,11 @@ public class Opera extends Entity{
         this.history = history;
     }
 
-    public List<Entity> getAries() {
+    public List<Generic> getAries() {
         return aries;
     }
 
-    public void setAries(List<Entity> aries) {
+    public void setAries(List<Generic> aries) {
         this.aries = aries;
     }
 

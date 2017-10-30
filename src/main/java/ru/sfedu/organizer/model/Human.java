@@ -8,7 +8,7 @@ import java.util.*;
 /**
  * Class Human
  */
-public class Human  extends Entity{
+public class Human  extends Generic{
 
   //
   // Fields
@@ -22,7 +22,7 @@ public class Human  extends Entity{
   //
   // Constructors
   //
-  public Human (EntityTypes type) { 
+  public Human (ClassType type) { 
       super(type);
   };
   

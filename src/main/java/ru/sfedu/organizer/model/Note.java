@@ -15,7 +15,7 @@ public class Note {
 
   private long id;
   private String description;
-  private Entity object;
+  private Generic object;
   
   //
   // Constructors
@@ -47,11 +47,11 @@ public class Note {
         this.description = description;
     }
 
-    public Entity getObject() {
+    public Generic getObject() {
         return object;
     }
 
-    public void setObject(Entity object) {
+    public void setObject(Generic object) {
         this.object = object;
     }
 
