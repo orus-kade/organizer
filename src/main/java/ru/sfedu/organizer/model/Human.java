@@ -67,6 +67,11 @@ public class Human  extends Generic{
         this.deathDate = deathDate;
     }
 
+    @Override
+    public String toString() {
+        return "Human{" + "name=" + name + ", biography=" + biography + ", birthDate=" + birthDate + ", deathDate=" + deathDate + '}';
+    }
+
   
 
 }
