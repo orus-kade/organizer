@@ -68,7 +68,7 @@ public class CsvDataProvider implements IDataProvider{
             CSVReader reader = new CSVReader(new FileReader(getFileName(obj)), ';');
             ColumnPositionMappingStrategy<Generic> beanStrategy = new ColumnPositionMappingStrategy<Generic>();           
             beanStrategy.setType(getClass(obj));
-            beanStrategy.setColumnMapping(getFields(obj));
+            //beanStrategy.setColumnMapping(getFields(obj));
             CsvFilter filter = new CsvFilter(beanStrategy, obj.getId());
             CsvToBean<Generic> csvToBean = new CsvToBean<Generic>();
             List<Generic> list = csvToBean.parse(beanStrategy, reader, filter);

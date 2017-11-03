@@ -1,4 +1,1 @@
-id;title;text;libretto
-1;t1;e1;1
-2;t2;e2;2
-3;t3;e3;3
+'2';'title';'tyext';'{"id":0,"type":"LIBRETTO"}'

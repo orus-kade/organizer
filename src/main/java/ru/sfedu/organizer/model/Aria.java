@@ -1,6 +1,7 @@
 package ru.sfedu.organizer.model;
 
-
+import com.opencsv.bean.CsvBindByPosition;
+import com.opencsv.bean.CsvCustomBindByPosition;
 import java.util.*;
 import static ru.sfedu.organizer.model.Types.*;
 
@@ -14,13 +15,23 @@ public class Aria extends Generic{
   //
   // Fields
   //
+    
+  @CsvBindByPosition (position = 0) 
+  private long id; 
 
+  @CsvBindByPosition (position = 1) 
   private String title;
-  private String text;
+  
+  @CsvBindByPosition (position = 2) 
+  private String text; 
+  
+ 
   private List<Generic> composers;
   private List<Generic> writers;
   private List<Generic> famousSingers;
-  private long libretto;
+  
+  @CsvCustomBindByPosition (converter = Generic.class, position = 3) 
+  private Generic libretto;
   
   //
   // Constructors
@@ -78,14 +89,15 @@ public class Aria extends Generic{
         this.famousSingers = famousSingers;
     }
 
-    public long getLibretto() {
+    public Generic getLibretto() {
         return libretto;
     }
 
-    public void setLibretto(long libretto) {
+    public void setLibretto(Generic libretto) {
         this.libretto = libretto;
     }
 
+    
     @Override
     public String toString() {
         return "Aria{" +  "id=" + getId() + ", type=" + getType()  + ", title=" + title + ", text=" + text + ", composers=" + composers + ", writers=" + writers + ", famousSingers=" + famousSingers + ", libretto=" + getLibretto() + '}';

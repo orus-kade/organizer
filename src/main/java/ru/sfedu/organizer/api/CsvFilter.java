@@ -19,7 +19,7 @@ public class CsvFilter implements CsvToBeanFilter{
     }   
     @Override
     public boolean allowLine(String[] strings) {
- 	int index = strategy.getColumnIndex("id");
+ 	int index = 0;
  	String value = strings[index];
  	boolean result = id.equals(value);
  	return result;

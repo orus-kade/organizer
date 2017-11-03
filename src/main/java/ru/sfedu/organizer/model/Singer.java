@@ -1,8 +1,9 @@
 package ru.sfedu.organizer.model;
 
 
+import com.opencsv.bean.CsvBindByPosition;
+import com.opencsv.bean.CsvCustomBindByPosition;
 import java.util.*;
-import ru.sfedu.organizer.model.Voices;
 import static ru.sfedu.organizer.model.Types.*;
 
 
@@ -14,8 +15,24 @@ public class Singer extends Human {
   //
   // Fields
   //
+  
+  @CsvBindByPosition (position = 0)    
+  private long id;
+  
+  @CsvBindByPosition (position = 1)  
+  private String name;
+  
+  @CsvBindByPosition (position = 2)  
+  private String biography;
+  
+  @CsvBindByPosition (position = 3)   
+  private String birthDate;
+  
+  @CsvBindByPosition (position = 4)   
+  private String deathDate;
 
-  private long voice;
+  @CsvBindByPosition (position = 5) 
+  private String voice;
   private List<Generic> aries;
   
   //
@@ -34,11 +51,11 @@ public class Singer extends Human {
   // Accessor methods
   //
 
-    public long getVoice() {
+    public String getVoice() {
         return voice;
     }
 
-    public void setVoice(long voice) {
+    public void setVoice(String voice) {
         this.voice = voice;
     }
 

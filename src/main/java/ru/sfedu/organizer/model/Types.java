@@ -13,6 +13,7 @@ public enum Types {
     LIBRETTO, 
     OPERA, 
     SINGER, 
-    WRITER;
+    WRITER,
+    NOTE
 
 }

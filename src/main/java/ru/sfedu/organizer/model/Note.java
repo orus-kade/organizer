@@ -1,26 +1,33 @@
 package ru.sfedu.organizer.model;
 
+import com.opencsv.bean.CsvBindByPosition;
+import com.opencsv.bean.CsvCustomBindByPosition;
 
-import java.util.*;
 
 
 /**
  * Class Note
  */
-public class Note {
+public class Note extends Generic{
 
   //
   // Fields
   //
-
+  @CsvBindByPosition (position = 0)   
   private long id;
+  
+  @CsvBindByPosition (position = 1)
   private String description;
+  
+  @CsvCustomBindByPosition(converter = Generic.class, position = 2)
   private Generic object;
   
   //
   // Constructors
   //
-  public Note () { };
+  public Note () {
+      super(Types.NOTE);
+  };
   
   //
   // Methods
@@ -30,14 +37,6 @@ public class Note {
   //
   // Accessor methods
   //
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
 
     public String getDescription() {
         return description;
