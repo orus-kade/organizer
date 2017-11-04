@@ -102,6 +102,5 @@ public class Aria extends Generic{
     public String toString() {
         return "Aria{" +  "id=" + getId() + ", type=" + getType()  + ", title=" + title + ", text=" + text + ", composers=" + composers + ", writers=" + writers + ", famousSingers=" + famousSingers + ", libretto=" + getLibretto() + '}';
     }
-
-
+  
 }

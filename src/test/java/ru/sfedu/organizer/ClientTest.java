@@ -67,66 +67,41 @@ public class ClientTest {
         Aria a = new Aria();
         a.setId(2);
         Generic w;
-        w = p.getRecordById(a);
-        
+        w = p.getRecordById(a);        
         System.out.println(w);     
     }
     
     
     @Test
     public void test4(){
-
-        java.io.Writer writer;
-        try {
-            writer = new FileWriter(getConfigurationEntry(CSV_PATH) + "Aria.csv");        
-        Aria a = new Aria();
-        a.setId(2);
-        a.setText("tyext");
-        a.setTitle("title");
-        Generic lib = new Generic(Types.LIBRETTO);
-        a.setLibretto(lib);
-        System.out.println(a);      
-        ColumnPositionMappingStrategy<Aria> beanStrategy = new ColumnPositionMappingStrategy<Aria>();           
-        beanStrategy.setType(Aria.class);
-        StatefulBeanToCsv<Aria> beanWriter = new StatefulBeanToCsv<Aria>('\\', "\n", beanStrategy, '\'', ';', true, writer);
-        //StatefulBeanToCsvBuilder<Aria> builder = new StatefulBeanToCsvBuilder<Aria>(writer);
-        //StatefulBeanToCsv<Aria> beanWriter = builder.withMappingStrategy(beanStrategy).build();
-            beanWriter.write(a);
-            writer.close();
-        } catch (IOException ex) {
-            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (CsvDataTypeMismatchException ex) {
-            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (CsvRequiredFieldEmptyException ex) {
-            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        
-        Reader reader;
-        try {
-            reader = new FileReader(getConfigurationEntry(CSV_PATH) + "Aria.csv");        
-            CsvToBean<Aria> csvToBean = new CsvToBeanBuilder(reader)
-                    .withType(Aria.class)
-                    .withEscapeChar('\\')
-                    .withQuoteChar('\'')
-                    .withSeparator(';')
-                    .build();
-         
-            List<Aria> list = csvToBean.parse();
-            reader.close();
-            System.out.println(list);
-        } catch (IOException ex) {
-            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        Voices v;
-        v = Voices.1;
-        
-        
+            Aria a = new Aria();
+            a.setText("tyext");
+            a.setTitle("title");
+            Generic lib = new Generic(Types.LIBRETTO);
+            lib.setId(2);
+            a.setLibretto(lib);
+            CsvDataProvider p = new CsvDataProvider();
+            p.addRecord(a);
+    }
+    
+    @Test
+    public void test5(){
+            Aria a = new Aria();
+            a.setId(5);
+            a.setText("tyext");
+            a.setTitle("title");
+            Generic lib = new Generic(Types.LIBRETTO);
+            lib.setId(2);
+            a.setLibretto(lib);
+            CsvDataProvider p = new CsvDataProvider();
+            p.deleteRecord(a);
     }
     
     
+    
+    
     @Test 
-    public void test3() throws IOException{
+    public void test6() throws IOException{
         java.io.Writer writer = new FileWriter(getConfigurationEntry(CSV_PATH) + "Composer.csv");
         Composer com = new Composer();
         com.setId(2);

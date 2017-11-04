@@ -4,7 +4,11 @@ package ru.sfedu.organizer.api;
 import com.opencsv.*;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import java.io.*;
 import java.util.List;
 import java.util.logging.Level;
@@ -24,39 +28,78 @@ import static ru.sfedu.organizer.utils.ConfigurationUtil.*;
 public class CsvDataProvider implements IDataProvider{
     
     @Override
-    public int saveRecord(Generic obj) {
-        Types type = obj.getType();
+    public int addRecord(Generic obj) {        
         try {
-            CSVWriter writer = new CSVWriter(new FileWriter(getFileName(obj)));
-            
-            StatefulBeanToCsv
-            
-            
+            Types type = obj.getType(); 
+            Reader reader;
+            reader = new FileReader(getFileName(obj));        
+            CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(getClass(obj))
+                    .withEscapeChar('\\')
+                    .withQuoteChar('\'')
+                    .withSeparator(';')
+                    .build();         
+            List<Generic> list = csvToBean.parse();
+            long lastId = list.get(list.size() - 1).getId();            
+            reader.close();
+            java.io.Writer writer;
+            writer = new FileWriter(getFileName(obj));  
+            obj.setId(lastId+1);
+            list.add(obj);
+            StatefulBeanToCsv<Generic> beanWriter = new StatefulBeanToCsvBuilder(writer)
+                    .withEscapechar('\\')
+                    .withQuotechar('\'')
+                    .withSeparator(';')
+                    .build();
+            beanWriter.write(list);
+            writer.close();
         } catch (IOException ex) {
             Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
-        }       
+        } catch (CsvDataTypeMismatchException ex) {
+            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CsvRequiredFieldEmptyException ex) {
+            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        return 0;
+    }
+
+    @Override
+    public int editRecord(Generic obj) {
         
-        return 0;      
+        return 0;
     }
 
     @Override
     public int deleteRecord(Generic obj) {
-        Types type = obj.getType();
         try {
-            CSVReader reader = new CSVReader(new FileReader(getFileName(obj)), ';');
-            
-            reader.close
-            
-            CSVWriter writer  new CSVWriter(new FileReader(getFileName(obj)), ';');
-            
-            
+            Types type = obj.getType(); 
+            Reader reader;
+            reader = new FileReader(getFileName(obj));        
+            CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(getClass(obj))
+                    .withEscapeChar('\\')
+                    .withQuoteChar('\'')
+                    .withSeparator(';')
+                    .build();         
+            List<Generic> list = csvToBean.parse();            
+            reader.close();
+            java.io.Writer writer;
+            writer = new FileWriter(getFileName(obj));  
+            list.removeIf(n -> n.equals(obj));
+            StatefulBeanToCsv<Generic> beanWriter = new StatefulBeanToCsvBuilder(writer)
+                    .withEscapechar('\\')
+                    .withQuotechar('\'')
+                    .withSeparator(';')
+                    .build();
+            beanWriter.write(list);
+            writer.close();
         } catch (IOException ex) {
             Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        
-        
-        
+        } catch (CsvDataTypeMismatchException ex) {
+            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CsvRequiredFieldEmptyException ex) {
+            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+        } 
         return 0;
         
     }
@@ -64,21 +107,24 @@ public class CsvDataProvider implements IDataProvider{
     @Override
     public Generic getRecordById(Generic obj) {
         try {
-            Types type = obj.getType();
-            CSVReader reader = new CSVReader(new FileReader(getFileName(obj)), ';');
-            ColumnPositionMappingStrategy<Generic> beanStrategy = new ColumnPositionMappingStrategy<Generic>();           
-            beanStrategy.setType(getClass(obj));
-            //beanStrategy.setColumnMapping(getFields(obj));
-            CsvFilter filter = new CsvFilter(beanStrategy, obj.getId());
-            CsvToBean<Generic> csvToBean = new CsvToBean<Generic>();
-            List<Generic> list = csvToBean.parse(beanStrategy, reader, filter);
+            Types type = obj.getType(); 
+            Reader reader;
+            reader = new FileReader(getFileName(obj));  
+            CsvFilter filter = new CsvFilter(obj.getId());
+            CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(getClass(obj))
+                    .withEscapeChar('\\')
+                    .withQuoteChar('\'')
+                    .withSeparator(';')
+                    .withFilter(filter)
+                    .build();         
+            List<Generic> list = csvToBean.parse();
             reader.close();
             if (list.isEmpty()) return null;
             return list.get(0);
         } catch (IOException ex) {
             Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-       
+        }       
        return null;
        
     }
@@ -142,6 +188,8 @@ public class CsvDataProvider implements IDataProvider{
         }
         return fields;
     }
+
+    
     
 }
 
