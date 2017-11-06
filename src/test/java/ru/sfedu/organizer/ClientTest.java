@@ -67,8 +67,9 @@ public class ClientTest {
         Aria a = new Aria();
         a.setId(2);
         Generic w;
-        w = p.getRecordById(a);        
-        System.out.println(w);     
+        w = p.getRecordById(a);   
+        Aria a2 = (Aria) w;
+        System.out.println(a2);     
     }
     
     
