@@ -28,7 +28,7 @@ import static ru.sfedu.organizer.utils.ConfigurationUtil.*;
 public class CsvDataProvider implements IDataProvider{
     
     @Override
-    public int addRecord(Generic obj) {        
+    public Response addRecord(Generic obj) {        
         try {
             Types type = obj.getType(); 
             Reader reader;
@@ -64,13 +64,13 @@ public class CsvDataProvider implements IDataProvider{
     }
 
     @Override
-    public int editRecord(Generic obj) {
+    public Response editRecord(Generic obj) {
         
         return 0;
     }
 
     @Override
-    public int deleteRecord(Generic obj) {
+    public Response deleteRecord(Generic obj) {
         try {
             Types type = obj.getType(); 
             Reader reader;
@@ -105,7 +105,7 @@ public class CsvDataProvider implements IDataProvider{
     }
 
     @Override
-    public Generic getRecordById(Generic obj) {
+    public Response getRecordById(Generic obj) {
         try {
             Types type = obj.getType(); 
             Reader reader;
@@ -120,8 +120,8 @@ public class CsvDataProvider implements IDataProvider{
                     .build();         
             List<Generic> list = csvToBean.parse();
             reader.close();
-            if (list.isEmpty()) return null;
-            return list.get(0);
+            Response response = new Response();
+            
         } catch (IOException ex) {
             Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
         }       

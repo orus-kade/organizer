@@ -1,31 +1,19 @@
 
 package ru.sfedu.organizer;
 
-import com.google.protobuf.Descriptors;
-import com.opencsv.*;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
-import com.opencsv.bean.HeaderColumnNameMappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
-import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import java.io.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.json.simple.JSONObject;
-import org.json.simple.JSONValue;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.junit.*;
 import static org.junit.Assert.*;
 import ru.sfedu.organizer.api.CsvDataProvider;
-import ru.sfedu.organizer.api.CsvFilter;
 import ru.sfedu.organizer.model.*;
 import ru.sfedu.organizer.model.Types;
-import ru.sfedu.organizer.utils.*;
 import static ru.sfedu.organizer.Constants.*;
 import static ru.sfedu.organizer.utils.ConfigurationUtil.*;
 

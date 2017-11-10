@@ -58,7 +58,6 @@ public class Generic extends AbstractBeanField<Object>{
             Logger.getLogger(Generic.class.getName()).log(Level.SEVERE, null, ex);
         }
         return this;
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

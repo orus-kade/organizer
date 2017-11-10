@@ -5,12 +5,12 @@ import ru.sfedu.organizer.model.Generic;
 
 
 public interface IDataProvider {
-    public int addRecord(Generic obj);
+    public Response addRecord(Generic obj);
     
-    public int editRecord(Generic obj);
+    public Response editRecord(Generic obj);
     
-    public int deleteRecord(Generic obj);
+    public Response deleteRecord(Generic obj);
     
-    public Generic getRecordById(Generic obj);
+    public Response getRecordById(Generic obj);
    
 }
