@@ -6,13 +6,10 @@ import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import java.io.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.*;
 import static org.junit.Assert.*;
 import ru.sfedu.organizer.api.CsvDataProvider;
 import ru.sfedu.organizer.model.*;
-import ru.sfedu.organizer.model.Types;
 import static ru.sfedu.organizer.Constants.*;
 import static ru.sfedu.organizer.utils.ConfigurationUtil.*;
 
@@ -51,12 +48,12 @@ public class ClientTest {
     @Test
     public void test2() throws IOException {
         CsvDataProvider p = new CsvDataProvider();
-        Aria a = new Aria();
+        Author a = new Author();
         a.setId(2);
-        Generic w;
-        w = p.getRecordById(a);   
-        Aria a2 = (Aria) w;
-        System.out.println(a2);     
+        Result result = new Result();
+        result = p.getRecordById(a);   
+        System.out.println("rururur");
+        System.out.println(result.getMessage());     
     }
     
     

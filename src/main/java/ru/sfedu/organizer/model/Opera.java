@@ -28,7 +28,7 @@ public class Opera extends Generic{
   private Generic libretto;
   
   private List<Generic> composers;
-  private List<Generic> writers;
+  private List<Generic> authors;
   private List<Generic> aries;
   
   
@@ -64,12 +64,12 @@ public class Opera extends Generic{
         this.composers = composers;
     }
 
-    public List<Generic> getWriters() {
-        return writers;
+    public List<Generic> getAuthors() {
+        return authors;
     }
 
-    public void setWriters(List<Generic> writers) {
-        this.writers = writers;
+    public void setAuthors(List<Generic> authors) {
+        this.authors = authors;
     }
 
     public String getHistory() {

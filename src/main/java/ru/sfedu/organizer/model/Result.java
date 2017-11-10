@@ -11,7 +11,19 @@ public class Result {
     
     private String status;
     private String message;
-    private List<Generic> list = null;        
+    private List<Generic> list = null; 
+    
+    public Result(List<Generic> list){
+        this.list = list;
+    }
+
+    public Result() {
+    }
+
+    public Result(String status, String message) {
+        this.status = status;
+        this.message = message;
+    }    
 
     public String getStatus() {
         return status;

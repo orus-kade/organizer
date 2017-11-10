@@ -1,24 +1,13 @@
 
 package ru.sfedu.organizer.api;
-
-import com.opencsv.bean.CsvToBean;
-import com.opencsv.bean.CsvToBeanBuilder;
-import com.opencsv.bean.StatefulBeanToCsv;
-import com.opencsv.bean.StatefulBeanToCsvBuilder;
-import com.opencsv.exceptions.CsvDataTypeMismatchException;
-import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
+import com.opencsv.bean.*;
+import com.opencsv.exceptions.*;
 import java.io.*;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static ru.sfedu.organizer.Constants.*;
-import ru.sfedu.organizer.model.Aria;
-import ru.sfedu.organizer.model.Composer;
-import ru.sfedu.organizer.model.Generic;
-import ru.sfedu.organizer.model.Libretto;
-import ru.sfedu.organizer.model.Opera;
-import ru.sfedu.organizer.model.Singer;
-import ru.sfedu.organizer.model.Types;
+import ru.sfedu.organizer.model.*;
 import static ru.sfedu.organizer.utils.ConfigurationUtil.*;
 
 
@@ -118,13 +107,16 @@ public class CsvDataProvider implements IDataProvider{
                     .build();         
             List<Generic> list = csvToBean.parse();
             reader.close();
-            Result response = new Result();
-            
+            Result result = new Result(list);
+            result.setStatus("OK");
+            result.setMessage("OK");
+            return result;            
         } catch (IOException ex) {
             Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            Result result = new Result("exseption",ex.getMessage());
+            return result;
         }       
-       return null;
-       
+              
     }
 
     private String getFileName(Generic obj) throws IOException {
@@ -141,7 +133,7 @@ public class CsvDataProvider implements IDataProvider{
                 break;
             case SINGER : file = getConfigurationEntry(CSV_PATH) + "Singer.csv";
                 break;
-             case WRITER : file = getConfigurationEntry(CSV_PATH) + "Writer.csv";
+             case AUTHOR : file = getConfigurationEntry(CSV_PATH) + "Author.csv";
                 break;    
         }
         return file;
@@ -161,7 +153,7 @@ public class CsvDataProvider implements IDataProvider{
                 break;
             case SINGER : cl = Singer.class;
                 break;
-             case WRITER : cl = Writer.class;
+             case AUTHOR : cl = Author.class;
                 break;    
         }
         return cl;
@@ -181,7 +173,7 @@ public class CsvDataProvider implements IDataProvider{
                 break;
             case SINGER : fields = FIELDS_SINGER;
                 break;
-             case WRITER : fields = FIELDS_WRITER;
+             case AUTHOR : fields = FIELDS_AUTHOR;
                 break;    
         }
         return fields;

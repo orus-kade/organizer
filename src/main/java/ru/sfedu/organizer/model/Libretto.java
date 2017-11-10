@@ -23,7 +23,7 @@ public class Libretto extends Generic{
   @CsvCustomBindByPosition (converter = Generic.class, position = 1)
   private Generic opera;
   
-  private List<Generic> writers;
+  private List<Generic> authors;
   private List<Generic> famousSingers;
   
   //
@@ -35,6 +35,10 @@ public class Libretto extends Generic{
   
   //
   // Methods
+  ////
+  // Methods
+  ////
+  // Methods
   //
 
 
@@ -42,12 +46,12 @@ public class Libretto extends Generic{
   // Accessor methods
   //
 
-    public List<Generic> getWriters() {
-        return writers;
+    public List<Generic> getAuthors() {
+        return authors;
     }
 
-    public void setWriters(List<Generic> writers) {
-        this.writers = writers;
+    public void setAuthors(List<Generic> authors) {
+        this.authors = authors;
     }
 
     public List<Generic> getFamousSingers() {

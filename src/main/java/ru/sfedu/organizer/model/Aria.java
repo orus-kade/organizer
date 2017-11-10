@@ -27,7 +27,7 @@ public class Aria extends Generic{
   
  
   private List<Generic> composers;
-  private List<Generic> writers;
+  private List<Generic> authors;
   private List<Generic> famousSingers;
   
   @CsvCustomBindByPosition (converter = Generic.class, position = 3) 
@@ -73,12 +73,12 @@ public class Aria extends Generic{
         this.composers = composers;
     }
 
-    public List<Generic> getWriters() {
-        return writers;
+    public List<Generic> getAuthors() {
+        return authors;
     }
 
-    public void setWriters(List<Generic> writers) {
-        this.writers = writers;
+    public void setAuthors(List<Generic> authors) {
+        this.authors = authors;
     }
 
     public List<Generic> getFamousSingers() {
@@ -100,7 +100,7 @@ public class Aria extends Generic{
     
     @Override
     public String toString() {
-        return "Aria{" +  "id=" + getId() + ", type=" + getType()  + ", title=" + title + ", text=" + text + ", composers=" + composers + ", writers=" + writers + ", famousSingers=" + famousSingers + ", libretto=" + getLibretto() + '}';
+        return "Aria{" +  "id=" + getId() + ", type=" + getType()  + ", title=" + title + ", text=" + text + ", composers=" + composers + ", writers=" + authors + ", famousSingers=" + famousSingers + ", libretto=" + getLibretto() + '}';
     }
   
 }

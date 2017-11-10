@@ -7,9 +7,9 @@ import static ru.sfedu.organizer.model.Types.*;
 
 
 /**
- * Class Writer
+ * Class Author
  */
-public class Writer extends Human {
+public class Author extends Human {
 
   //
   // Fields
@@ -22,8 +22,8 @@ public class Writer extends Human {
   //
   // Constructors
   //
-  public Writer () {
-      super(WRITER);
+  public Author () {
+      super(AUTHOR);
   };
   
   //
