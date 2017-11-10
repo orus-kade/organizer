@@ -1,5 +1,6 @@
 package ru.sfedu.organizer;
 
+import com.google.gson.annotations.Since;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
@@ -48,13 +49,16 @@ public class ClientTest {
     @Test
     public void test2() throws IOException {
         CsvDataProvider p = new CsvDataProvider();
-        Aria a = new Aria();
-        a.setId(22);
-        Result result = new Result();
-        result = p.getRecordById(a);   
-        System.out.println(result.getMessage());     
+        Singer a = new Singer();
+        //Aria a = new Aria();
+        a.setId(2);
+//        Result result = new Result();
+//        result = p.getRecordById(a);   
+//        System.out.println(result.getMessage());
+        //result = p.getRecordById(a, true);
+        
+        p.getRelationsSinger(a);
     }
-    
     
     @Test
     public void test4(){
