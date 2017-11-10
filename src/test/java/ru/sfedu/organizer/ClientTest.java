@@ -1,4 +1,3 @@
-
 package ru.sfedu.organizer;
 
 import com.opencsv.bean.ColumnPositionMappingStrategy;

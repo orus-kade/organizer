@@ -1,8 +1,6 @@
 
 package ru.sfedu.organizer.api;
 
-import com.opencsv.*;
-import com.opencsv.bean.ColumnPositionMappingStrategy;
 import com.opencsv.bean.CsvToBean;
 import com.opencsv.bean.CsvToBeanBuilder;
 import com.opencsv.bean.StatefulBeanToCsv;
@@ -28,7 +26,7 @@ import static ru.sfedu.organizer.utils.ConfigurationUtil.*;
 public class CsvDataProvider implements IDataProvider{
     
     @Override
-    public Response addRecord(Generic obj) {        
+    public Result addRecord(Generic obj) {        
         try {
             Types type = obj.getType(); 
             Reader reader;
@@ -64,13 +62,13 @@ public class CsvDataProvider implements IDataProvider{
     }
 
     @Override
-    public Response editRecord(Generic obj) {
+    public Result editRecord(Generic obj) {
         
         return 0;
     }
 
     @Override
-    public Response deleteRecord(Generic obj) {
+    public Result deleteRecord(Generic obj) {
         try {
             Types type = obj.getType(); 
             Reader reader;
@@ -105,7 +103,7 @@ public class CsvDataProvider implements IDataProvider{
     }
 
     @Override
-    public Response getRecordById(Generic obj) {
+    public Result getRecordById(Generic obj) {
         try {
             Types type = obj.getType(); 
             Reader reader;
@@ -120,7 +118,7 @@ public class CsvDataProvider implements IDataProvider{
                     .build();         
             List<Generic> list = csvToBean.parse();
             reader.close();
-            Response response = new Response();
+            Result response = new Result();
             
         } catch (IOException ex) {
             Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
