@@ -7,14 +7,8 @@ import java.util.*;
 import static ru.sfedu.organizer.model.Types.*;
 
 
-/**
- * Class Opera
- */
 public class Opera extends Generic{
 
-  //
-  // Fields
-  //
   @CsvBindByPosition (position = 0)
   private long id;
     
@@ -27,27 +21,12 @@ public class Opera extends Generic{
   @CsvCustomBindByPosition (converter = Generic.class, position = 3)
   private Generic libretto;
   
-  private List<Generic> composers;
-  private List<Generic> authors;
   private List<Generic> aries;
   
-  
-  //
-  // Constructors
-  //
   public Opera () {
       super(OPERA);
   };
   
-  //
-  // Methods
-  //
-
-
-  //
-  // Accessor methods
-  //
-
     public String getTitle() {
         return title;
     }
@@ -55,23 +34,7 @@ public class Opera extends Generic{
     public void setTitle(String title) {
         this.title = title;
     }
-
-    public List<Generic> getComposers() {
-        return composers;
-    }
-
-    public void setComposers(List<Generic> composers) {
-        this.composers = composers;
-    }
-
-    public List<Generic> getAuthors() {
-        return authors;
-    }
-
-    public void setAuthors(List<Generic> authors) {
-        this.authors = authors;
-    }
-
+    
     public String getHistory() {
         return history;
     }

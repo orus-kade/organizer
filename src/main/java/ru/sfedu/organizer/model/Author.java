@@ -1,48 +1,38 @@
 package ru.sfedu.organizer.model;
 
 
+import com.opencsv.bean.CsvBindByPosition;
 import java.util.*;
 import static ru.sfedu.organizer.model.Types.*;
     
 
 
-/**
- * Class Author
- */
 public class Author extends Human {
+    
+    
+  @CsvBindByPosition (position = 0)    
+  private long id;
+  
+  @CsvBindByPosition (position = 1)  
+  private String name;
+  
+  @CsvBindByPosition (position = 2)  
+  private String biography;
+  
+  @CsvBindByPosition (position = 3)   
+  private String birthDate;
+  
+  @CsvBindByPosition (position = 4)   
+  private String deathDate;    
 
-  //
-  // Fields
-  //
-
-  private List<Generic> operas;
   private List<Generic> aries;
   private List<Generic> librettos;
   
-  //
-  // Constructors
-  //
+
   public Author () {
       super(AUTHOR);
   };
   
-  //
-  // Methods
-  //
-
-
-  //
-  // Accessor methods
-  //
-
-    public List<Generic> getOperas() {
-        return operas;
-    }
-
-    public void setOperas(List<Generic> operas) {
-        this.operas = operas;
-    }
-
     public List<Generic> getAries() {
         return aries;
     }

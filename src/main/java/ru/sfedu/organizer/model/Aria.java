@@ -12,9 +12,6 @@ import static ru.sfedu.organizer.model.Types.*;
  */
 public class Aria extends Generic{
 
-  //
-  // Fields
-  //
     
   @CsvBindByPosition (position = 0) 
   private long id; 
@@ -25,30 +22,20 @@ public class Aria extends Generic{
   @CsvBindByPosition (position = 2) 
   private String text; 
   
- 
+  @CsvCustomBindByPosition (converter = Generic.class, position = 3) 
+  private Generic opera;
+  
   private List<Generic> composers;
   private List<Generic> authors;
-  private List<Generic> famousSingers;
+  private List<Generic> singers;
   
-  @CsvCustomBindByPosition (converter = Generic.class, position = 3) 
-  private Generic libretto;
   
-  //
-  // Constructors
-  //
+  
+
   public Aria () { 
       super(ARIA);
   };
-  
-  //
-  // Methods
-  //
 
-
-  //
-  // Accessor methods
-  //
-   
     public String getTitle() {
         return title;
     }
@@ -81,26 +68,26 @@ public class Aria extends Generic{
         this.authors = authors;
     }
 
-    public List<Generic> getFamousSingers() {
-        return famousSingers;
+    public List<Generic> getSingers() {
+        return singers;
     }
 
-    public void setFamousSingers(List<Generic> famousSingers) {
-        this.famousSingers = famousSingers;
+    public void setSingers(List<Generic> singers) {
+        this.singers = singers;
     }
 
-    public Generic getLibretto() {
-        return libretto;
+    public Generic getOpera() {
+        return opera;
     }
 
-    public void setLibretto(Generic libretto) {
-        this.libretto = libretto;
+    public void setOpera(Generic opera) {
+        this.opera = opera;
     }
 
     
     @Override
     public String toString() {
-        return "Aria{" +  "id=" + getId() + ", type=" + getType()  + ", title=" + title + ", text=" + text + ", composers=" + composers + ", writers=" + authors + ", famousSingers=" + famousSingers + ", libretto=" + getLibretto() + '}';
+        return "Aria{" +  "id=" + getId() + ", type=" + getType()  + ", title=" + title + ", text=" + text + ", composers=" + composers + ", writers=" + authors + ", famousSingers=" + singers + ", libretto=" + getOpera() + '}';
     }
   
 }

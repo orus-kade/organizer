@@ -31,7 +31,6 @@ public class Composer extends Human {
   @CsvBindByPosition (position = 4)   
   private String deathDate; 
 
-  private List<Generic> operas;
   private List<Generic> aries;
   
   //
@@ -41,23 +40,6 @@ public class Composer extends Human {
       super(COMPOSER);
   };
   
-  //
-  // Methods
-  //
-
-
-  //
-  // Accessor methods
-  //
-
-    public List<Generic> getOperas() {
-        return operas;
-    }
-
-    public void setOperas(List<Generic> operas) {
-        this.operas = operas;
-    }
-
     public List<Generic> getAries() {
         return aries;
     }
@@ -68,6 +50,6 @@ public class Composer extends Human {
 
     @Override
     public String toString() {
-        return "Composer{" + "name=" + getName() + ", biography=" + getBiography() + ", birthDate=" + getBirthDate() + ", deathDate=" + getDeathDate() + ", operas=" + operas + ", aries=" + aries + '}';
+        return "Composer{" + "name=" + getName() + ", biography=" + getBiography() + ", birthDate=" + getBirthDate() + ", deathDate=" + getDeathDate() + ", aries=" + aries + '}';
     }  
 }

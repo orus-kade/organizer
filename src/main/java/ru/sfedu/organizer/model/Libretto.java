@@ -11,9 +11,6 @@ import static ru.sfedu.organizer.model.Types.*;
  */
 public class Libretto extends Generic{
 
-  //
-  // Fields
-  //
   @CsvBindByPosition (position = 0)   
   private long id;   
     
@@ -24,27 +21,10 @@ public class Libretto extends Generic{
   private Generic opera;
   
   private List<Generic> authors;
-  private List<Generic> famousSingers;
   
-  //
-  // Constructors
-  //
   public Libretto () {
       super(LIBRETTO);
   };
-  
-  //
-  // Methods
-  ////
-  // Methods
-  ////
-  // Methods
-  //
-
-
-  //
-  // Accessor methods
-  //
 
     public List<Generic> getAuthors() {
         return authors;
@@ -52,14 +32,6 @@ public class Libretto extends Generic{
 
     public void setAuthors(List<Generic> authors) {
         this.authors = authors;
-    }
-
-    public List<Generic> getFamousSingers() {
-        return famousSingers;
-    }
-
-    public void setFamousSingers(List<Generic> famousSingers) {
-        this.famousSingers = famousSingers;
     }
 
     public String getText() {

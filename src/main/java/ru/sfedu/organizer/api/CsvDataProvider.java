@@ -17,7 +17,6 @@ public class CsvDataProvider implements IDataProvider{
     @Override
     public Result addRecord(Generic obj) {        
         try {
-            Types type = obj.getType(); 
             Reader reader;
             reader = new FileReader(getFileName(obj));        
             CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
@@ -87,14 +86,12 @@ public class CsvDataProvider implements IDataProvider{
         } catch (CsvRequiredFieldEmptyException ex) {
             Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
         } 
-        return 0;
-        
+        return 0;        
     }
 
     @Override
     public Result getRecordById(Generic obj) {
         try {
-            Types type = obj.getType(); 
             Reader reader;
             reader = new FileReader(getFileName(obj));  
             CsvFilter filter = new CsvFilter(obj.getId());
@@ -107,16 +104,17 @@ public class CsvDataProvider implements IDataProvider{
                     .build();         
             List<Generic> list = csvToBean.parse();
             reader.close();
-            Result result = new Result(list);
-            result.setStatus("OK");
-            result.setMessage("OK");
+            if (list.isEmpty()){
+                Result result = new Result("Error", "Can't find object "+obj.getType()+" with id = "+obj.getId());
+                return result;
+            }
+            Result result = new Result("OK", "Succes", list);
             return result;            
         } catch (IOException ex) {
             Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
             Result result = new Result("exseption",ex.getMessage());
             return result;
-        }       
-              
+        }   
     }
 
     private String getFileName(Generic obj) throws IOException {
@@ -133,7 +131,7 @@ public class CsvDataProvider implements IDataProvider{
                 break;
             case SINGER : file = getConfigurationEntry(CSV_PATH) + "Singer.csv";
                 break;
-             case AUTHOR : file = getConfigurationEntry(CSV_PATH) + "Author.csv";
+            case AUTHOR : file = getConfigurationEntry(CSV_PATH) + "Author.csv";
                 break;    
         }
         return file;
@@ -158,6 +156,26 @@ public class CsvDataProvider implements IDataProvider{
         }
         return cl;
     }
+    
+    private Result getRelations(Generic obj){
+        Types type = obj.getType();   
+        switch (type){
+           case ARIA : fields = FIELDS_ARIA;
+                break;
+           case COMPOSER : fields = FIELDS_COMPOSER;
+                break;
+           case LIBRETTO : fields = FIELDS_LIBRETTO;
+                break;
+           case OPERA : fields = FIELDS_OPERA; 
+                break;
+           case SINGER : fields = FIELDS_SINGER;
+                break;
+           case AUTHOR : fields = FIELDS_AUTHOR;
+                break;    
+        }
+        return null;
+    }
+    
     
     private String[] getFields(Generic obj) {
         Types type = obj.getType();

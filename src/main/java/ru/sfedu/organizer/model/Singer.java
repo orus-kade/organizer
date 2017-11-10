@@ -33,24 +33,13 @@ public class Singer extends Human {
 
   @CsvBindByPosition (position = 5) 
   private String voice;
-  private List<Generic> aries;
   
-  //
-  // Constructors
-  //
+  private List<Generic> aries;
+
   public Singer () {
       super(SINGER);
   };
   
-  //
-  // Methods
-  //
-
-
-  //
-  // Accessor methods
-  //
-
     public String getVoice() {
         return voice;
     }

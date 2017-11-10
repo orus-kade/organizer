@@ -20,6 +20,12 @@ public class Result {
     public Result() {
     }
 
+    public Result(String status, String message, List<Generic> list) {
+        this.list = list;
+        this.status = status;
+        this.message = message;
+    }   
+    
     public Result(String status, String message) {
         this.status = status;
         this.message = message;

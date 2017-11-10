@@ -48,11 +48,10 @@ public class ClientTest {
     @Test
     public void test2() throws IOException {
         CsvDataProvider p = new CsvDataProvider();
-        Author a = new Author();
-        a.setId(2);
+        Aria a = new Aria();
+        a.setId(22);
         Result result = new Result();
         result = p.getRecordById(a);   
-        System.out.println("rururur");
         System.out.println(result.getMessage());     
     }
     
@@ -64,7 +63,7 @@ public class ClientTest {
             a.setTitle("title");
             Generic lib = new Generic(Types.LIBRETTO);
             lib.setId(2);
-            a.setLibretto(lib);
+            a.setOpera(lib);
             CsvDataProvider p = new CsvDataProvider();
             p.addRecord(a);
     }
@@ -77,7 +76,7 @@ public class ClientTest {
             a.setTitle("title");
             Generic lib = new Generic(Types.LIBRETTO);
             lib.setId(2);
-            a.setLibretto(lib);
+            a.setOpera(lib);
             CsvDataProvider p = new CsvDataProvider();
             p.deleteRecord(a);
     }

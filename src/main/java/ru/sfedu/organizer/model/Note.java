@@ -10,9 +10,7 @@ import com.opencsv.bean.CsvCustomBindByPosition;
  */
 public class Note extends Generic{
 
-  //
-  // Fields
-  //
+
   @CsvBindByPosition (position = 0)   
   private long id;
   
@@ -22,22 +20,11 @@ public class Note extends Generic{
   @CsvCustomBindByPosition(converter = Generic.class, position = 2)
   private Generic object;
   
-  //
-  // Constructors
-  //
+
   public Note () {
       super(Types.NOTE);
   };
   
-  //
-  // Methods
-  //
-
-
-  //
-  // Accessor methods
-  //
-
     public String getDescription() {
         return description;
     }
