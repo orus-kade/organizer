@@ -3,6 +3,7 @@ package ru.sfedu.organizer.api;
 import com.opencsv.bean.*;
 import com.opencsv.exceptions.*;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -91,6 +92,10 @@ public class CsvDataProvider implements IDataProvider{
 
     @Override
     public Result getRecordById(Generic obj) {
+        return getRecordById(obj, false);
+    }
+
+    private Result getRecordById(Generic obj, boolean check){
         try {
             Reader reader;
             reader = new FileReader(getFileName(obj));  
@@ -108,31 +113,39 @@ public class CsvDataProvider implements IDataProvider{
                 Result result = new Result("Error", "Can't find object "+obj.getType()+" with id = "+obj.getId());
                 return result;
             }
+            if (check){
+                System.out.println("Это просто проверка на существование");
+                Result result = new Result("OK", "Succes", list);
+                return result;
+            }
+            System.out.println("это не проверка наличия элемента, а получение элемента");
             Result result = new Result("OK", "Succes", list);
             return result;            
         } catch (IOException ex) {
             Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
             Result result = new Result("exseption",ex.getMessage());
             return result;
-        }   
+        }
     }
-
+    
     private String getFileName(Generic obj) throws IOException {
         Types type = obj.getType();
         String file = null;
         switch (type){
-            case ARIA : file = getConfigurationEntry(CSV_PATH) + "Aria.csv";
+            case ARIA : file = getConfigurationEntry(CSV_PATH_ARIA);
                 break;
-            case COMPOSER : file = getConfigurationEntry(CSV_PATH) + "Composer.csv";
+            case COMPOSER : file = getConfigurationEntry(CSV_PATH_COMPOSER);
                 break;
-            case LIBRETTO : file = getConfigurationEntry(CSV_PATH) + "Libretto.csv";
+            case LIBRETTO : file = getConfigurationEntry(CSV_PATH_LIBRETTO);
                 break;
-            case OPERA : file = getConfigurationEntry(CSV_PATH) + "Opera.csv"; 
+            case OPERA : file = getConfigurationEntry(CSV_PATH_OPERA); 
                 break;
-            case SINGER : file = getConfigurationEntry(CSV_PATH) + "Singer.csv";
+            case SINGER : file = getConfigurationEntry(CSV_PATH_SINGER);
                 break;
-            case AUTHOR : file = getConfigurationEntry(CSV_PATH) + "Author.csv";
-                break;    
+            case AUTHOR : file = getConfigurationEntry(CSV_PATH_AUTHOR);
+                break; 
+            case NOTE: file = getConfigurationEntry(CSV_PATH_NOTE);
+                break; 
         }
         return file;
     }
@@ -151,53 +164,106 @@ public class CsvDataProvider implements IDataProvider{
                 break;
             case SINGER : cl = Singer.class;
                 break;
-             case AUTHOR : cl = Author.class;
+            case AUTHOR : cl = Author.class;
                 break;    
+            case NOTE: cl = Note.class;    
+                break; 
         }
         return cl;
     }
     
-    private Result getRelations(Generic obj){
-        Types type = obj.getType();   
+    private Generic getRelations(Generic obj){
+        Types type = obj.getType(); 
         switch (type){
-           case ARIA : fields = FIELDS_ARIA;
+           case ARIA : obj = getRelationsAria(obj);
                 break;
-           case COMPOSER : fields = FIELDS_COMPOSER;
+           case COMPOSER : obj = getRelationsComposer(obj);
                 break;
-           case LIBRETTO : fields = FIELDS_LIBRETTO;
+           case LIBRETTO : obj = getRelationsLibretto(obj);
                 break;
-           case OPERA : fields = FIELDS_OPERA; 
+           case OPERA : obj = getRelationsOpera(obj); 
                 break;
-           case SINGER : fields = FIELDS_SINGER;
+           case SINGER : obj = getRelationsSinger(obj);
                 break;
-           case AUTHOR : fields = FIELDS_AUTHOR;
-                break;    
+           case AUTHOR : obj = getRelationsAuthor(obj);
+                break;
+           case NOTE: break;    
         }
-        return null;
+        return obj;
+    }
+    
+    private Generic getRelationsAria(Generic obj){
+        return obj;
+    }
+    
+    private Generic getRelationsComposer(Generic obj){
+        return obj;
+    }
+        
+    private Generic getRelationsLibretto(Generic obj){
+        return obj;
+    }
+            
+    private Generic getRelationsOpera(Generic obj){
+        return obj;
+    }
+                
+    public Generic getRelationsSinger(Generic obj){
+        try {
+            Reader reader;  
+            reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
+            ColumnPositionMappingStrategy s = new ColumnPositionMappingStrategy();
+            s.setColumnMapping(new String[]{"id1", "id2"});
+            CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(Relation.class)
+             //       .withMappingStrategy(s)
+                    .withEscapeChar('\\')
+                    .withQuoteChar('\'')
+                    .withSeparator(';')
+                    .build();
+            List<Relation> relations = csvToBean.parse();
+            reader.close();
+           // relations.removeIf((x -> x.id2 != obj.getId()));
+            if (relations.isEmpty()) return obj;
+            List<Generic> arias = relations.stream().collect(ArrayList<Generic>::new, (a, r) ->  a.add(new Generic(r.id1, Types.ARIA)), (a1, a2) -> a1.addAll(a2));
+            System.out.println(arias);
+            return obj;
+        } catch (IOException ex) {
+            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            return obj;
+        }
+    }
+                    
+    private Generic getRelationsAuthor(Generic obj){
+        return obj;
     }
     
     
-    private String[] getFields(Generic obj) {
-        Types type = obj.getType();
-        String[] fields = null;
-        switch (type){
-            case ARIA : fields = FIELDS_ARIA;
-                break;
-            case COMPOSER : fields = FIELDS_COMPOSER;
-                break;
-            case LIBRETTO : fields = FIELDS_LIBRETTO;
-                break;
-            case OPERA : fields = FIELDS_OPERA; 
-                break;
-            case SINGER : fields = FIELDS_SINGER;
-                break;
-             case AUTHOR : fields = FIELDS_AUTHOR;
-                break;    
-        }
-        return fields;
-    }
+    
+    public class Relation{
+        
+        @CsvBindByPosition (position = 0) 
 
-    
-    
+        private String id1; 
+        @CsvBindByPosition (position = 1)
+        private String id2;
+
+//        public long getId1() {
+//            return id1;
+//        }
+//
+//        public void setId1(long id1) {
+//            this.id1 = id1;
+//        }
+//
+//        public long getId2() {
+//            return id2;
+//        }
+//
+//        public void setId2(long id2) {
+//            this.id2 = id2;
+//        }
+        
+    }
 }
 

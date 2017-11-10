@@ -22,6 +22,11 @@ public class Generic extends AbstractBeanField<Object>{
     public Generic(Types type) {
         this.type = type;
     }    
+
+    public Generic(long id, Types type) {
+        this.id = id;
+        this.type = type;
+    }   
     
     public long getId() {
         return id;
