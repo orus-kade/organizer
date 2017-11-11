@@ -2,11 +2,15 @@ package ru.sfedu.organizer;
 
 import com.google.gson.annotations.Since;
 import com.opencsv.bean.ColumnPositionMappingStrategy;
+import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
 import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import java.io.*;
 import java.util.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.*;
 import static org.junit.Assert.*;
 import ru.sfedu.organizer.api.CsvDataProvider;
@@ -52,13 +56,41 @@ public class ClientTest {
         Singer a = new Singer();
         //Aria a = new Aria();
         a.setId(2);
-//        Result result = new Result();
-//        result = p.getRecordById(a);   
-//        System.out.println(result.getMessage());
+        Result result = new Result();
+        result = p.getRecordById(a);  
+        List<Singer> s = result.getList().stream().collect(ArrayList<Singer>::new, (arr, g) -> arr.add((Singer)g), (a1, a2) -> a1.addAll(a2));
+        System.out.println(s);
         //result = p.getRecordById(a, true);
         
-        p.getRelationsSinger(a);
+        //Generic obj = p.getRelationsSinger(a);
+        //System.out.println(obj);
+        
     }
+    @Test
+    public void tt(){
+        try {
+            Writer writer = new FileWriter(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
+            StatefulBeanToCsv<Relation> b = new StatefulBeanToCsvBuilder<Relation>(writer)
+                    .withSeparator(';')
+                    .withQuotechar('\'')
+                    .withEscapechar('\\')
+                    .build();
+            Relation r = new Relation();
+            r.setId1(1);
+            r.setId2(2);            
+            b.write(r);
+            writer.close();
+            System.out.println(r);
+        } catch (CsvDataTypeMismatchException ex) {
+            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CsvRequiredFieldEmptyException ex) {
+            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+        
+        
+    }   
     
     @Test
     public void test4(){

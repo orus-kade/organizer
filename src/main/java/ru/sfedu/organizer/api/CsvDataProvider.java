@@ -114,11 +114,10 @@ public class CsvDataProvider implements IDataProvider{
                 return result;
             }
             if (check){
-                System.out.println("Это просто проверка на существование");
-                Result result = new Result("OK", "Succes", list);
+                Result result = new Result("Object exsists", "Succes", list);
                 return result;
             }
-            System.out.println("это не проверка наличия элемента, а получение элемента");
+            list.stream().forEach(g -> g = getRelations(g));
             Result result = new Result("OK", "Succes", list);
             return result;            
         } catch (IOException ex) {
@@ -213,21 +212,19 @@ public class CsvDataProvider implements IDataProvider{
             Reader reader;  
             reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
             ColumnPositionMappingStrategy s = new ColumnPositionMappingStrategy();
-            s.setColumnMapping(new String[]{"id1", "id2"});
             CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
                     .withType(Relation.class)
-             //       .withMappingStrategy(s)
                     .withEscapeChar('\\')
                     .withQuoteChar('\'')
                     .withSeparator(';')
                     .build();
             List<Relation> relations = csvToBean.parse();
             reader.close();
-           // relations.removeIf((x -> x.id2 != obj.getId()));
             if (relations.isEmpty()) return obj;
-            List<Generic> arias = relations.stream().collect(ArrayList<Generic>::new, (a, r) ->  a.add(new Generic(r.id1, Types.ARIA)), (a1, a2) -> a1.addAll(a2));
-            System.out.println(arias);
-            return obj;
+            List<Generic> arias = relations.stream().filter(r -> r.getId2() == obj.getId()).collect(ArrayList<Generic>::new, (a, r) ->  a.add(new Generic(r.getId1(), Types.ARIA)), (a1, a2) -> a1.addAll(a2));
+            Singer singer = (Singer)obj;
+            singer.setAries(arias);
+            return singer;
         } catch (IOException ex) {
             Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
             return obj;
@@ -237,33 +234,7 @@ public class CsvDataProvider implements IDataProvider{
     private Generic getRelationsAuthor(Generic obj){
         return obj;
     }
-    
-    
-    
-    public class Relation{
-        
-        @CsvBindByPosition (position = 0) 
-
-        private String id1; 
-        @CsvBindByPosition (position = 1)
-        private String id2;
-
-//        public long getId1() {
-//            return id1;
-//        }
-//
-//        public void setId1(long id1) {
-//            this.id1 = id1;
-//        }
-//
-//        public long getId2() {
-//            return id2;
-//        }
-//
-//        public void setId2(long id2) {
-//            this.id2 = id2;
-//        }
-        
-    }
 }
+
+    
 

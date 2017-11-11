@@ -56,6 +56,11 @@ public class Singer extends Human {
         this.aries = aries;
     }
 
+    @Override
+    public String toString() {
+        return "Singer{" + "id=" + getId() + ", name=" + getName() + ", biography=" + getBiography() + ", birthDate=" + getBirthDate() + ", deathDate=" + getDeathDate() + ", voice=" + voice + ", aries=" + aries + '}';
+    }
+
 
 
   
