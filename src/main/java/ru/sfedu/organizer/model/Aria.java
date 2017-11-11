@@ -87,7 +87,7 @@ public class Aria extends Generic{
     
     @Override
     public String toString() {
-        return "Aria{" +  "id=" + getId() + ", type=" + getType()  + ", title=" + title + ", text=" + text + ", composers=" + composers + ", writers=" + authors + ", famousSingers=" + singers + ", libretto=" + getOpera() + '}';
+        return "Aria{" +  "id=" + getId() + ", type=" + getType()  + ", title=" + title + ", text=" + text + ", composers=" + composers + ", writers=" + authors + ", famousSingers=" + singers + ", Opera=" + opera + '}';
     }
   
 }

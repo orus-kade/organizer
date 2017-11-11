@@ -53,15 +53,22 @@ public class ClientTest {
     @Test
     public void test2() throws IOException {
         CsvDataProvider p = new CsvDataProvider();
-        Singer a = new Singer();
+        //Singer a = new Singer();
         //Aria a = new Aria();
+        //Author a = new Author();
+        Opera a = new Opera();
         a.setId(2);
         Result result = new Result();
-        result = p.getRecordById(a);  
-        List<Singer> s = result.getList().stream().collect(ArrayList<Singer>::new, (arr, g) -> arr.add((Singer)g), (a1, a2) -> a1.addAll(a2));
-        System.out.println(s);
-        //result = p.getRecordById(a, true);
-        
+        result = p.getRecordById(a); 
+        System.out.println(result.getStatus()+" "+result.getMessage()); 
+        if (result.getStatus() == "OK" || result.getStatus() == "Warning"){
+           List<Opera> list = result.getList().stream().collect(ArrayList<Opera>::new, (arr, g) -> arr.add((Opera)g), (a1, a2) -> a1.addAll(a2));
+           list.stream().forEach(s -> System.out.println(s.getAries()));                                                                       
+        }
+        else{
+            System.out.println(result.getStatus()+" "+result.getMessage());            
+        }
+        //result = p.getRecordById(a, true);        
         //Generic obj = p.getRelationsSinger(a);
         //System.out.println(obj);
         

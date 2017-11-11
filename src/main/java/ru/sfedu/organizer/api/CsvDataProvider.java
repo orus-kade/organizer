@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import static ru.sfedu.organizer.Constants.*;
 import ru.sfedu.organizer.model.*;
+import static ru.sfedu.organizer.model.Types.*;
 import static ru.sfedu.organizer.utils.ConfigurationUtil.*;
 
 
@@ -117,8 +118,17 @@ public class CsvDataProvider implements IDataProvider{
                 Result result = new Result("Object exsists", "Succes", list);
                 return result;
             }
-            list.stream().forEach(g -> g = getRelations(g));
-            Result result = new Result("OK", "Succes", list);
+            Result result = new Result("OK", "Success");
+            list.stream().forEach(g -> {
+                try {
+                    g = getRelations(g);
+                } catch (IOException ex) {
+                    Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+                    result.setStatus("Warning");
+                    result.setMessage(result.getMessage() + " " + ex.getMessage());
+                }
+            });
+            result.setList(list);
             return result;            
         } catch (IOException ex) {
             Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
@@ -171,7 +181,7 @@ public class CsvDataProvider implements IDataProvider{
         return cl;
     }
     
-    private Generic getRelations(Generic obj){
+    private Generic getRelations(Generic obj) throws IOException{
         Types type = obj.getType(); 
         switch (type){
            case ARIA : obj = getRelationsAria(obj);
@@ -191,27 +201,61 @@ public class CsvDataProvider implements IDataProvider{
         return obj;
     }
     
-    private Generic getRelationsAria(Generic obj){
-        return obj;
+    private Generic getRelationsAria(Generic obj) throws IOException{
+        Reader reader;  
+            reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_AUTHOR));
+            CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(Relation.class)
+                    .withEscapeChar('\\')
+                    .withQuoteChar('\'')
+                    .withSeparator(';')
+                    .build();
+            List<Relation> relations = csvToBean.parse();
+            reader.close();
+            List<Generic> list = relations.stream()
+                    .filter(r -> r.getId1() == obj.getId())
+                    .collect(ArrayList<Generic>::new,
+                            (a, r) ->  a.add(new Generic(r.getId2(), AUTHOR)),
+                            (a1, a2) -> a1.addAll(a2));
+            Aria aria = (Aria)obj;
+            aria.setAuthors(list);
+            
+            reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_COMPOSER));
+            csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(Relation.class)
+                    .withEscapeChar('\\')
+                    .withQuoteChar('\'')
+                    .withSeparator(';')
+                    .build();
+            relations = csvToBean.parse();
+            list = relations.stream()
+                    .filter(r -> r.getId1() == obj.getId())
+                    .collect(ArrayList<Generic>::new,
+                            (a, r) ->  a.add(new Generic(r.getId2(), COMPOSER)),
+                            (a1, a2) -> a1.addAll(a2));
+            aria.setComposers(list); 
+            
+            reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
+            csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(Relation.class)
+                    .withEscapeChar('\\')
+                    .withQuoteChar('\'')
+                    .withSeparator(';')
+                    .build();
+            relations = csvToBean.parse();
+            list = relations.stream()
+                    .filter(r -> r.getId1() == obj.getId())
+                    .collect(ArrayList<Generic>::new,
+                            (a, r) ->  a.add(new Generic(r.getId2(), SINGER)),
+                            (a1, a2) -> a1.addAll(a2));
+            aria.setSingers(list);   
+            
+            return aria;
     }
     
-    private Generic getRelationsComposer(Generic obj){
-        return obj;
-    }
-        
-    private Generic getRelationsLibretto(Generic obj){
-        return obj;
-    }
-            
-    private Generic getRelationsOpera(Generic obj){
-        return obj;
-    }
-                
-    public Generic getRelationsSinger(Generic obj){
-        try {
-            Reader reader;  
-            reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
-            ColumnPositionMappingStrategy s = new ColumnPositionMappingStrategy();
+    private Generic getRelationsComposer(Generic obj) throws IOException{        
+        Reader reader;  
+            reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_COMPOSER));
             CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
                     .withType(Relation.class)
                     .withEscapeChar('\\')
@@ -221,18 +265,116 @@ public class CsvDataProvider implements IDataProvider{
             List<Relation> relations = csvToBean.parse();
             reader.close();
             if (relations.isEmpty()) return obj;
-            List<Generic> arias = relations.stream().filter(r -> r.getId2() == obj.getId()).collect(ArrayList<Generic>::new, (a, r) ->  a.add(new Generic(r.getId1(), Types.ARIA)), (a1, a2) -> a1.addAll(a2));
+            List<Generic> aries = relations.stream()
+                    .filter(r -> r.getId2() == obj.getId())
+                    .collect(ArrayList<Generic>::new,
+                            (a, r) ->  a.add(new Generic(r.getId1(), ARIA)),
+                            (a1, a2) -> a1.addAll(a2));
+            Composer composer = (Composer)obj;
+            composer.setAries(aries);
+            return composer;
+    }
+        
+    private Generic getRelationsLibretto(Generic obj) throws IOException{
+            Reader reader;  
+            reader = new FileReader(getConfigurationEntry(CSV_PATH_AUTHOR_LIBRETTO));
+            CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(Relation.class)
+                    .withEscapeChar('\\')
+                    .withQuoteChar('\'')
+                    .withSeparator(';')
+                    .build();
+            List<Relation> relations = csvToBean.parse();
+            reader.close();
+            if (relations.isEmpty()) return obj;
+            List<Generic> authors = relations.stream()
+                    .filter(r -> r.getId2() == obj.getId())
+                    .collect(ArrayList<Generic>::new,
+                            (a, r) ->  a.add(new Generic(r.getId1(), AUTHOR)),
+                            (a1, a2) -> a1.addAll(a2));
+            Libretto libretto = (Libretto)obj;
+            libretto.setAuthors(authors);
+            return libretto;
+    }    
+            
+    private Generic getRelationsOpera(Generic obj) throws IOException{        
+        Reader reader;  
+            reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA));
+            CsvToBean<Aria> csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(Aria.class)
+                    .withEscapeChar('\\')
+                    .withQuoteChar('\'')
+                    .withSeparator(';')
+                    .build();
+            List<Aria> aries = csvToBean.parse();
+            reader.close();
+            if (aries.isEmpty()) return obj;
+            List<Generic> ar = aries.stream()
+                    .filter(r -> r.getOpera().getId() == obj.getId())
+                    .collect(ArrayList<Generic>::new,
+                            (a, r) ->  a.add(new Generic(r.getId(), ARIA)),
+                            (a1, a2) -> a1.addAll(a2));
+            Opera opera = (Opera)obj;
+            opera.setAries(ar);
+            return opera;
+    }
+                
+    public Generic getRelationsSinger(Generic obj) throws IOException{
+            Reader reader;  
+            reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
+            CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(Relation.class)
+                    .withEscapeChar('\\')
+                    .withQuoteChar('\'')
+                    .withSeparator(';')
+                    .build();
+            List<Relation> relations = csvToBean.parse();
+            reader.close();
+            if (relations.isEmpty()) return obj;
+            List<Generic> arias = relations.stream()
+                    .filter(r -> r.getId2() == obj.getId())
+                    .collect(ArrayList<Generic>::new,
+                            (a, r) ->  a.add(new Generic(r.getId1(), ARIA)),
+                            (a1, a2) -> a1.addAll(a2));
             Singer singer = (Singer)obj;
             singer.setAries(arias);
             return singer;
-        } catch (IOException ex) {
-            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
-            return obj;
-        }
     }
                     
-    private Generic getRelationsAuthor(Generic obj){
-        return obj;
+    private Generic getRelationsAuthor(Generic obj) throws IOException{
+        Reader reader;  
+            reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_AUTHOR));
+            CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(Relation.class)
+                    .withEscapeChar('\\')
+                    .withQuoteChar('\'')
+                    .withSeparator(';')
+                    .build();
+            List<Relation> relations = csvToBean.parse();
+            reader.close();
+            List<Generic> list = relations.stream()
+                    .filter(r -> r.getId2() == obj.getId())
+                    .collect(ArrayList<Generic>::new,
+                            (a, r) ->  a.add(new Generic(r.getId1(), ARIA)),
+                            (a1, a2) -> a1.addAll(a2));
+            Author author = (Author)obj;
+            author.setAries(list);
+            
+            reader = new FileReader(getConfigurationEntry(CSV_PATH_AUTHOR_LIBRETTO));
+            csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(Relation.class)
+                    .withEscapeChar('\\')
+                    .withQuoteChar('\'')
+                    .withSeparator(';')
+                    .build();
+            relations = csvToBean.parse();
+            list = relations.stream()
+                    .filter(r -> r.getId1() == obj.getId())
+                    .collect(ArrayList<Generic>::new,
+                            (a, r) ->  a.add(new Generic(r.getId2(), LIBRETTO)),
+                            (a1, a2) -> a1.addAll(a2));
+            author.setLibrettos(list);            
+            return author;
     }
 }
 
