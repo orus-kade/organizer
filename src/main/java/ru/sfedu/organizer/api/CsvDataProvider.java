@@ -3,10 +3,12 @@ package ru.sfedu.organizer.api;
 import com.opencsv.bean.*;
 import com.opencsv.exceptions.*;
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+//import org.apache.log4j.Level;
+//import org.apache.log4j.Logger;
+//import org.apache.log4j.Priority;
 import static ru.sfedu.organizer.Constants.*;
 import ru.sfedu.organizer.model.*;
 import static ru.sfedu.organizer.model.Types.*;
@@ -19,6 +21,8 @@ public class CsvDataProvider implements IDataProvider{
     @Override
     public Result addRecord(Generic obj) {        
         try {
+            Result r = checkObject(obj);
+            if (!"OK".equals(r.getStatus())) return r;
             Reader reader;
             reader = new FileReader(getFileName(obj));        
             CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
@@ -28,8 +32,8 @@ public class CsvDataProvider implements IDataProvider{
                     .withSeparator(';')
                     .build();         
             List<Generic> list = csvToBean.parse();
-            long lastId = list.get(list.size() - 1).getId();            
             reader.close();
+            long lastId = list.stream().max(Comparator.comparingLong(e -> e.getId())).get().getId();            
             java.io.Writer writer;
             writer = new FileWriter(getFileName(obj));  
             obj.setId(lastId+1);
@@ -41,26 +45,177 @@ public class CsvDataProvider implements IDataProvider{
                     .build();
             beanWriter.write(list);
             writer.close();
+            Result result = new Result("OK", "Record added");
+            return result;
         } catch (IOException ex) {
             Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            Result result = new Result("Error", ex.getMessage());
+            return result;
         } catch (CsvDataTypeMismatchException ex) {
             Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            Result result = new Result("Error", ex.getMessage());
+            return result;
         } catch (CsvRequiredFieldEmptyException ex) {
             Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        return 0;
+            Result result = new Result("Error", ex.getMessage());
+            return result;
+        }         
     }
+    
+    private Result checkObject(Generic obj){
+        Types type = obj.getType(); 
+        Result result = new Result();
+        switch (type){
+           case ARIA : result = checkAria(obj);
+                break;
+           case COMPOSER : result = checkComposer(obj);
+                break;
+           case LIBRETTO : result = checkLibretto(obj);
+                break;
+           case OPERA : result = checkOpera(obj); 
+                break;
+           case SINGER : result = checkSinger(obj);
+                break;
+           case AUTHOR : result = checkAuthor(obj);
+                break;
+           case NOTE: result = checkNote(obj);
+                break;    
+        }
+        return result;
+    }
+    
+    private Result checkAria(Generic obj){
+        List<Generic> list = ((Aria)obj).getAuthors();
+        Result result = new Result("OK", "");
+        list.stream().forEach(e -> 
+                {
+                    Result r = getRecordById(e, true);
+                    if (!"OK".equals(r.getStatus())){
+                        result.setStatus("Error");
+                        result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
+                    } 
+                });
+        
+        list = ((Aria)obj).getComposers();
+        list.stream().forEach(e -> 
+                {
+                    Result r = getRecordById(e, true);
+                    if (!"OK".equals(r.getStatus())){
+                        result.setStatus("Error");
+                        result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
+                    } 
+                }); 
+        list = ((Aria)obj).getSingers();
+        list.stream().forEach(e -> 
+                {
+                    Result r = getRecordById(e, true);
+                    if (!"OK".equals(r.getStatus())){
+                        result.setStatus("Error");
+                        result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
+                    } 
+                }); 
+        return result;         
+    }
+    
+    private Result checkAuthor(Generic obj){
+        List<Generic> list = ((Author)obj).getAries();
+        Result result = new Result("OK", "");
+        list.stream().forEach(e -> 
+                {
+                    Result r = getRecordById(e, true);
+                    if (!"OK".equals(r.getStatus())){
+                        result.setStatus("Error");
+                        result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
+                    } 
+                });
+        
+        list = ((Author)obj).getLibrettos();
+        list.stream().forEach(e -> 
+                {
+                    Result r = getRecordById(e, true);
+                    if (!"OK".equals(r.getStatus())){
+                        result.setStatus("Error");
+                        result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
+                    } 
+                });        
+        return result; 
+    }
+    
+    private Result checkComposer(Generic obj){
+        List<Generic> list = ((Composer)obj).getAries();
+        Result result = new Result("OK", "");
+        list.stream().forEach(e -> 
+                {
+                    Result r = getRecordById(e, true);
+                    if (!"OK".equals(r.getStatus())){
+                        result.setStatus("Error");
+                        result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
+                    } 
+                });
+        return result;        
+    }
+    
+    private Result checkLibretto(Generic obj){
+        List<Generic> list = ((Libretto)obj).getAuthors();
+        Result result = new Result("OK", "");
+        list.stream().forEach(e -> 
+                {
+                    Result r = getRecordById(e, true);
+                    if (!"OK".equals(r.getStatus())){
+                        result.setStatus("Error");
+                        result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
+                    } 
+                });
+        return result;        
+    }
+    
+    private Result checkOpera(Generic obj){
+       List<Generic> list = ((Opera)obj).getAries();
+        Result result = new Result("OK", "");
+        list.stream().forEach(e -> 
+                {
+                    Result r = getRecordById(e, true);
+                    if (!"OK".equals(r.getStatus())){
+                        result.setStatus("Error");
+                        result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
+                    } 
+                });
+        return result;  
+    }
+    
+    private Result checkSinger(Generic obj){        
+        List<Generic> list = ((Singer)obj).getAries();
+        Result result = new Result("OK", "");
+        list.stream().forEach(e -> 
+                {
+                    Result r = getRecordById(e, true);
+                    if (!"OK".equals(r.getStatus())){
+                        result.setStatus("Error");
+                        result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
+                    } 
+                });
+        return result;
+    }
+    
+    private Result checkNote(Generic obj){
+        Note note = (Note)obj;
+        Result result = new Result();
+        if (note == null){
+            result.setStatus("Error");
+            result.setMessage("Note: Object is null");
+        }
+        else{
+            result = getRecordById(note.getObject(), true);
+        }       
+        return result;
+    }
+    
 
     @Override
     public Result editRecord(Generic obj) {
-        
-        return 0;
-    }
-
-    @Override
-    public Result deleteRecord(Generic obj) {
         try {
-            Types type = obj.getType(); 
+            Result r = checkObject(obj);
+            if (!"OK".equals(r.getStatus())) return r;
             Reader reader;
             reader = new FileReader(getFileName(obj));        
             CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
@@ -69,11 +224,12 @@ public class CsvDataProvider implements IDataProvider{
                     .withQuoteChar('\'')
                     .withSeparator(';')
                     .build();         
-            List<Generic> list = csvToBean.parse();            
-            reader.close();
+            List<Generic> list = csvToBean.parse();
+            reader.close();            
             java.io.Writer writer;
-            writer = new FileWriter(getFileName(obj));  
-            list.removeIf(n -> n.equals(obj));
+            writer = new FileWriter(getFileName(obj)); 
+            list.removeIf(e -> e.getId() == obj.getId());
+            list.add(obj);
             StatefulBeanToCsv<Generic> beanWriter = new StatefulBeanToCsvBuilder(writer)
                     .withEscapechar('\\')
                     .withQuotechar('\'')
@@ -81,14 +237,65 @@ public class CsvDataProvider implements IDataProvider{
                     .build();
             beanWriter.write(list);
             writer.close();
+            Result result = new Result("OK", "Record edited");
+            return result;
         } catch (IOException ex) {
             Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            Result result = new Result("Error", ex.getMessage());
+            return result;
         } catch (CsvDataTypeMismatchException ex) {
             Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            Result result = new Result("Error", ex.getMessage());
+            return result;
         } catch (CsvRequiredFieldEmptyException ex) {
             Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        return 0;        
+            Result result = new Result("Error", ex.getMessage());
+            return result;
+        }  
+    }
+
+    @Override
+    public Result deleteRecord(Generic obj) {
+        try {
+            Reader reader;
+            reader = new FileReader(getFileName(obj));        
+            CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(getClass(obj))
+                    .withEscapeChar('\\')
+                    .withQuoteChar('\'')
+                    .withSeparator(';')
+                    .build();         
+            List<Generic> list = csvToBean.parse();
+            reader.close(); 
+            if (!list.removeIf(e -> e.getId() == obj.getId())){
+                Result result = new Result("Error", "Object " + obj + " not found");
+                return result; 
+            }
+            Writer writer;
+            writer = new FileWriter(getFileName(obj)); 
+            StatefulBeanToCsv<Generic> beanWriter = new StatefulBeanToCsvBuilder(writer)
+                    .withEscapechar('\\')
+                    .withQuotechar('\'')
+                    .withSeparator(';')
+                    .build();
+            beanWriter.write(list);
+            writer.close();
+            Result result = new Result("OK", "Record edited");
+            return result;
+        } catch (IOException ex) {
+            //Logger.getLogger(CsvDataProvider.class.getName()).log(Priority.DEBUG, null, ex);
+            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            Result result = new Result("Error", ex.getMessage());
+            return result;
+        } catch (CsvDataTypeMismatchException ex) {
+            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            Result result = new Result("Error", ex.getMessage());
+            return result;
+        } catch (CsvRequiredFieldEmptyException ex) {
+            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            Result result = new Result("Error", ex.getMessage());
+            return result;
+        }        
     }
 
     @Override
@@ -115,7 +322,7 @@ public class CsvDataProvider implements IDataProvider{
                 return result;
             }
             if (check){
-                Result result = new Result("Object exsists", "Succes", list);
+                Result result = new Result("OK", "Object exsists", list);
                 return result;
             }
             Result result = new Result("OK", "Success");
@@ -319,7 +526,7 @@ public class CsvDataProvider implements IDataProvider{
             return opera;
     }
                 
-    public Generic getRelationsSinger(Generic obj) throws IOException{
+    private Generic getRelationsSinger(Generic obj) throws IOException{
             Reader reader;  
             reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
             CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
