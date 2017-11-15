@@ -45,6 +45,7 @@ public class CsvDataProvider implements IDataProvider{
                     .build();
             beanWriter.write(list);
             writer.close();
+            addRelations(objs);
             Result result = new Result("OK", "Record added");
             return result;
         } catch (IOException ex) {
@@ -208,6 +209,69 @@ public class CsvDataProvider implements IDataProvider{
             result = getRecordById(note.getObject(), true);
         }       
         return result;
+    }
+    
+    private Result addRelations(Generic obj) throws IOException{
+        Types type = obj.getType(); 
+        Result result = new Result();
+        switch (type){
+           case ARIA : result = addRelationsAria(obj);
+                break;
+           case COMPOSER : result = addRelationsComposer(obj);
+                break;
+           case LIBRETTO : result = addRelationsLibretto(obj);
+                break;
+           case OPERA : result = addRelationsOpera(obj); 
+                break;
+           case SINGER : result = addRelationsSinger(obj);
+                break;
+           case AUTHOR : result = addRelationsAuthor(obj);
+                break;
+           case NOTE: break;    
+        }
+        return result;
+    }
+    
+    private Result addRelationsAria(Generic obj){
+                
+    }
+    
+    private Result addRelationsAuthor(Generic obj){
+        
+    }
+    
+    private Result addRelationsComposer(Generic obj){
+        
+    }
+    
+    private Result addRelationsLibretto(Generic obj){
+        
+    }
+    
+    private Result addRelationsOpera(Generic obj){
+        
+    }
+    
+    private Result addRelationsSinger(Generic obj) throws IOException{
+        Singer object = (Singer)obj;
+        List<Generic> list = object.getAries();
+        if (list.isEmpty()) return new Result("OK", "There are no relations");
+        Reader reader;  
+            reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
+            CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(Relation.class)
+                    .withEscapeChar('\\')
+                    .withQuoteChar('\'')
+                    .withSeparator(';')
+                    .build();
+            List<Relation> relations = csvToBean.parse();
+            reader.close();
+            List<Relation> newR = list.stream().collect(ArrayList<Relation>::new,
+                                                         (a, r) -> a.add(new Relation(r.getId(), obj.getId())),
+                                                         (a1, a2) -> a1.addAll(a2));
+            Singer singer = (Singer)obj;
+            singer.setAries(arias);
+            return null;
     }
     
 

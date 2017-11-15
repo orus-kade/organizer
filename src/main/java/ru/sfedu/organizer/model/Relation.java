@@ -12,10 +12,17 @@ import com.opencsv.bean.CsvBindByPosition;
  * @author user
  */
 public class Relation {
-    @CsvBindByPosition (position = 0) 
+    
+        @CsvBindByPosition (position = 0) 
         private long id1 = 0; 
+        
         @CsvBindByPosition (position = 1)
         private long id2 = 0;
+
+        public Relation(long id1, long id2) {
+            this.id1 = id1;
+            this.id2 = id2;            
+        }  
 
         public long getId1() {
             return id1;
