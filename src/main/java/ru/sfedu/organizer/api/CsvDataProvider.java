@@ -34,7 +34,7 @@ public class CsvDataProvider implements IDataProvider{
             List<Generic> list = csvToBean.parse();
             reader.close();
             long lastId = list.stream().max(Comparator.comparingLong(e -> e.getId())).get().getId();            
-            java.io.Writer writer;
+            Writer writer;
             writer = new FileWriter(getFileName(obj));  
             obj.setId(lastId+1);
             list.add(obj);
@@ -45,8 +45,16 @@ public class CsvDataProvider implements IDataProvider{
                     .build();
             beanWriter.write(list);
             writer.close();
-            addRelations(objs);
-            Result result = new Result("OK", "Record added");
+            r = editRelations(obj);
+            Result result = new Result();
+            if (!"OK".equals(r.getStatus())){
+                result.setStatus("Warning");
+                result.setMessage(r.getMessage());
+            }
+            else{
+                result.setStatus("OK");
+                result.setMessage("Record added");
+            }
             return result;
         } catch (IOException ex) {
             Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
@@ -211,67 +219,365 @@ public class CsvDataProvider implements IDataProvider{
         return result;
     }
     
-    private Result addRelations(Generic obj) throws IOException{
+    private Result editRelations(Generic obj) throws IOException{
         Types type = obj.getType(); 
         Result result = new Result();
         switch (type){
-           case ARIA : result = addRelationsAria(obj);
+           case ARIA : result = editRelationsAria(obj, false);
                 break;
-           case COMPOSER : result = addRelationsComposer(obj);
+           case COMPOSER : result = editRelationsComposer(obj, false);
                 break;
-           case LIBRETTO : result = addRelationsLibretto(obj);
+           case LIBRETTO : result = editRelationsLibretto(obj, false);
                 break;
-           case OPERA : result = addRelationsOpera(obj); 
+           case OPERA : //result = editRelationsOpera(obj); 
                 break;
-           case SINGER : result = addRelationsSinger(obj);
+           case SINGER : result = editRelationsSinger(obj, false);
                 break;
-           case AUTHOR : result = addRelationsAuthor(obj);
+           case AUTHOR : result = editRelationsAuthor(obj, false);
                 break;
            case NOTE: break;    
         }
         return result;
     }
     
-    private Result addRelationsAria(Generic obj){
-                
-    }
-    
-    private Result addRelationsAuthor(Generic obj){
+    private Result editRelationsAria(Generic obj, boolean delete) throws IOException{
+        List<Generic> list = ((Aria)obj).getAuthors();
+        Reader reader; 
+        Writer writer;
+        Result result = new Result("OK", "");
+        if (list.isEmpty()) result.setMessage(result.getMessage() + " There are no relations to authors");
+        else{
+            reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_AUTHOR));
+            CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
+                        .withType(Relation.class)
+                        .withEscapeChar('\\')
+                        .withQuoteChar('\'')
+                        .withSeparator(';')
+                        .build();
+            List<Relation> relations = csvToBean.parse();
+            reader.close();      
+            relations.removeIf(r -> r.getId1() == obj.getId());
+            if (!delete){
+                List<Relation> newR = list.stream().collect(ArrayList<Relation>::new,
+                                                                 (a, r) -> a.add(new Relation(obj.getId(), r.getId())),
+                                                                 (a1, a2) -> a1.addAll(a2));
+                relations.addAll(newR);
+            }
+            writer = new FileWriter(CSV_PATH_ARIA_AUTHOR);
+            StatefulBeanToCsv<Relation> beanWriter = new StatefulBeanToCsvBuilder(writer)
+                        .withEscapechar('\\')
+                        .withQuotechar('\'')
+                        .withSeparator(';')
+                        .build();
+            try {
+                beanWriter.write(relations);
+                result.setMessage("Relations to authors edited");
+            } catch (CsvDataTypeMismatchException ex) {
+                Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+                result.setStatus("Error");
+                result.setMessage(result.getMessage() + " " +  ex.getMessage());
+            } catch (CsvRequiredFieldEmptyException ex) {
+                Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+                result.setStatus("Error");
+                result.setMessage(result.getMessage() + " " +  ex.getMessage());
+            }
+            writer.close();            
+        }
         
+        list = ((Aria)obj).getComposers();
+        if (list.isEmpty()){
+            result.setMessage(result.getMessage() + " There are no relations to composers");
+        }
+        else{        
+        reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_COMPOSER));
+            CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
+                        .withType(Relation.class)
+                        .withEscapeChar('\\')
+                        .withQuoteChar('\'')
+                        .withSeparator(';')
+                        .build();
+            List<Relation> relations = csvToBean.parse();
+            reader.close();      
+            relations.removeIf(r -> r.getId1() == obj.getId());
+            if (!delete){
+                List<Relation> newR = list.stream().collect(ArrayList<Relation>::new,
+                                                             (a, r) -> a.add(new Relation(obj.getId(), r.getId())),
+                                                             (a1, a2) -> a1.addAll(a2));
+                relations.addAll(newR);
+            }
+            writer = new FileWriter(CSV_PATH_ARIA_COMPOSER);
+            StatefulBeanToCsv<Relation> beanWriter = new StatefulBeanToCsvBuilder(writer)
+                        .withEscapechar('\\')
+                        .withQuotechar('\'')
+                        .withSeparator(';')
+                        .build();
+            try {
+                beanWriter.write(relations);
+                result.setMessage("Relations to composers edited");
+            } catch (CsvDataTypeMismatchException ex) {
+                Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+                result.setStatus("Error");
+                result.setMessage(result.getMessage() + " " +  ex.getMessage());
+            } catch (CsvRequiredFieldEmptyException ex) {
+                Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+                result.setStatus("Error");
+                result.setMessage(result.getMessage() + " " +  ex.getMessage());
+            }
+            writer.close(); 
+        }
+        list = ((Aria)obj).getSingers();
+        if (list.isEmpty()){
+            result.setMessage(result.getMessage() + " There are no relations to singers");
+            return result;
+        }    
+        reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
+            CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
+                        .withType(Relation.class)
+                        .withEscapeChar('\\')
+                        .withQuoteChar('\'')
+                        .withSeparator(';')
+                        .build();
+            List<Relation> relations = csvToBean.parse();
+            reader.close();      
+            relations.removeIf(r -> r.getId1() == obj.getId());
+            if (!delete){
+                List<Relation> newR = list.stream().collect(ArrayList<Relation>::new,
+                                                             (a, r) -> a.add(new Relation(obj.getId(), r.getId())),
+                                                             (a1, a2) -> a1.addAll(a2));
+                relations.addAll(newR);
+            }
+            writer = new FileWriter(CSV_PATH_ARIA_SINGER);
+            StatefulBeanToCsv<Relation> beanWriter = new StatefulBeanToCsvBuilder(writer)
+                        .withEscapechar('\\')
+                        .withQuotechar('\'')
+                        .withSeparator(';')
+                        .build();
+            try {
+                beanWriter.write(relations);
+                result.setMessage("Relations to singers edited");
+            } catch (CsvDataTypeMismatchException ex) {
+                Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+                result.setStatus("Error");
+                result.setMessage(result.getMessage() + " " +  ex.getMessage());
+            } catch (CsvRequiredFieldEmptyException ex) {
+                Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+                result.setStatus("Error");
+                result.setMessage(result.getMessage() + " " +  ex.getMessage());
+            }
+            writer.close(); 
+        return result;       
     }
     
-    private Result addRelationsComposer(Generic obj){
+    private Result editRelationsAuthor(Generic obj, boolean delete) throws IOException{
+        List<Generic> list = ((Author)obj).getAries();
+        Reader reader; 
+        Writer writer;
+        Result result = new Result("OK", "");
+        if (list.isEmpty()) result.setMessage(result.getMessage() + " There are no relations to Aries");
+        else{
+            reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_AUTHOR));
+            CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
+                        .withType(Relation.class)
+                        .withEscapeChar('\\')
+                        .withQuoteChar('\'')
+                        .withSeparator(';')
+                        .build();
+            List<Relation> relations = csvToBean.parse();
+            reader.close();      
+            relations.removeIf(r -> r.getId2() == obj.getId());
+            if (!delete){
+                List<Relation> newR = list.stream().collect(ArrayList<Relation>::new,
+                                                             (a, r) -> a.add(new Relation(r.getId(), obj.getId())),
+                                                             (a1, a2) -> a1.addAll(a2));
+                relations.addAll(newR);
+            }
+            writer = new FileWriter(CSV_PATH_ARIA_AUTHOR);
+            StatefulBeanToCsv<Relation> beanWriter = new StatefulBeanToCsvBuilder(writer)
+                        .withEscapechar('\\')
+                        .withQuotechar('\'')
+                        .withSeparator(';')
+                        .build();
+            try {
+                beanWriter.write(relations);
+                result.setMessage("Relations to aries edited");
+            } catch (CsvDataTypeMismatchException ex) {
+                Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+                result.setStatus("Error");
+                result.setMessage(result.getMessage() + " " +  ex.getMessage());
+            } catch (CsvRequiredFieldEmptyException ex) {
+                Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+                result.setStatus("Error");
+                result.setMessage(result.getMessage() + " " +  ex.getMessage());
+            }
+            writer.close();
+            
+        }
         
+        list = ((Author)obj).getLibrettos();
+        if (list.isEmpty()){
+            result.setMessage(result.getMessage() + " There are no relations to Librettos");
+            return result;
+        }
+        reader = new FileReader(getConfigurationEntry(CSV_PATH_AUTHOR_LIBRETTO));
+            CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
+                        .withType(Relation.class)
+                        .withEscapeChar('\\')
+                        .withQuoteChar('\'')
+                        .withSeparator(';')
+                        .build();
+            List<Relation> relations = csvToBean.parse();
+            reader.close();      
+            relations.removeIf(r -> r.getId1() == obj.getId());
+            if (!delete){
+                List<Relation> newR = list.stream().collect(ArrayList<Relation>::new,
+                                                             (a, r) -> a.add(new Relation(obj.getId(), r.getId())),
+                                                             (a1, a2) -> a1.addAll(a2));
+                relations.addAll(newR);
+            }
+            writer = new FileWriter(CSV_PATH_AUTHOR_LIBRETTO);
+            StatefulBeanToCsv<Relation> beanWriter = new StatefulBeanToCsvBuilder(writer)
+                        .withEscapechar('\\')
+                        .withQuotechar('\'')
+                        .withSeparator(';')
+                        .build();
+            try {
+                beanWriter.write(relations);
+                result.setMessage("Relations to librettos edited");
+            } catch (CsvDataTypeMismatchException ex) {
+                Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+                result.setStatus("Error");
+                result.setMessage(result.getMessage() + " " +  ex.getMessage());
+            } catch (CsvRequiredFieldEmptyException ex) {
+                Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+                result.setStatus("Error");
+                result.setMessage(result.getMessage() + " " +  ex.getMessage());
+            }
+            writer.close(); 
+        return result;
     }
     
-    private Result addRelationsLibretto(Generic obj){
-        
-    }
-    
-    private Result addRelationsOpera(Generic obj){
-        
-    }
-    
-    private Result addRelationsSinger(Generic obj) throws IOException{
-        Singer object = (Singer)obj;
-        List<Generic> list = object.getAries();
+    private Result editRelationsComposer(Generic obj, boolean delete) throws IOException {
+        List<Generic> list = ((Composer)obj).getAries();
         if (list.isEmpty()) return new Result("OK", "There are no relations");
         Reader reader;  
-            reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
-            CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
+        reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_COMPOSER));
+        CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
                     .withType(Relation.class)
                     .withEscapeChar('\\')
                     .withQuoteChar('\'')
                     .withSeparator(';')
                     .build();
-            List<Relation> relations = csvToBean.parse();
-            reader.close();
+        List<Relation> relations = csvToBean.parse();
+        reader.close();      
+        relations.removeIf(r -> r.getId2() == obj.getId());
+        if (!delete){
             List<Relation> newR = list.stream().collect(ArrayList<Relation>::new,
                                                          (a, r) -> a.add(new Relation(r.getId(), obj.getId())),
                                                          (a1, a2) -> a1.addAll(a2));
-            Singer singer = (Singer)obj;
-            singer.setAries(arias);
-            return null;
+            relations.addAll(newR);
+        }
+        Writer writer = new FileWriter(CSV_PATH_ARIA_COMPOSER);
+        StatefulBeanToCsv<Relation> beanWriter = new StatefulBeanToCsvBuilder(writer)
+                    .withEscapechar('\\')
+                    .withQuotechar('\'')
+                    .withSeparator(';')
+                    .build();
+        try {
+            beanWriter.write(relations);
+        } catch (CsvDataTypeMismatchException ex) {
+            writer.close();
+            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            return new Result("Error", ex.getMessage());
+        } catch (CsvRequiredFieldEmptyException ex) {
+            writer.close();
+            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            return new Result("Error", ex.getMessage());
+        }
+        writer.close();
+        Result result = new Result("OK", "Relations edited");
+        return result;
+    }
+    
+    private Result editRelationsLibretto(Generic obj, boolean delete) throws IOException{
+        List<Generic> list = ((Libretto)obj).getAuthors();
+        if (list.isEmpty()) return new Result("OK", "There are no relations");
+        Reader reader;  
+        reader = new FileReader(getConfigurationEntry(CSV_PATH_AUTHOR_LIBRETTO));
+        CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(Relation.class)
+                    .withEscapeChar('\\')
+                    .withQuoteChar('\'')
+                    .withSeparator(';')
+                    .build();
+        List<Relation> relations = csvToBean.parse();
+        reader.close();        
+        relations.removeIf(r -> r.getId2() == obj.getId());
+        if (!delete){
+            List<Relation> newR = list.stream().collect(ArrayList<Relation>::new,
+                                                         (a, r) -> a.add(new Relation(r.getId(), obj.getId())),
+                                                         (a1, a2) -> a1.addAll(a2));
+            relations.addAll(newR);
+        }
+        Writer writer = new FileWriter(CSV_PATH_AUTHOR_LIBRETTO);
+        StatefulBeanToCsv<Relation> beanWriter = new StatefulBeanToCsvBuilder(writer)
+                    .withEscapechar('\\')
+                    .withQuotechar('\'')
+                    .withSeparator(';')
+                    .build();
+        try {
+            beanWriter.write(relations);
+        } catch (CsvDataTypeMismatchException ex) {
+            writer.close();
+            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            return new Result("Error", ex.getMessage());
+        } catch (CsvRequiredFieldEmptyException ex) {
+            writer.close();
+            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            return new Result("Error", ex.getMessage());
+        }
+        writer.close();
+        return new Result("OK", "Relations edited");
+    }
+        
+    private Result editRelationsSinger(Generic obj, boolean delete) throws IOException{
+        List<Generic> list = ((Singer)obj).getAries();
+        if (list.isEmpty()) return new Result("OK", "There are no relations");
+        Reader reader;  
+        reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
+        CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(Relation.class)
+                    .withEscapeChar('\\')
+                    .withQuoteChar('\'')
+                    .withSeparator(';')
+                    .build();
+        List<Relation> relations = csvToBean.parse();
+        reader.close();      
+        relations.removeIf(r -> r.getId2() == obj.getId());
+        if (!delete){
+            List<Relation> newR = list.stream().collect(ArrayList<Relation>::new,
+                                                         (a, r) -> a.add(new Relation(r.getId(), obj.getId())),
+                                                         (a1, a2) -> a1.addAll(a2));
+            relations.addAll(newR);
+        }
+        Writer writer = new FileWriter(CSV_PATH_ARIA_SINGER);
+        StatefulBeanToCsv<Relation> beanWriter = new StatefulBeanToCsvBuilder(writer)
+                    .withEscapechar('\\')
+                    .withQuotechar('\'')
+                    .withSeparator(';')
+                    .build();
+        try {
+            beanWriter.write(relations);
+        } catch (CsvDataTypeMismatchException ex) {
+            writer.close();
+            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            return new Result("Error", ex.getMessage());
+        } catch (CsvRequiredFieldEmptyException ex) {
+            writer.close();
+            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            return new Result("Error", ex.getMessage());
+        }
+        writer.close();
+        return new Result("OK", "Relations edited");
     }
     
 
@@ -301,7 +607,16 @@ public class CsvDataProvider implements IDataProvider{
                     .build();
             beanWriter.write(list);
             writer.close();
-            Result result = new Result("OK", "Record edited");
+            r = editRelations(obj);
+            Result result = new Result();
+            if (!"OK".equals(r.getStatus())){
+                result.setStatus("Warning");
+                result.setMessage(r.getMessage());
+            }
+            else{
+                result.setStatus("OK");
+                result.setMessage("Record edited");
+            }
             return result;
         } catch (IOException ex) {
             Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
@@ -344,7 +659,16 @@ public class CsvDataProvider implements IDataProvider{
                     .build();
             beanWriter.write(list);
             writer.close();
-            Result result = new Result("OK", "Record edited");
+            Result r = deleteRelations(obj);
+            Result result = new Result();
+            if (!"OK".equals(r.getStatus())){
+                result.setStatus("Warning");
+                result.setMessage(r.getMessage());
+            }
+            else{
+                result.setStatus("OK");
+                result.setMessage("Record deleted");
+            }
             return result;
         } catch (IOException ex) {
             //Logger.getLogger(CsvDataProvider.class.getName()).log(Priority.DEBUG, null, ex);
@@ -362,6 +686,65 @@ public class CsvDataProvider implements IDataProvider{
         }        
     }
 
+    private Result deleteRelations(Generic obj) throws IOException{
+        Types type = obj.getType(); 
+        Result result = new Result();
+        switch (type){
+           case ARIA : result = editRelationsAria(obj, true);
+                break;
+           case COMPOSER : result = editRelationsComposer(obj, true);
+                break;
+           case LIBRETTO : result = editRelationsLibretto(obj, true);
+                break;
+           case OPERA : result = deleteRelationsOpera(obj); 
+                break;
+           case SINGER : result = editRelationsSinger(obj, true);
+                break;
+           case AUTHOR : result = editRelationsAuthor(obj, true);
+                break;
+           case NOTE: break;    
+        }
+        return result;
+    }
+    
+    public Result deleteRelationsOpera(Generic obj) throws IOException{
+        List<Generic> list = ((Opera)obj).getAries();
+        if (list.isEmpty()){
+            return new Result ("OK", "There are no relations to aries");
+        }
+        Reader reader;  
+        reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA));
+        CsvToBean<Aria> csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(Aria.class)
+                    .withEscapeChar('\\')
+                    .withQuoteChar('\'')
+                    .withSeparator(';')
+                    .build();
+        List<Aria> aries = csvToBean.parse();
+        reader.close();            
+        aries.removeIf(a -> list.contains(new Generic(a.getId(), ARIA)));
+        Writer writer;
+        writer = new FileWriter(getConfigurationEntry(CSV_PATH_ARIA));  
+        StatefulBeanToCsv<Aria> beanWriter = new StatefulBeanToCsvBuilder(writer)
+                    .withEscapechar('\\')
+                    .withQuotechar('\'')
+                    .withSeparator(';')
+                    .build();
+        try {
+            beanWriter.write(aries);
+        } catch (CsvDataTypeMismatchException ex) {
+            writer.close();
+            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            return new Result("Error", ex.getMessage());
+        } catch (CsvRequiredFieldEmptyException ex) {
+            writer.close();
+            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            return new Result("Error", ex.getMessage());
+        }
+        writer.close();       
+        return new Result("OK", "Aries deleted");
+    }
+    
     @Override
     public Result getRecordById(Generic obj) {
         return getRecordById(obj, false);
@@ -648,6 +1031,3 @@ public class CsvDataProvider implements IDataProvider{
             return author;
     }
 }
-
-    
-

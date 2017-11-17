@@ -1,22 +1,9 @@
 package ru.sfedu.organizer;
 
-import com.google.gson.annotations.Since;
-import com.opencsv.bean.ColumnPositionMappingStrategy;
-import com.opencsv.bean.CsvBindByPosition;
-import com.opencsv.bean.StatefulBeanToCsv;
-import com.opencsv.bean.StatefulBeanToCsvBuilder;
-import com.opencsv.exceptions.CsvDataTypeMismatchException;
-import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import java.io.*;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.*;
-import static org.junit.Assert.*;
 import ru.sfedu.organizer.api.CsvDataProvider;
 import ru.sfedu.organizer.model.*;
-import static ru.sfedu.organizer.Constants.*;
-import static ru.sfedu.organizer.utils.ConfigurationUtil.*;
 
 /**
  *
@@ -80,31 +67,29 @@ public class ClientTest {
         //System.out.println(obj);
         
     }
-    @Test
-    public void tt(){
-        try {
-            Writer writer = new FileWriter(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
-            StatefulBeanToCsv<Relation> b = new StatefulBeanToCsvBuilder<Relation>(writer)
-                    .withSeparator(';')
-                    .withQuotechar('\'')
-                    .withEscapechar('\\')
-                    .build();
-            Relation r = new Relation();
-            r.setId1(1);
-            r.setId2(2);            
-            b.write(r);
-            writer.close();
-            System.out.println(r);
-        } catch (CsvDataTypeMismatchException ex) {
-            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (CsvRequiredFieldEmptyException ex) {
-            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        
-        
-    }   
+//    @Test
+//    public void tt(){
+//        try {
+//            Writer writer = new FileWriter(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
+//            StatefulBeanToCsv<Relation> b = new StatefulBeanToCsvBuilder<Relation>(writer)
+//                    .withSeparator(';')
+//                    .withQuotechar('\'')
+//                    .withEscapechar('\\')
+//                    .build();
+//            Relation r = new Relation();
+//            r.setId1(1);
+//            r.setId2(2);            
+//            b.write(r);
+//            writer.close();
+//            System.out.println(r);
+//        } catch (CsvDataTypeMismatchException ex) {
+//            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (CsvRequiredFieldEmptyException ex) {
+//            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (IOException ex) {
+//            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
+//        }      
+//    }   
     
     @Test
     public void test4(){
@@ -130,52 +115,15 @@ public class ClientTest {
             CsvDataProvider p = new CsvDataProvider();
             p.deleteRecord(a);
     }
-    
-    
-    
-    
-    @Test 
-    public void test6() throws IOException{
-        java.io.Writer writer = new FileWriter(getConfigurationEntry(CSV_PATH) + "Composer.csv");
-        Composer com = new Composer();
-        com.setId(2);
-        com.setBiography("sds");
-        com.setBirthDate("12.12.1222");
-        com.setDeathDate("12.12.1234");
-        com.setName("NAME");
-        List<Generic> operas = new ArrayList<>();
-        operas.add(new Generic(Types.OPERA));
-        operas.add(new Generic(Types.OPERA));
-        com.setOperas((List<Generic>)operas);
-        System.out.println(com);      
-        ColumnPositionMappingStrategy<Composer> beanStrategy = new ColumnPositionMappingStrategy<Composer>();           
-        beanStrategy.setType(Composer.class);
-        //beanStrategy.setColumnMapping(new String[] {"id", "name", "biography", "birthDate", "deathDate", "operas"});
-        StatefulBeanToCsv<Composer> beanWriter = new StatefulBeanToCsv<Composer>('\\', "\n", beanStrategy, '\'', ';', true, writer);
-        //StatefulBeanToCsvBuilder<Composer> builder = new StatefulBeanToCsvBuilder<Composer>(writer);
-        //StatefulBeanToCsv<Composer> beanWriter = builder.withMappingStrategy(beanStrategy).build();
-        try {
-            // Writing data to csv file
-            beanWriter.write(com);
-        } catch (CsvDataTypeMismatchException ex) {
-            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (CsvRequiredFieldEmptyException ex) {
-            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        writer.close();
-    }
-    
-    
+
     /**
      * Test of logBasicSystemInfo method, of class Client.
      */
     @Test
     public void testLogBasicSystemInfo() {
         System.out.println("logBasicSystemInfo");
-        Client instance = new Client();
-        instance.logBasicSystemInfo();
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
+        Client client = new Client();
+        client.logBasicSystemInfo();
     }   
                     
 }
