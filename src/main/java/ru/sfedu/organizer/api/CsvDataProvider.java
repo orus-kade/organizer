@@ -786,7 +786,7 @@ public class CsvDataProvider implements IDataProvider{
             return result;            
         } catch (IOException ex) {
             Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
-            Result result = new Result("exseption",ex.getMessage());
+            Result result = new Result("Error",ex.getMessage());
             return result;
         }
     }
@@ -1029,5 +1029,37 @@ public class CsvDataProvider implements IDataProvider{
                             (a1, a2) -> a1.addAll(a2));
             author.setLibrettos(list);            
             return author;
+    }
+
+    @Override
+    public Result getAllRecords(Generic obj) {
+       try {
+            Reader reader;
+            reader = new FileReader(getFileName(obj));  
+            CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(getClass(obj))
+                    .withEscapeChar('\\')
+                    .withQuoteChar('\'')
+                    .withSeparator(';')
+                    .build();         
+            List<Generic> list = csvToBean.parse();
+            reader.close();
+            Result result = new Result("OK", "Success");
+            list.stream().forEach(g -> {
+                try {
+                    g = getRelations(g);
+                } catch (IOException ex) {
+                    Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+                    result.setStatus("Warning");
+                    result.setMessage(result.getMessage() + " " + ex.getMessage());
+                }
+            });
+            result.setList(list);
+            return result;            
+        } catch (IOException ex) {
+            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            Result result = new Result("Error",ex.getMessage());
+            return result;
+        } 
     }
 }

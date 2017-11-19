@@ -13,5 +13,7 @@ public interface IDataProvider {
     public Result deleteRecord(Generic obj);
     
     public Result getRecordById(Generic obj);
+    
+    public Result getAllRecords(Generic obj);
    
 }
