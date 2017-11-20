@@ -17,7 +17,7 @@ public class Libretto extends Generic{
   @CsvBindByPosition (position = 1)   
   private String text;  
   
-  @CsvCustomBindByPosition (converter = Generic.class, position = 1)
+  @CsvCustomBindByPosition (converter = Generic.class, position = 2)
   private Generic opera;
   
   private List<Generic> authors;
@@ -50,5 +50,11 @@ public class Libretto extends Generic{
         this.opera = opera;
     }
 
-  
+    @Override
+    public String toString() {
+        return "Libretto{" + "id=" + getId() + ", text=" + text + ", opera=" + opera + ", authors=" + authors + '}';
+    }
+
+
+    
 }

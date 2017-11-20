@@ -49,5 +49,11 @@ public class Author extends Human {
         this.librettos = librettos;
     }
 
+    @Override
+    public String toString() {
+        return "Author{" + "id=" + getId() + ", name=" + getName() + ", biography=" + getBiography() + ", birthDate=" + getBirthDate() + ", deathDate=" + getDeathDate() + ", aries=" + aries + ", librettos=" + librettos + '}';
+    }
+
  
+    
 }

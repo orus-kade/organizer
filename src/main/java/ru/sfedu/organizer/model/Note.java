@@ -41,5 +41,10 @@ public class Note extends Generic{
         this.object = object;
     }
 
+    @Override
+    public String toString() {
+        return "Note{" + "id=" +  getId() + ", description=" + description + ", object=" + object + '}';
+    }
+
 
 }

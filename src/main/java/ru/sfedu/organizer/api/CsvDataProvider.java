@@ -96,113 +96,129 @@ public class CsvDataProvider implements IDataProvider{
     private Result checkAria(Generic obj){
         List<Generic> list = ((Aria)obj).getAuthors();
         Result result = new Result("OK", "");
-        list.stream().forEach(e -> 
-                {
-                    Result r = getRecordById(e, true);
-                    if (!"OK".equals(r.getStatus())){
-                        result.setStatus("Error");
-                        result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
-                    } 
-                });
-        
+        if (list != null){            
+            list.stream().forEach(e -> 
+                    {
+                        Result r = getRecordById(e, true);
+                        if (!"OK".equals(r.getStatus())){
+                            result.setStatus("Error");
+                            result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
+                        } 
+                    });
+        }
         list = ((Aria)obj).getComposers();
-        list.stream().forEach(e -> 
-                {
-                    Result r = getRecordById(e, true);
-                    if (!"OK".equals(r.getStatus())){
-                        result.setStatus("Error");
-                        result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
-                    } 
-                }); 
+        if (list != null){ 
+            list.stream().forEach(e -> 
+                    {
+                        Result r = getRecordById(e, true);
+                        if (!"OK".equals(r.getStatus())){
+                            result.setStatus("Error");
+                            result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
+                        } 
+                    }); 
+        }
         list = ((Aria)obj).getSingers();
-        list.stream().forEach(e -> 
-                {
-                    Result r = getRecordById(e, true);
-                    if (!"OK".equals(r.getStatus())){
-                        result.setStatus("Error");
-                        result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
-                    } 
-                }); 
+        if (list != null){ 
+            list.stream().forEach(e -> 
+                    {
+                        Result r = getRecordById(e, true);
+                        if (!"OK".equals(r.getStatus())){
+                            result.setStatus("Error");
+                            result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
+                        } 
+                    }); 
+        }
         return result;         
     }
     
     private Result checkAuthor(Generic obj){
         List<Generic> list = ((Author)obj).getAries();
         Result result = new Result("OK", "");
-        list.stream().forEach(e -> 
-                {
-                    Result r = getRecordById(e, true);
-                    if (!"OK".equals(r.getStatus())){
-                        result.setStatus("Error");
-                        result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
-                    } 
-                });
-        
+        if (list != null){
+            list.stream().forEach(e -> 
+                    {
+                        Result r = getRecordById(e, true);
+                        if (!"OK".equals(r.getStatus())){
+                            result.setStatus("Error");
+                            result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
+                        } 
+                    });
+        }
+        if (list != null){
         list = ((Author)obj).getLibrettos();
-        list.stream().forEach(e -> 
-                {
-                    Result r = getRecordById(e, true);
-                    if (!"OK".equals(r.getStatus())){
-                        result.setStatus("Error");
-                        result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
-                    } 
-                });        
+            list.stream().forEach(e -> 
+                    {
+                        Result r = getRecordById(e, true);
+                        if (!"OK".equals(r.getStatus())){
+                            result.setStatus("Error");
+                            result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
+                        } 
+                    });   
+        }
         return result; 
     }
     
     private Result checkComposer(Generic obj){
         List<Generic> list = ((Composer)obj).getAries();
         Result result = new Result("OK", "");
-        list.stream().forEach(e -> 
-                {
-                    Result r = getRecordById(e, true);
-                    if (!"OK".equals(r.getStatus())){
-                        result.setStatus("Error");
-                        result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
-                    } 
-                });
+        if (list != null){
+            list.stream().forEach(e -> 
+                    {
+                        Result r = getRecordById(e, true);
+                        if (!"OK".equals(r.getStatus())){
+                            result.setStatus("Error");
+                            result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
+                        } 
+                    });
+        }
         return result;        
     }
     
     private Result checkLibretto(Generic obj){
         List<Generic> list = ((Libretto)obj).getAuthors();
         Result result = new Result("OK", "");
-        list.stream().forEach(e -> 
-                {
-                    Result r = getRecordById(e, true);
-                    if (!"OK".equals(r.getStatus())){
-                        result.setStatus("Error");
-                        result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
-                    } 
-                });
+        if (list != null){
+            list.stream().forEach(e -> 
+                    {
+                        Result r = getRecordById(e, true);
+                        if (!"OK".equals(r.getStatus())){
+                            result.setStatus("Error");
+                            result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
+                        } 
+                    });
+        }
         return result;        
     }
     
     private Result checkOpera(Generic obj){
        List<Generic> list = ((Opera)obj).getAries();
         Result result = new Result("OK", "");
-        list.stream().forEach(e -> 
-                {
-                    Result r = getRecordById(e, true);
-                    if (!"OK".equals(r.getStatus())){
-                        result.setStatus("Error");
-                        result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
-                    } 
-                });
+        if (list != null){
+            list.stream().forEach(e -> 
+                    {
+                        Result r = getRecordById(e, true);
+                        if (!"OK".equals(r.getStatus())){
+                            result.setStatus("Error");
+                            result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
+                        } 
+                    });
+        }
         return result;  
     }
     
     private Result checkSinger(Generic obj){        
         List<Generic> list = ((Singer)obj).getAries();
         Result result = new Result("OK", "");
-        list.stream().forEach(e -> 
-                {
-                    Result r = getRecordById(e, true);
-                    if (!"OK".equals(r.getStatus())){
-                        result.setStatus("Error");
-                        result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
-                    } 
-                });
+        if (list != null){
+            list.stream().forEach(e -> 
+                    {
+                        Result r = getRecordById(e, true);
+                        if (!"OK".equals(r.getStatus())){
+                            result.setStatus("Error");
+                            result.setMessage(result.getMessage() + " " + e + " doesn't exsist!\n");
+                        } 
+                    });
+        }
         return result;
     }
     
@@ -245,7 +261,7 @@ public class CsvDataProvider implements IDataProvider{
         Reader reader; 
         Writer writer;
         Result result = new Result("OK", "");
-        if (list.isEmpty()) result.setMessage(result.getMessage() + " There are no relations to authors");
+        if (list == null) result.setMessage(result.getMessage() + " There are no relations to authors");
         else{
             reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_AUTHOR));
             CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
@@ -263,7 +279,7 @@ public class CsvDataProvider implements IDataProvider{
                                                                  (a1, a2) -> a1.addAll(a2));
                 relations.addAll(newR);
             }
-            writer = new FileWriter(CSV_PATH_ARIA_AUTHOR);
+            writer = new FileWriter(getConfigurationEntry(CSV_PATH_ARIA_AUTHOR));
             StatefulBeanToCsv<Relation> beanWriter = new StatefulBeanToCsvBuilder(writer)
                         .withEscapechar('\\')
                         .withQuotechar('\'')
@@ -285,7 +301,7 @@ public class CsvDataProvider implements IDataProvider{
         }
         
         list = ((Aria)obj).getComposers();
-        if (list.isEmpty()){
+        if (list == null){
             result.setMessage(result.getMessage() + " There are no relations to composers");
         }
         else{        
@@ -305,7 +321,7 @@ public class CsvDataProvider implements IDataProvider{
                                                              (a1, a2) -> a1.addAll(a2));
                 relations.addAll(newR);
             }
-            writer = new FileWriter(CSV_PATH_ARIA_COMPOSER);
+            writer = new FileWriter(getConfigurationEntry(CSV_PATH_ARIA_COMPOSER));
             StatefulBeanToCsv<Relation> beanWriter = new StatefulBeanToCsvBuilder(writer)
                         .withEscapechar('\\')
                         .withQuotechar('\'')
@@ -326,7 +342,7 @@ public class CsvDataProvider implements IDataProvider{
             writer.close(); 
         }
         list = ((Aria)obj).getSingers();
-        if (list.isEmpty()){
+        if (list == null){
             result.setMessage(result.getMessage() + " There are no relations to singers");
             return result;
         }    
@@ -346,7 +362,7 @@ public class CsvDataProvider implements IDataProvider{
                                                              (a1, a2) -> a1.addAll(a2));
                 relations.addAll(newR);
             }
-            writer = new FileWriter(CSV_PATH_ARIA_SINGER);
+            writer = new FileWriter(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
             StatefulBeanToCsv<Relation> beanWriter = new StatefulBeanToCsvBuilder(writer)
                         .withEscapechar('\\')
                         .withQuotechar('\'')
@@ -373,7 +389,7 @@ public class CsvDataProvider implements IDataProvider{
         Reader reader; 
         Writer writer;
         Result result = new Result("OK", "");
-        if (list.isEmpty()) result.setMessage(result.getMessage() + " There are no relations to Aries");
+        if (list == null) result.setMessage(result.getMessage() + " There are no relations to Aries");
         else{
             reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_AUTHOR));
             CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
@@ -391,7 +407,7 @@ public class CsvDataProvider implements IDataProvider{
                                                              (a1, a2) -> a1.addAll(a2));
                 relations.addAll(newR);
             }
-            writer = new FileWriter(CSV_PATH_ARIA_AUTHOR);
+            writer = new FileWriter(getConfigurationEntry(CSV_PATH_ARIA_AUTHOR));
             StatefulBeanToCsv<Relation> beanWriter = new StatefulBeanToCsvBuilder(writer)
                         .withEscapechar('\\')
                         .withQuotechar('\'')
@@ -414,7 +430,7 @@ public class CsvDataProvider implements IDataProvider{
         }
         
         list = ((Author)obj).getLibrettos();
-        if (list.isEmpty()){
+        if (list == null){
             result.setMessage(result.getMessage() + " There are no relations to Librettos");
             return result;
         }
@@ -434,7 +450,7 @@ public class CsvDataProvider implements IDataProvider{
                                                              (a1, a2) -> a1.addAll(a2));
                 relations.addAll(newR);
             }
-            writer = new FileWriter(CSV_PATH_AUTHOR_LIBRETTO);
+            writer = new FileWriter(getConfigurationEntry(CSV_PATH_AUTHOR_LIBRETTO));
             StatefulBeanToCsv<Relation> beanWriter = new StatefulBeanToCsvBuilder(writer)
                         .withEscapechar('\\')
                         .withQuotechar('\'')
@@ -458,7 +474,7 @@ public class CsvDataProvider implements IDataProvider{
     
     private Result editRelationsComposer(Generic obj, boolean delete) throws IOException {
         List<Generic> list = ((Composer)obj).getAries();
-        if (list.isEmpty()) return new Result("OK", "There are no relations");
+        if (list == null) return new Result("OK", "There are no relations");
         Reader reader;  
         reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_COMPOSER));
         CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
@@ -476,7 +492,7 @@ public class CsvDataProvider implements IDataProvider{
                                                          (a1, a2) -> a1.addAll(a2));
             relations.addAll(newR);
         }
-        Writer writer = new FileWriter(CSV_PATH_ARIA_COMPOSER);
+        Writer writer = new FileWriter(getConfigurationEntry(CSV_PATH_ARIA_COMPOSER));
         StatefulBeanToCsv<Relation> beanWriter = new StatefulBeanToCsvBuilder(writer)
                     .withEscapechar('\\')
                     .withQuotechar('\'')
@@ -500,7 +516,7 @@ public class CsvDataProvider implements IDataProvider{
     
     private Result editRelationsLibretto(Generic obj, boolean delete) throws IOException{
         List<Generic> list = ((Libretto)obj).getAuthors();
-        if (list.isEmpty()) return new Result("OK", "There are no relations");
+        if (list == null) return new Result("OK", "There are no relations");
         Reader reader;  
         reader = new FileReader(getConfigurationEntry(CSV_PATH_AUTHOR_LIBRETTO));
         CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
@@ -518,7 +534,7 @@ public class CsvDataProvider implements IDataProvider{
                                                          (a1, a2) -> a1.addAll(a2));
             relations.addAll(newR);
         }
-        Writer writer = new FileWriter(CSV_PATH_AUTHOR_LIBRETTO);
+        Writer writer = new FileWriter(getConfigurationEntry(CSV_PATH_AUTHOR_LIBRETTO));
         StatefulBeanToCsv<Relation> beanWriter = new StatefulBeanToCsvBuilder(writer)
                     .withEscapechar('\\')
                     .withQuotechar('\'')
@@ -541,7 +557,7 @@ public class CsvDataProvider implements IDataProvider{
         
     private Result editRelationsSinger(Generic obj, boolean delete) throws IOException{
         List<Generic> list = ((Singer)obj).getAries();
-        if (list.isEmpty()) return new Result("OK", "There are no relations");
+        if (list == null) return new Result("OK", "There are no relations");
         Reader reader;  
         reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
         CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
@@ -559,7 +575,7 @@ public class CsvDataProvider implements IDataProvider{
                                                          (a1, a2) -> a1.addAll(a2));
             relations.addAll(newR);
         }
-        Writer writer = new FileWriter(CSV_PATH_ARIA_SINGER);
+        Writer writer = new FileWriter(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
         StatefulBeanToCsv<Relation> beanWriter = new StatefulBeanToCsvBuilder(writer)
                     .withEscapechar('\\')
                     .withQuotechar('\'')

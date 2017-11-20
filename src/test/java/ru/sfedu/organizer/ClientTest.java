@@ -1,9 +1,17 @@
 package ru.sfedu.organizer;
 
+import com.opencsv.bean.StatefulBeanToCsv;
+import com.opencsv.bean.StatefulBeanToCsvBuilder;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
+import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.*;
+import static ru.sfedu.organizer.Constants.*;
 import ru.sfedu.organizer.api.CsvDataProvider;
 import ru.sfedu.organizer.model.*;
+import static ru.sfedu.organizer.utils.ConfigurationUtil.getConfigurationEntry;
 
 /**
  *
@@ -67,36 +75,35 @@ public class ClientTest {
         //System.out.println(obj);
         
     }
-//    @Test
-//    public void tt(){
-//        try {
-//            Writer writer = new FileWriter(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
-//            StatefulBeanToCsv<Relation> b = new StatefulBeanToCsvBuilder<Relation>(writer)
-//                    .withSeparator(';')
-//                    .withQuotechar('\'')
-//                    .withEscapechar('\\')
-//                    .build();
-//            Relation r = new Relation();
-//            r.setId1(1);
-//            r.setId2(2);            
-//            b.write(r);
-//            writer.close();
-//            System.out.println(r);
-//        } catch (CsvDataTypeMismatchException ex) {
-//            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (CsvRequiredFieldEmptyException ex) {
-//            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (IOException ex) {
-//            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
-//        }      
-//    }   
+    @Test
+    public void tt(){
+        try {
+            Writer writer = new FileWriter(getConfigurationEntry(CSV_PATH_ARIA_AUTHOR));
+            StatefulBeanToCsv<Relation> b = new StatefulBeanToCsvBuilder<Relation>(writer)
+                    .withSeparator(';')
+                    .withQuotechar('\'')
+                    .withEscapechar('\\')
+                    .build();
+            Relation r = new Relation(1, 2);          
+            b.write(r);
+            writer.close();
+            System.out.println(r);
+        } catch (CsvDataTypeMismatchException ex) {
+            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CsvRequiredFieldEmptyException ex) {
+            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
+        }      
+    }   
     
     @Test
     public void test4(){
             Aria a = new Aria();
+            a.setId(3);
             a.setText("tyext");
             a.setTitle("title");
-            Generic lib = new Generic(Types.LIBRETTO);
+            Generic lib = new Generic(Types.OPERA);
             lib.setId(2);
             a.setOpera(lib);
             CsvDataProvider p = new CsvDataProvider();
@@ -109,7 +116,7 @@ public class ClientTest {
             a.setId(5);
             a.setText("tyext");
             a.setTitle("title");
-            Generic lib = new Generic(Types.LIBRETTO);
+            Generic lib = new Generic(Types.OPERA);
             lib.setId(2);
             a.setOpera(lib);
             CsvDataProvider p = new CsvDataProvider();

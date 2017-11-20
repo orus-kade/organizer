@@ -59,5 +59,10 @@ public class Opera extends Generic{
         this.libretto = libretto;
     }
 
+    @Override
+    public String toString() {
+        return "Opera{" + "id=" + getId() + ", title=" + title + ", history=" + history + ", libretto=" + libretto + ", aries=" + aries + '}';
+    }
+
     
 }

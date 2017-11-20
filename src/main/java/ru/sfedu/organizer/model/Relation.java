@@ -22,7 +22,9 @@ public class Relation {
         public Relation(long id1, long id2) {
             this.id1 = id1;
             this.id2 = id2;            
-        }  
+        }
+        
+        public Relation(){}
 
         public long getId1() {
             return id1;

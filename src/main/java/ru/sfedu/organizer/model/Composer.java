@@ -50,6 +50,6 @@ public class Composer extends Human {
 
     @Override
     public String toString() {
-        return "Composer{" + "name=" + getName() + ", biography=" + getBiography() + ", birthDate=" + getBirthDate() + ", deathDate=" + getDeathDate() + ", aries=" + aries + '}';
+        return "Composer{"  + "id=" + getId() + "name=" + getName() + ", biography=" + getBiography() + ", birthDate=" + getBirthDate() + ", deathDate=" + getDeathDate() + ", aries=" + aries + '}';
     }  
 }

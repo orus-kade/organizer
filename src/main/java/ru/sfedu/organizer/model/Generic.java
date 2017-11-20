@@ -55,14 +55,28 @@ public class Generic extends AbstractBeanField<Object>{
 
     @Override
     protected Object convert(String string) throws CsvDataTypeMismatchException, CsvConstraintViolationException {        
+        Generic obj = null;
         try {
             JSONObject jsonObject = (JSONObject) new JSONParser().parse(string);
-            setId((long) jsonObject.get("id"));
-            setType(Types.valueOf((String) jsonObject.get("type")));
+            obj = new Generic();
+            obj.setId((long) jsonObject.get("id"));
+            obj.setType(Types.valueOf((String) jsonObject.get("type")));
         } catch (ParseException ex) {
             Logger.getLogger(Generic.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return this;
+        return obj;
+        
+        
+//        try {
+//            JSONObject jsonObject = (JSONObject) new JSONParser().parse(string);
+//            setId((long) jsonObject.get("id"));
+//            setType(Types.valueOf((String) jsonObject.get("type")));
+//        } catch (ParseException ex) {
+//            Logger.getLogger(Generic.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+//        return this;
+        
+        
     }
 
     @Override
