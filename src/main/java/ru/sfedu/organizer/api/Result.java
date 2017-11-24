@@ -1,6 +1,7 @@
-package ru.sfedu.organizer.model;
+package ru.sfedu.organizer.api;
 
 import java.util.*;
+import ru.sfedu.organizer.model.Generic;
 
 /**
  *
@@ -9,7 +10,7 @@ import java.util.*;
 
 public class Result {
     
-    private String status;
+    private ResultStatuses status;
     private String message;
     private List<Generic> list = null; 
     
@@ -20,22 +21,22 @@ public class Result {
     public Result() {
     }
 
-    public Result(String status, String message, List<Generic> list) {
+    public Result(ResultStatuses status, String message, List<Generic> list) {
         this.list = list;
         this.status = status;
         this.message = message;
     }   
     
-    public Result(String status, String message) {
+    public Result(ResultStatuses status, String message) {
         this.status = status;
         this.message = message;
     }    
 
-    public String getStatus() {
+    public ResultStatuses getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(ResultStatuses status) {
         this.status = status;
     }
 

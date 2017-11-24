@@ -2,7 +2,6 @@
 package ru.sfedu.organizer.api;
 
 import ru.sfedu.organizer.model.Generic;
-import ru.sfedu.organizer.model.Result;
 
 
 public interface IDataProvider {
