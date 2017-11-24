@@ -22,7 +22,7 @@ public class CsvDataProvider implements IDataProvider{
     public Result addRecord(Generic obj) {        
         try {
             Result r = checkObject(obj);
-            if (ResultStatuses.OK.equals(r.getStatus())) return r;
+            if (!ResultStatuses.OK.equals(r.getStatus())) return r;
             Reader reader;
             reader = new FileReader(getFileName(obj));        
             CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
@@ -32,12 +32,14 @@ public class CsvDataProvider implements IDataProvider{
                     .withSeparator(';')
                     .build();         
             List<Generic> list = csvToBean.parse();
+            List<Generic> oldList = new ArrayList<Generic>();
+            oldList.addAll(list);
             reader.close();
-            long lastId = list.stream().max(Comparator.comparingLong(e -> e.getId())).get().getId();            
-            Writer writer;
-            writer = new FileWriter(getFileName(obj));  
+            long lastId = list.stream().max(Comparator.comparingLong(e -> e.getId())).get().getId(); 
             obj.setId(lastId+1);
             list.add(obj);
+            Writer writer;
+            writer = new FileWriter(getFileName(obj));              
             StatefulBeanToCsv<Generic> beanWriter = new StatefulBeanToCsvBuilder(writer)
                     .withEscapechar('\\')
                     .withQuotechar('\'')
@@ -48,8 +50,16 @@ public class CsvDataProvider implements IDataProvider{
             r = editRelations(obj);
             Result result = new Result();
             if (!ResultStatuses.OK.equals(r.getStatus())){
-                result.setStatus(ResultStatuses.WARNING);
+                result.setStatus(ResultStatuses.ERROR);
                 result.setMessage(r.getMessage());
+                writer = new FileWriter(getFileName(obj));              
+                beanWriter = new StatefulBeanToCsvBuilder(writer)
+                    .withEscapechar('\\')
+                    .withQuotechar('\'')
+                    .withSeparator(';')
+                    .build();
+                    beanWriter.write(oldList);
+                    writer.close();
             }
             else{
                 result.setStatus(ResultStatuses.OK);
@@ -611,11 +621,13 @@ public class CsvDataProvider implements IDataProvider{
                     .withSeparator(';')
                     .build();         
             List<Generic> list = csvToBean.parse();
-            reader.close();            
-            java.io.Writer writer;
-            writer = new FileWriter(getFileName(obj)); 
+            List<Generic> oldList = new ArrayList<Generic>();
+            oldList.addAll(list);
+            reader.close();  
             list.removeIf(e -> e.getId() == obj.getId());
             list.add(obj);
+            Writer writer;
+            writer = new FileWriter(getFileName(obj));             
             StatefulBeanToCsv<Generic> beanWriter = new StatefulBeanToCsvBuilder(writer)
                     .withEscapechar('\\')
                     .withQuotechar('\'')
@@ -625,9 +637,17 @@ public class CsvDataProvider implements IDataProvider{
             writer.close();
             r = editRelations(obj);
             Result result = new Result();
-            if (!"OK".equals(r.getStatus())){
-                result.setStatus(ResultStatuses.WARNING);
+            if (!ResultStatuses.OK.equals(r.getStatus())){
+                result.setStatus(ResultStatuses.ERROR);
                 result.setMessage(r.getMessage());
+                writer = new FileWriter(getFileName(obj));             
+                beanWriter = new StatefulBeanToCsvBuilder(writer)
+                    .withEscapechar('\\')
+                    .withQuotechar('\'')
+                    .withSeparator(';')
+                    .build();
+                beanWriter.write(oldList);
+                writer.close();
             }
             else{
                 result.setStatus(ResultStatuses.OK);
@@ -661,6 +681,8 @@ public class CsvDataProvider implements IDataProvider{
                     .withSeparator(';')
                     .build();         
             List<Generic> list = csvToBean.parse();
+            List<Generic> oldList = new ArrayList<Generic>();
+            oldList.addAll(list);
             reader.close(); 
             if (!list.removeIf(e -> e.getId() == obj.getId())){
                 Result result = new Result(ResultStatuses.ERROR, "Object " + obj + " not found");
@@ -677,9 +699,17 @@ public class CsvDataProvider implements IDataProvider{
             writer.close();
             Result r = deleteRelations(obj);
             Result result = new Result();
-            if (!"OK".equals(r.getStatus())){
-                result.setStatus(ResultStatuses.WARNING);
+            if (!ResultStatuses.OK.equals(r.getStatus())){
+                result.setStatus(ResultStatuses.ERROR);
                 result.setMessage(r.getMessage());
+                writer = new FileWriter(getFileName(obj)); 
+                beanWriter = new StatefulBeanToCsvBuilder(writer)
+                    .withEscapechar('\\')
+                    .withQuotechar('\'')
+                    .withSeparator(';')
+                    .build();
+                beanWriter.write(oldList);
+                writer.close();
             }
             else{
                 result.setStatus(ResultStatuses.OK);
