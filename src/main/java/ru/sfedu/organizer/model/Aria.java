@@ -15,6 +15,8 @@ public class Aria extends Generic{
     
   @CsvBindByPosition (position = 0) 
   private long id; 
+  
+  private Types type;
 
   @CsvBindByPosition (position = 1) 
   private String title;
@@ -22,8 +24,8 @@ public class Aria extends Generic{
   @CsvBindByPosition (position = 2) 
   private String text; 
   
-  @CsvCustomBindByPosition (converter = Generic.class, position = 3) 
-  private Generic opera;
+  @CsvCustomBindByPosition (converter = Opera.class, position = 3) 
+  private Opera opera;
   
   private List<Generic> composers;
   private List<Generic> authors;
@@ -33,7 +35,12 @@ public class Aria extends Generic{
   
 
   public Aria () { 
-      super(ARIA);
+      this.type = ARIA;
+  };
+  
+  public Aria (long id) { 
+      this.id = id;
+      this.type = ARIA;
   };
 
     public String getTitle() {
@@ -76,18 +83,38 @@ public class Aria extends Generic{
         this.singers = singers;
     }
 
-    public Generic getOpera() {
+    public Opera getOpera() {
         return opera;
     }
 
-    public void setOpera(Generic opera) {
+    public void setOpera(Opera opera) {
         this.opera = opera;
     }
 
     
     @Override
     public String toString() {
-        return "Aria{" +  "id=" + getId() + ", type=" + getType()  + ", title=" + title + ", text=" + text + ", composers=" + composers + ", writers=" + authors + ", famousSingers=" + singers + ", Opera=" + opera + '}';
+        return "Aria{" +  "id=" + getId() + "\n\ttype=" + getType()  + "\n\ttitle=" + title + "\n\ttext=" + text + "\n\tcomposers=" + composers + "\n\tauthors=" + authors + "\n\tfamousSingers=" + singers + "\n\tOpera=" + opera + '}';
+    }
+
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Override
+    public Types getType() {
+        return type;
+    }
+
+    @Override
+    public void setType(Types type) {
+        this.type = type;
     }
   
 }

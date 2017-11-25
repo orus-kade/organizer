@@ -2,6 +2,7 @@ package ru.sfedu.organizer.model;
 
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvCustomBindByPosition;
+import static ru.sfedu.organizer.model.Types.*;
 
 
 
@@ -14,6 +15,8 @@ public class Note extends Generic{
   @CsvBindByPosition (position = 0)   
   private long id;
   
+  private Types type;
+  
   @CsvBindByPosition (position = 1)
   private String description;
   
@@ -22,7 +25,12 @@ public class Note extends Generic{
   
 
   public Note () {
-      super(Types.NOTE);
+      this.type = NOTE;
+  };
+  
+  public Note (long id) {
+      this.id = id;
+      this.type = NOTE;
   };
   
     public String getDescription() {
@@ -41,6 +49,27 @@ public class Note extends Generic{
         this.object = object;
     }
 
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Override
+    public Types getType() {
+        return type;
+    }
+
+    @Override
+    public void setType(Types type) {
+        this.type = type;
+    }
+    
+    
     @Override
     public String toString() {
         return "Note{" + "id=" +  getId() + ", description=" + description + ", object=" + object + '}';

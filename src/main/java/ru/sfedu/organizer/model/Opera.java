@@ -11,6 +11,8 @@ public class Opera extends Generic{
 
   @CsvBindByPosition (position = 0)
   private long id;
+  
+  private Types type;
     
   @CsvBindByPosition (position = 1)  
   private String title;
@@ -24,7 +26,12 @@ public class Opera extends Generic{
   private List<Generic> aries;
   
   public Opera () {
-      super(OPERA);
+      this.type = OPERA;
+  };
+  
+  public Opera (long id) {
+      this.id = id;
+      this.type = OPERA;
   };
   
     public String getTitle() {
@@ -59,6 +66,28 @@ public class Opera extends Generic{
         this.libretto = libretto;
     }
 
+    @Override
+    public long getId() {
+        return id;
+    }
+
+    @Override
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    @Override
+    public Types getType() {
+        return type;
+    }
+
+    @Override
+    public void setType(Types type) {
+        this.type = type;
+    }
+    
+    
+    
     @Override
     public String toString() {
         return "Opera{" + "id=" + getId() + ", title=" + title + ", history=" + history + ", libretto=" + libretto + ", aries=" + aries + '}';

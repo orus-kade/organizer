@@ -19,6 +19,8 @@ public class Singer extends Human {
   @CsvBindByPosition (position = 0)    
   private long id;
   
+  private Types type;
+  
   @CsvBindByPosition (position = 1)  
   private String name;
   
@@ -37,7 +39,12 @@ public class Singer extends Human {
   private List<Generic> aries;
 
   public Singer () {
-      super(SINGER);
+      this.type = SINGER;
+  };
+  
+  public Singer (long id) {
+      this.id = id;
+      this.type = SINGER;
   };
   
     public String getVoice() {
@@ -56,6 +63,68 @@ public class Singer extends Human {
         this.aries = aries;
     }
 
+    @Override
+    public long getId() {
+        return id;
+    }
+
+  @Override
+    public void setId(long id) {
+        this.id = id;
+    }
+
+  @Override
+    public Types getType() {
+        return type;
+    }
+
+  @Override
+    public void setType(Types type) {
+        this.type = type;
+    }
+
+  @Override
+    public String getName() {
+        return name;
+    }
+
+  @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+  @Override
+    public String getBiography() {
+        return biography;
+    }
+
+  @Override
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
+
+  @Override
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+  @Override
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+
+  @Override
+    public String getDeathDate() {
+        return deathDate;
+    }
+
+  @Override
+    public void setDeathDate(String deathDate) {
+        this.deathDate = deathDate;
+    }
+    
+    
+    
     @Override
     public String toString() {
         return "Singer{" + "id=" + getId() + ", name=" + getName() + ", biography=" + getBiography() + ", birthDate=" + getBirthDate() + ", deathDate=" + getDeathDate() + ", voice=" + voice + ", aries=" + aries + '}';

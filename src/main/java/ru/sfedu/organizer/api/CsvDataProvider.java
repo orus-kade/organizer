@@ -768,7 +768,7 @@ public class CsvDataProvider implements IDataProvider{
                     .build();
         List<Aria> aries = csvToBean.parse();
         reader.close();            
-        aries.removeIf(a -> list.contains(new Generic(a.getId(), ARIA)));
+        aries.removeIf(a -> list.contains(new Aria(a.getId())));
         Writer writer;
         writer = new FileWriter(getConfigurationEntry(CSV_PATH_ARIA));  
         StatefulBeanToCsv<Aria> beanWriter = new StatefulBeanToCsvBuilder(writer)
@@ -915,7 +915,7 @@ public class CsvDataProvider implements IDataProvider{
             List<Generic> list = relations.stream()
                     .filter(r -> r.getId1() == obj.getId())
                     .collect(ArrayList<Generic>::new,
-                            (a, r) ->  a.add(new Generic(r.getId2(), AUTHOR)),
+                            (a, r) ->  a.add(new Author(r.getId2())),
                             (a1, a2) -> a1.addAll(a2));
             Aria aria = (Aria)obj;
             aria.setAuthors(list);
@@ -928,12 +928,12 @@ public class CsvDataProvider implements IDataProvider{
                     .withSeparator(';')
                     .build();
             relations = csvToBean.parse();
-            list = relations.stream()
+            List<Generic> l = relations.stream()
                     .filter(r -> r.getId1() == obj.getId())
                     .collect(ArrayList<Generic>::new,
-                            (a, r) ->  a.add(new Generic(r.getId2(), COMPOSER)),
+                            (a, r) ->  a.add(new Composer(r.getId2())),
                             (a1, a2) -> a1.addAll(a2));
-            aria.setComposers(list); 
+            aria.setComposers(l); 
             
             reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
             csvToBean = new CsvToBeanBuilder(reader)
@@ -946,7 +946,7 @@ public class CsvDataProvider implements IDataProvider{
             list = relations.stream()
                     .filter(r -> r.getId1() == obj.getId())
                     .collect(ArrayList<Generic>::new,
-                            (a, r) ->  a.add(new Generic(r.getId2(), SINGER)),
+                            (a, r) ->  a.add(new Singer(r.getId2())),
                             (a1, a2) -> a1.addAll(a2));
             aria.setSingers(list);   
             
@@ -968,7 +968,7 @@ public class CsvDataProvider implements IDataProvider{
             List<Generic> aries = relations.stream()
                     .filter(r -> r.getId2() == obj.getId())
                     .collect(ArrayList<Generic>::new,
-                            (a, r) ->  a.add(new Generic(r.getId1(), ARIA)),
+                            (a, r) ->  a.add(new Aria(r.getId1())),
                             (a1, a2) -> a1.addAll(a2));
             Composer composer = (Composer)obj;
             composer.setAries(aries);
@@ -990,7 +990,7 @@ public class CsvDataProvider implements IDataProvider{
             List<Generic> authors = relations.stream()
                     .filter(r -> r.getId2() == obj.getId())
                     .collect(ArrayList<Generic>::new,
-                            (a, r) ->  a.add(new Generic(r.getId1(), AUTHOR)),
+                            (a, r) ->  a.add(new Author(r.getId1())),
                             (a1, a2) -> a1.addAll(a2));
             Libretto libretto = (Libretto)obj;
             libretto.setAuthors(authors);
@@ -1012,7 +1012,7 @@ public class CsvDataProvider implements IDataProvider{
             List<Generic> ar = aries.stream()
                     .filter(r -> r.getOpera().getId() == obj.getId())
                     .collect(ArrayList<Generic>::new,
-                            (a, r) ->  a.add(new Generic(r.getId(), ARIA)),
+                            (a, r) ->  a.add(new Aria(r.getId())),
                             (a1, a2) -> a1.addAll(a2));
             Opera opera = (Opera)obj;
             opera.setAries(ar);
@@ -1034,7 +1034,7 @@ public class CsvDataProvider implements IDataProvider{
             List<Generic> arias = relations.stream()
                     .filter(r -> r.getId2() == obj.getId())
                     .collect(ArrayList<Generic>::new,
-                            (a, r) ->  a.add(new Generic(r.getId1(), ARIA)),
+                            (a, r) ->  a.add(new Aria(r.getId1())),
                             (a1, a2) -> a1.addAll(a2));
             Singer singer = (Singer)obj;
             singer.setAries(arias);
@@ -1055,7 +1055,7 @@ public class CsvDataProvider implements IDataProvider{
             List<Generic> list = relations.stream()
                     .filter(r -> r.getId2() == obj.getId())
                     .collect(ArrayList<Generic>::new,
-                            (a, r) ->  a.add(new Generic(r.getId1(), ARIA)),
+                            (a, r) ->  a.add(new Aria(r.getId1())),
                             (a1, a2) -> a1.addAll(a2));
             Author author = (Author)obj;
             author.setAries(list);
@@ -1071,13 +1071,13 @@ public class CsvDataProvider implements IDataProvider{
             list = relations.stream()
                     .filter(r -> r.getId1() == obj.getId())
                     .collect(ArrayList<Generic>::new,
-                            (a, r) ->  a.add(new Generic(r.getId2(), LIBRETTO)),
+                            (a, r) ->  a.add(new Libretto(r.getId2())),
                             (a1, a2) -> a1.addAll(a2));
             author.setLibrettos(list);            
             return author;
     }
 
-    @Override
+   @Override
     public Result getAllRecords(Generic obj) {
        try {
             Reader reader;
@@ -1108,4 +1108,6 @@ public class CsvDataProvider implements IDataProvider{
             return result;
         } 
     }
+
+    
 }

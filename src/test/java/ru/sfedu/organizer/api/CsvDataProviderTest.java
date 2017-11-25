@@ -125,13 +125,7 @@ public class CsvDataProviderTest {
     @Test
     public void testGetAll() {
         System.out.println("getAllRecords");
-        //Generic obj = new Generic(Types.ARIA);
-        //Generic obj = new Generic(Types.AUTHOR);
-        //Generic obj = new Generic(Types.COMPOSER);
-        //Generic obj = new Generic(Types.LIBRETTO);
-        //Generic obj = new Generic(Types.NOTE);
-        //Generic obj = new Generic(Types.OPERA);
-        Generic obj = new Generic(Types.SINGER);
+        Generic obj = new Aria();
         CsvDataProvider instance = new CsvDataProvider();
         Result result = instance.getAllRecords(obj);
         System.out.println(result.getStatus());
@@ -142,31 +136,32 @@ public class CsvDataProviderTest {
     @Test
     public void testGetById() {
         System.out.println("getAllRecords");
-        //Generic obj = new Generic(Types.ARIA);
-        //Generic obj = new Generic(Types.AUTHOR);
-        //Generic obj = new Generic(Types.COMPOSER);
-        Generic obj = new Generic(Types.LIBRETTO);
-        //Generic obj = new Generic(Types.NOTE);
-        //Generic obj = new Generic(Types.OPERA);
-        //Generic obj = new Generic(Types.SINGER);
-        obj.setId(2);
+        //Generic obj = new Aria();
+        //Generic obj = new Author();
+        //Generic obj = new Composer();
+        Generic obj = new Libretto();
+        //Generic obj = new Note();
+        //Generic obj = new Opera();
+        //Generic obj = new Singer();
+        obj.setId(1);
         CsvDataProvider instance = new CsvDataProvider();
         Result result = instance.getRecordById(obj);
         System.out.println(result.getStatus());
         System.out.println(result.getMessage());
+        if (result.getStatus().equals(ResultStatuses.OK))
         result.getList().stream().forEach(r -> System.out.println(r));
     }
     
     @Test
     public void testEdit() {
         System.out.println("getAllRecords");
-        Generic obj = new Generic(Types.ARIA);
-        //Generic obj = new Generic(Types.AUTHOR);
-        //Generic obj = new Generic(Types.COMPOSER);
-        //Generic obj = new Generic(Types.LIBRETTO);
-        //Generic obj = new Generic(Types.NOTE);
-        //Generic obj = new Generic(Types.OPERA);
-        //Generic obj = new Generic(Types.SINGER);
+        Generic obj = new Aria();
+        //Generic obj = new Author();
+        //Generic obj = new Composer();
+        //Generic obj = new Libretto();
+        //Generic obj = new Note();
+        //Generic obj = new Opera();
+        //Generic obj = new Singer();
         obj.setId(2);
         CsvDataProvider instance = new CsvDataProvider();
         Result  result = instance.getRecordById(obj);
@@ -175,11 +170,11 @@ public class CsvDataProviderTest {
         result.getList().stream().forEach(r -> System.out.println(r));
         Aria a = new Aria();
         a.setId(2);
-        a.setOpera(new Generic(5, Types.OPERA));
+        a.setOpera(new Opera(5));
         a.setTitle("NewTitle");
         List<Generic> singers = new ArrayList<Generic>();
-        singers.add(new Generic (3, Types.SINGER));
-        singers.add(new Generic (4, Types.SINGER));
+        singers.add(new Singer(3));
+        singers.add(new Singer(4));
         a.setSingers(singers);
         result = instance.editRecord(a);
         System.out.println(result.getStatus());
@@ -195,20 +190,20 @@ public class CsvDataProviderTest {
     @Test
     public void testAdd() {
         System.out.println("getAllRecords");
-        //Generic obj = new Generic(Types.ARIA);
-        //Generic obj = new Generic(Types.AUTHOR);
-        //Generic obj = new Generic(Types.COMPOSER);
-        //Generic obj = new Generic(Types.LIBRETTO);
-        //Generic obj = new Generic(Types.NOTE);
-        //Generic obj = new Generic(Types.OPERA);
-        //Generic obj = new Generic(Types.SINGER);
+        //Generic obj = new Aria();
+        //Generic obj = new Author();
+        //Generic obj = new Composer();
+        //Generic obj = new Libretto();
+        //Generic obj = new Note();
+        //Generic obj = new Opera();
+        //Generic obj = new Singer();
         CsvDataProvider instance = new CsvDataProvider();
         Aria a = new Aria();
-        a.setOpera(new Generic(5, Types.OPERA));
+        a.setOpera(new Opera(5));
         a.setTitle("NewTitle");
         List<Generic> singers = new ArrayList<Generic>();
-        singers.add(new Generic (3, Types.SINGER));
-        singers.add(new Generic (4, Types.SINGER));
+        singers.add(new Singer (3));
+        singers.add(new Singer (4));
         a.setSingers(singers);
         Result result = instance.addRecord(a);
         System.out.println(result.getStatus());
@@ -224,20 +219,20 @@ public class CsvDataProviderTest {
     @Test
     public void testDelete() {
         System.out.println("getAllRecords");
-        //Generic obj = new Generic(Types.ARIA);
-        //Generic obj = new Generic(Types.AUTHOR);
-        //Generic obj = new Generic(Types.COMPOSER);
-        //Generic obj = new Generic(Types.LIBRETTO);
-        //Generic obj = new Generic(Types.NOTE);
-        //Generic obj = new Generic(Types.OPERA);
-        //Generic obj = new Generic(Types.SINGER);
+        //Generic obj = new Aria();
+        //Generic obj = new Author();
+        //Generic obj = new Composer();
+        //Generic obj = new Libretto();
+        //Generic obj = new Note();
+        //Generic obj = new Opera();
+        //Generic obj = new Singer();
         CsvDataProvider instance = new CsvDataProvider();
         Aria a = new Aria();
-        a.setOpera(new Generic(5, Types.OPERA));
+        a.setOpera(new Opera(5));
         a.setTitle("NewTitle");
         List<Generic> singers = new ArrayList<Generic>();
-        singers.add(new Generic (3, Types.SINGER));
-        singers.add(new Generic (4, Types.SINGER));
+        singers.add(new Singer (3));
+        singers.add(new Singer (4));
         a.setSingers(singers);
         Result result = instance.addRecord(a);
         System.out.println(result.getStatus());

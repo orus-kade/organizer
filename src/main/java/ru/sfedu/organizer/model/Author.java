@@ -13,6 +13,8 @@ public class Author extends Human {
   @CsvBindByPosition (position = 0)    
   private long id;
   
+  private Types type;
+  
   @CsvBindByPosition (position = 1)  
   private String name;
   
@@ -23,14 +25,21 @@ public class Author extends Human {
   private String birthDate;
   
   @CsvBindByPosition (position = 4)   
-  private String deathDate;    
+  private String deathDate;   
+  
+  
 
   private List<Generic> aries;
   private List<Generic> librettos;
   
 
   public Author () {
-      super(AUTHOR);
+      this.type = AUTHOR;
+  };
+  
+  public Author (long id) {
+      this.id = id;
+      this.type = AUTHOR;
   };
   
     public List<Generic> getAries() {
@@ -49,11 +58,73 @@ public class Author extends Human {
         this.librettos = librettos;
     }
 
+  @Override
+    public long getId() {
+        return id;
+    }
+
+  @Override
+    public void setId(long id) {
+        this.id = id;
+    }
+
+  @Override
+    public Types getType() {
+        return type;
+    }
+
+  @Override
+    public void setType(Types type) {
+        this.type = type;
+    }
+
+  @Override
+    public String getName() {
+        return name;
+    }
+
+  @Override
+    public void setName(String name) {
+        this.name = name;
+    }
+
+  @Override
+    public String getBiography() {
+        return biography;
+    }
+
+  @Override
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
+
+  @Override
+    public String getBirthDate() {
+        return birthDate;
+    }
+
+  @Override
+    public void setBirthDate(String birthDate) {
+        this.birthDate = birthDate;
+    }
+
+  @Override
+    public String getDeathDate() {
+        return deathDate;
+    }
+
+  @Override
+    public void setDeathDate(String deathDate) {
+        this.deathDate = deathDate;
+    }
+
+    
+    
+    
     @Override
     public String toString() {
         return "Author{" + "id=" + getId() + ", name=" + getName() + ", biography=" + getBiography() + ", birthDate=" + getBirthDate() + ", deathDate=" + getDeathDate() + ", aries=" + aries + ", librettos=" + librettos + '}';
     }
-
  
     
 }

@@ -8,70 +8,22 @@ import java.util.*;
 /**
  * Class Human
  */
-public class Human  extends Generic{
-
-  //
-  // Fields
-  //
-
-  private String name;
-  private String biography;
-  private String birthDate;
-  private String deathDate;
+public abstract class Human  extends Generic{
   
-  //
-  // Constructors
-  //
-  public Human (Types type) { 
-      super(type);
-  };
-  
-  //
-  // Methods
-  //
+    public abstract String getName(); 
 
+    public abstract void setName(String name);
 
-  //
-  // Accessor methods
-  //
+    public abstract String getBiography();
 
-    public String getName() {
-        return name;
-    }
+    public abstract void setBiography(String biography);
+    
+    public abstract String getBirthDate();
 
-    public void setName(String name) {
-        this.name = name;
-    }
+    public abstract void setBirthDate(String birthDate);
 
-    public String getBiography() {
-        return biography;
-    }
+    public abstract String getDeathDate();
 
-    public void setBiography(String biography) {
-        this.biography = biography;
-    }
-
-    public String getBirthDate() {
-        return birthDate;
-    }
-
-    public void setBirthDate(String birthDate) {
-        this.birthDate = birthDate;
-    }
-
-    public String getDeathDate() {
-        return deathDate;
-    }
-
-    public void setDeathDate(String deathDate) {
-        this.deathDate = deathDate;
-    }
-
-    @Override
-    public String toString() {
-        return "Human{" + "name=" + name + ", biography=" + biography + ", birthDate=" + birthDate + ", deathDate=" + deathDate + '}';
-    }
-
-  
+    public abstract void setDeathDate(String deathDate);
 
 }
