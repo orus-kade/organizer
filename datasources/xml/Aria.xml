@@ -1,1 +1,74 @@
-
+<xmlListEntity>
+   <list class="java.util.ArrayList">
+      <generic class="ru.sfedu.organizer.model.Aria" id="1">
+         <title>title1</title>
+         <text>tyext1</text>
+         <opera class="ru.sfedu.organizer.model.Opera">
+            <required>false</required>
+            <errorLocale>ru_RU</errorLocale>
+            <id>3</id>
+            <type>OPERA</type>
+         </opera>
+      </generic>
+      <generic class="ru.sfedu.organizer.model.Aria" id="3">
+         <title>title3</title>
+         <text>tyext3</text>
+         <opera class="ru.sfedu.organizer.model.Opera">
+            <required>false</required>
+            <errorLocale>ru_RU</errorLocale>
+            <id>1</id>
+            <type>OPERA</type>
+         </opera>
+      </generic>
+      <generic class="ru.sfedu.organizer.model.Aria" id="4">
+         <title>title4</title>
+         <text>tyext4</text>
+         <opera class="ru.sfedu.organizer.model.Opera">
+            <required>false</required>
+            <errorLocale>ru_RU</errorLocale>
+            <id>2</id>
+            <type>OPERA</type>
+         </opera>
+      </generic>
+      <generic class="ru.sfedu.organizer.model.Aria" id="5">
+         <title>NewTitle</title>
+         <text>erw</text>
+         <opera class="ru.sfedu.organizer.model.Opera">
+            <required>false</required>
+            <errorLocale>ru_RU</errorLocale>
+            <id>5</id>
+            <type>OPERA</type>
+         </opera>
+      </generic>
+      <generic class="ru.sfedu.organizer.model.Aria" id="55">
+         <title>NewTitle</title>
+         <text>333</text>
+         <opera class="ru.sfedu.organizer.model.Opera">
+            <required>false</required>
+            <errorLocale>ru_RU</errorLocale>
+            <id>5</id>
+            <type>OPERA</type>
+         </opera>
+      </generic>
+      <generic class="ru.sfedu.organizer.model.Aria" id="2">
+         <title>NewTitle</title>
+         <text>ew</text>
+         <opera class="ru.sfedu.organizer.model.Opera">
+            <required>false</required>
+            <errorLocale>ru_RU</errorLocale>
+            <id>5</id>
+            <type>OPERA</type>
+         </opera>
+      </generic>
+      <generic class="ru.sfedu.organizer.model.Aria" id="56">
+         <title>NewTitle</title>
+         <text>24</text>
+         <opera class="ru.sfedu.organizer.model.Opera">
+            <required>false</required>
+            <errorLocale>ru_RU</errorLocale>
+            <id>5</id>
+            <type>OPERA</type>
+         </opera>
+      </generic>
+   </list>
+</xmlListEntity>

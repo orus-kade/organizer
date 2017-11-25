@@ -136,10 +136,10 @@ public class CsvDataProviderTest {
     @Test
     public void testGetById() {
         System.out.println("getAllRecords");
-        //Generic obj = new Aria();
+        Generic obj = new Aria();
         //Generic obj = new Author();
         //Generic obj = new Composer();
-        Generic obj = new Libretto();
+        //Generic obj = new Libretto();
         //Generic obj = new Note();
         //Generic obj = new Opera();
         //Generic obj = new Singer();

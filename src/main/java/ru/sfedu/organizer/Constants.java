@@ -24,16 +24,17 @@ public class Constants {
     public static final String CSV_PATH_ARIA_SINGER = "csv_aria_singer";
     public static final String CSV_PATH_AUTHOR_LIBRETTO = "csv_author_libretto";
     
+    public static final String XML_PATH_ARIA = "xml_aria";
+    public static final String XML_PATH_AUTHOR = "xml_author";
+    public static final String XML_PATH_COMPOSER = "xml_composer";
+    public static final String XML_PATH_LIBRETTO = "xml_libretto";
+    public static final String XML_PATH_OPERA = "xml_opera";
+    public static final String XML_PATH_SINGER = "xml_singer";
+    public static final String XML_PATH_NOTE = "xml_note";  
     
-    
-    
-    //кажется, что это не надо больше
-  
-//    public static final String[] FIELDS_ARIA = new String[] {"id", "title","text", "libretto"}; 
-//    public static final String[] FIELDS_COMPOSER = new String[] {"id", "name","biography", "birthDate", "deathDate"}; 
-//    public static final String[] FIELDS_LIBRETTO = new String[] {"id", "opera"}; 
-//    public static final String[] FIELDS_OPERA = new String[] {"id", "title","history", "libretto"}; 
-//    public static final String[] FIELDS_SINGER = new String[] {"id", "name","biography", "birthDate", "deathDate", "voice"}; 
-//    public static final String[] FIELDS_AUTHOR = new String[] {"id", "name","biography", "birthDate", "deathDate"}; 
-  
+    public static final String XML_PATH_ARIA_AUTHOR = "xml_aria_author";
+    public static final String XML_PATH_ARIA_COMPOSER = "xml_aria_composer";
+    public static final String XML_PATH_ARIA_SINGER = "xml_aria_singer";
+    public static final String XML_PATH_AUTHOR_LIBRETTO = "xml_author_libretto";
+ 
 }

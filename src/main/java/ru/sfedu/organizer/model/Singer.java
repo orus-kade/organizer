@@ -122,16 +122,5 @@ public class Singer extends Human {
     public void setDeathDate(String deathDate) {
         this.deathDate = deathDate;
     }
-    
-    
-    
-    @Override
-    public String toString() {
-        return "Singer{" + "id=" + getId() + ", name=" + getName() + ", biography=" + getBiography() + ", birthDate=" + getBirthDate() + ", deathDate=" + getDeathDate() + ", voice=" + voice + ", aries=" + aries + '}';
-    }
-
-
-
-  
 
 }

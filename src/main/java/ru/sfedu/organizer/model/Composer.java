@@ -112,11 +112,5 @@ public class Composer extends Human {
     public void setDeathDate(String deathDate) {
         this.deathDate = deathDate;
     }
-    
-    
-    
-    @Override
-    public String toString() {
-        return "Composer{"  + "id=" + getId() + " name=" + getName() + ", biography=" + getBiography() + ", birthDate=" + getBirthDate() + ", deathDate=" + getDeathDate() + ", aries=" + aries + '}';
-    }  
+     
 }

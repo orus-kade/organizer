@@ -76,13 +76,5 @@ public class Libretto extends Generic{
     public void setType(Types type) {
         this.type = type;
     }
-    
-    
-    @Override
-    public String toString() {
-        return "Libretto{" + "id=" + getId() + ", text=" + text + ", opera=" + opera + ", authors=" + authors + '}';
-    }
-
-
-    
+ 
 }

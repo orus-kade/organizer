@@ -88,10 +88,10 @@ public class Opera extends Generic{
     
     
     
-    @Override
-    public String toString() {
-        return "Opera{" + "id=" + getId() + ", title=" + title + ", history=" + history + ", libretto=" + libretto + ", aries=" + aries + '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Opera{" + "id=" + getId() + ", title=" + title + ", history=" + history + ", libretto=" + libretto + ", aries=" + aries + '}';
+//    }
 
     
 }

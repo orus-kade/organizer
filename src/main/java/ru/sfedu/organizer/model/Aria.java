@@ -3,6 +3,8 @@ package ru.sfedu.organizer.model;
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvCustomBindByPosition;
 import java.util.*;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
 import static ru.sfedu.organizer.model.Types.*;
 
 
@@ -12,20 +14,23 @@ import static ru.sfedu.organizer.model.Types.*;
  */
 public class Aria extends Generic{
 
-    
+  @Attribute  
   @CsvBindByPosition (position = 0) 
   private long id; 
   
   private Types type;
 
+  @Element
   @CsvBindByPosition (position = 1) 
   private String title;
   
+  @Element
   @CsvBindByPosition (position = 2) 
   private String text; 
   
+  @Element
   @CsvCustomBindByPosition (converter = Opera.class, position = 3) 
-  private Opera opera;
+  private Generic opera;
   
   private List<Generic> composers;
   private List<Generic> authors;
@@ -83,18 +88,12 @@ public class Aria extends Generic{
         this.singers = singers;
     }
 
-    public Opera getOpera() {
+    public Generic getOpera() {
         return opera;
     }
 
     public void setOpera(Opera opera) {
         this.opera = opera;
-    }
-
-    
-    @Override
-    public String toString() {
-        return "Aria{" +  "id=" + getId() + "\n\ttype=" + getType()  + "\n\ttitle=" + title + "\n\ttext=" + text + "\n\tcomposers=" + composers + "\n\tauthors=" + authors + "\n\tfamousSingers=" + singers + "\n\tOpera=" + opera + '}';
     }
 
     @Override

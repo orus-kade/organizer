@@ -1,13 +1,23 @@
 
 package ru.sfedu.organizer.api;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
+import static ru.sfedu.organizer.Constants.*;
 import ru.sfedu.organizer.model.*;
+import static ru.sfedu.organizer.utils.ConfigurationUtil.getConfigurationEntry;
 
 
 /**
@@ -112,12 +122,23 @@ public class XmlDataProviderTest {
     
     
     @Test
-    public void test(){
+    public void test() throws IOException{
         CsvDataProvider csv = new CsvDataProvider();
         Generic aria = new Aria(1);
-        Generic a = (csv.getRecordById(aria).getList().get(0));
-        System.out.println(a);
-        
+        List<Generic> list = new ArrayList<Generic>();
+        list.addAll(csv.getAllRecords(aria).getList());
+        System.out.println(list);
+        XmlListEntity ll = new XmlListEntity();
+        ll.setList(list);
+        Serializer serializer = new Persister();
+        File result = new File(getConfigurationEntry(XML_PATH_ARIA));
+        try {
+            serializer.write(ll, result);
+            XmlListEntity l = serializer.read(XmlListEntity.class, result);
+            System.out.println(l.getList());
+        } catch (Exception ex) {
+            Logger.getLogger(XmlDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }
