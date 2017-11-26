@@ -4,26 +4,32 @@ package ru.sfedu.organizer.model;
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvCustomBindByPosition;
 import java.util.*;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
 import static ru.sfedu.organizer.model.Types.*;
 
 
 public class Opera extends Generic{
 
+  @Attribute  
   @CsvBindByPosition (position = 0)
   private long id;
   
   private Types type;
-    
+  
+  @Element (required = false)  
   @CsvBindByPosition (position = 1)  
   private String title;
   
+  @Element (required = false)
   @CsvBindByPosition (position = 2)
   private String history;
   
-  @CsvCustomBindByPosition (converter = Generic.class, position = 3)
-  private Generic libretto;
+  @Element (required = false)
+  @CsvBindByPosition (position = 3)
+  private long librettoId;
   
-  private List<Generic> aries;
+  private List<Long> aries;
   
   public Opera () {
       this.type = OPERA;
@@ -50,21 +56,25 @@ public class Opera extends Generic{
         this.history = history;
     }
 
-    public List<Generic> getAries() {
+    public long getLibrettoId() {
+        return librettoId;
+    }
+
+    public void setLibrettoId(long librettoId) {
+        this.librettoId = librettoId;
+    }
+
+    public List<Long> getAries() {
         return aries;
     }
 
-    public void setAries(List<Generic> aries) {
+    public void setAries(List<Long> aries) {
         this.aries = aries;
     }
 
-    public Generic getLibretto() {
-        return libretto;
-    }
+    
 
-    public void setLibretto(Generic libretto) {
-        this.libretto = libretto;
-    }
+    
 
     @Override
     public long getId() {
@@ -80,18 +90,5 @@ public class Opera extends Generic{
     public Types getType() {
         return type;
     }
-
-    @Override
-    public void setType(Types type) {
-        this.type = type;
-    }
-    
-    
-    
-//    @Override
-//    public String toString() {
-//        return "Opera{" + "id=" + getId() + ", title=" + title + ", history=" + history + ", libretto=" + libretto + ", aries=" + aries + '}';
-//    }
-
-    
+       
 }

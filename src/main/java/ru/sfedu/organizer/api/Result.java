@@ -32,6 +32,11 @@ public class Result {
         this.message = message;
     }    
 
+    public Result(ResultStatuses status, List<Generic> list) {
+        this.list = list;
+        this.status = status;
+    }
+    
     public ResultStatuses getStatus() {
         return status;
     }

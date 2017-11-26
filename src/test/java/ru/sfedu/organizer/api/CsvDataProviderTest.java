@@ -43,7 +43,7 @@ public class CsvDataProviderTest {
     @Test
     public void testAddRecord() {
         System.out.println("addRecord");
-        Generic obj = null;
+        Note obj = null;
         CsvDataProvider instance = new CsvDataProvider();
         Result expResult = null;
         Result result = instance.addRecord(obj);
@@ -57,7 +57,7 @@ public class CsvDataProviderTest {
     @Test
     public void testEditRecord() {
         System.out.println("editRecord");
-        Generic obj = null;
+        Note obj = null;
         CsvDataProvider instance = new CsvDataProvider();
         Result expResult = null;
         Result result = instance.editRecord(obj);
@@ -71,7 +71,7 @@ public class CsvDataProviderTest {
     @Test
     public void testDeleteRecord() {
         System.out.println("deleteRecord");
-        Generic obj = null;
+        Note obj = null;
         CsvDataProvider instance = new CsvDataProvider();
         Result expResult = null;
         Result result = instance.deleteRecord(obj);
@@ -82,20 +82,7 @@ public class CsvDataProviderTest {
     /**
      * Test of deleteRelationsOpera method, of class CsvDataProvider.
      */
-    @Test
-    public void testDeleteRelationsOpera() throws Exception {
-        System.out.println("deleteRelationsOpera");
-        Generic obj = null;
-        CsvDataProvider instance = new CsvDataProvider();
-        Result expResult = null;
-        Result result = instance.deleteRelationsOpera(obj);
-        assertEquals(expResult, result);
-        fail("The test case is a prototype.");
-    }
 
-    /**
-     * Test of getRecordById method, of class CsvDataProvider.
-     */
     @Test
     public void testGetRecordById() {
         System.out.println("getRecordById");
@@ -125,7 +112,7 @@ public class CsvDataProviderTest {
     @Test
     public void testGetAll() {
         System.out.println("getAllRecords");
-        Generic obj = new Aria();
+        Aria obj = new Aria();
         CsvDataProvider instance = new CsvDataProvider();
         Result result = instance.getAllRecords(obj);
         System.out.println(result.getStatus());
@@ -154,103 +141,37 @@ public class CsvDataProviderTest {
     
     @Test
     public void testEdit() {
-        System.out.println("getAllRecords");
-        Generic obj = new Aria();
-        //Generic obj = new Author();
-        //Generic obj = new Composer();
-        //Generic obj = new Libretto();
-        //Generic obj = new Note();
-        //Generic obj = new Opera();
-        //Generic obj = new Singer();
-        obj.setId(2);
-        CsvDataProvider instance = new CsvDataProvider();
-        Result  result = instance.getRecordById(obj);
-        System.out.println(result.getStatus());
-        System.out.println(result.getMessage());
-        result.getList().stream().forEach(r -> System.out.println(r));
-        Aria a = new Aria();
-        a.setId(2);
-        a.setOpera(new Opera(5));
-        a.setTitle("NewTitle");
-        List<Generic> singers = new ArrayList<Generic>();
-        singers.add(new Singer(3));
-        singers.add(new Singer(4));
-        a.setSingers(singers);
-        result = instance.editRecord(a);
-        System.out.println(result.getStatus());
-        System.out.println(result.getMessage());
-        
-        result = instance.getRecordById(a);
-        System.out.println(result.getStatus());
-        System.out.println(result.getMessage());
-        result.getList().stream().forEach(r -> System.out.println(r));
-        
+       Note note = new Note(3);
+       CsvDataProvider instance = new CsvDataProvider();
+       Result result = instance.getRecordById(note);
+       if (result.getStatus().equals(ResultStatuses.OK)){
+           note = (Note)result.getList().get(0);
+           note.setObjectType(Types.ARIA.toString());
+           note.setObjectId(55);
+           result = instance.editRecord(note);
+           System.out.println(result.getStatus());
+       }
     }
     
     @Test
     public void testAdd() {
-        System.out.println("getAllRecords");
-        //Generic obj = new Aria();
-        //Generic obj = new Author();
-        //Generic obj = new Composer();
-        //Generic obj = new Libretto();
-        //Generic obj = new Note();
-        //Generic obj = new Opera();
-        //Generic obj = new Singer();
-        CsvDataProvider instance = new CsvDataProvider();
-        Aria a = new Aria();
-        a.setOpera(new Opera(5));
-        a.setTitle("NewTitle");
-        List<Generic> singers = new ArrayList<Generic>();
-        singers.add(new Singer (3));
-        singers.add(new Singer (4));
-        a.setSingers(singers);
-        Result result = instance.addRecord(a);
-        System.out.println(result.getStatus());
-        System.out.println(result.getMessage());
-        
-        result = instance.getRecordById(a);
-        System.out.println(result.getStatus());
-        System.out.println(result.getMessage());
-        result.getList().stream().forEach(r -> System.out.println(r));
-        
+       Note note = new Note();
+       CsvDataProvider instance = new CsvDataProvider();
+       note.setDescription("desc");
+       note.setObjectId(1);
+       note.setObjectType(Types.COMPOSER.toString());
+       Result result = instance.addRecord(note);
+       System.out.println(result.getStatus());
+       System.out.println(result.getMessage());        
     }
     
     @Test
     public void testDelete() {
-        System.out.println("getAllRecords");
-        //Generic obj = new Aria();
-        //Generic obj = new Author();
-        //Generic obj = new Composer();
-        //Generic obj = new Libretto();
-        //Generic obj = new Note();
-        //Generic obj = new Opera();
-        //Generic obj = new Singer();
-        CsvDataProvider instance = new CsvDataProvider();
-        Aria a = new Aria();
-        a.setOpera(new Opera(5));
-        a.setTitle("NewTitle");
-        List<Generic> singers = new ArrayList<Generic>();
-        singers.add(new Singer (3));
-        singers.add(new Singer (4));
-        a.setSingers(singers);
-        Result result = instance.addRecord(a);
-        System.out.println(result.getStatus());
-        System.out.println(result.getMessage());
-        
-        result = instance.getRecordById(a);
-        System.out.println(result.getStatus());
-        System.out.println(result.getMessage());
-        result.getList().stream().forEach(r -> System.out.println(r));
-        
-        result = instance.deleteRecord(a);
-        System.out.println(result.getStatus());
-        System.out.println(result.getMessage());
-        
-        result = instance.getRecordById(a);
-        System.out.println(result.getStatus());
-        System.out.println(result.getMessage());
-        
+       Note note = new Note(1);
+       CsvDataProvider instance = new CsvDataProvider();
+       Result result = instance.deleteRecord(note);
+       System.out.println(result.getStatus());
+       System.out.println(result.getMessage());  
     }
     
 }

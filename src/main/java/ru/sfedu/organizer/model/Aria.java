@@ -2,6 +2,8 @@ package ru.sfedu.organizer.model;
 
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvCustomBindByPosition;
+import com.opencsv.exceptions.CsvConstraintViolationException;
+import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import java.util.*;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
@@ -20,27 +22,25 @@ public class Aria extends Generic{
   
   private Types type;
 
-  @Element
+  @Element (required = false)
   @CsvBindByPosition (position = 1) 
   private String title;
   
-  @Element
+  @Element (required = false)
   @CsvBindByPosition (position = 2) 
   private String text; 
   
-  @Element
-  @CsvCustomBindByPosition (converter = Opera.class, position = 3) 
-  private Generic opera;
-  
-  private List<Generic> composers;
-  private List<Generic> authors;
-  private List<Generic> singers;
+  @CsvBindByPosition (position = 3)
+  private long operaId;
   
   
-  
+  private List<Long> composers;
+  private List<Long> authors;
+  private List<Long> singers;  
 
   public Aria () { 
       this.type = ARIA;
+      
   };
   
   public Aria (long id) { 
@@ -64,38 +64,40 @@ public class Aria extends Generic{
         this.text = text;
     }
 
-    public List<Generic> getComposers() {
+    public long getOperaId() {
+        return operaId;
+    }
+
+    public void setOperaId(long operaId) {
+        this.operaId = operaId;
+    }
+
+    public List<Long> getComposers() {
         return composers;
     }
 
-    public void setComposers(List<Generic> composers) {
+    public void setComposers(List<Long> composers) {
         this.composers = composers;
     }
 
-    public List<Generic> getAuthors() {
+    public List<Long> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<Generic> authors) {
+    public void setAuthors(List<Long> authors) {
         this.authors = authors;
     }
 
-    public List<Generic> getSingers() {
+    public List<Long> getSingers() {
         return singers;
     }
 
-    public void setSingers(List<Generic> singers) {
+    public void setSingers(List<Long> singers) {
         this.singers = singers;
     }
 
-    public Generic getOpera() {
-        return opera;
-    }
-
-    public void setOpera(Opera opera) {
-        this.opera = opera;
-    }
-
+    
+    
     @Override
     public long getId() {
         return id;
@@ -109,11 +111,6 @@ public class Aria extends Generic{
     @Override
     public Types getType() {
         return type;
-    }
-
-    @Override
-    public void setType(Types type) {
-        this.type = type;
     }
   
 }

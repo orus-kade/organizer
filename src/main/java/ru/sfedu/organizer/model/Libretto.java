@@ -2,8 +2,9 @@ package ru.sfedu.organizer.model;
 
 
 import com.opencsv.bean.CsvBindByPosition;
-import com.opencsv.bean.CsvCustomBindByPosition;
 import java.util.*;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
 import static ru.sfedu.organizer.model.Types.*;
 
 /**
@@ -11,18 +12,21 @@ import static ru.sfedu.organizer.model.Types.*;
  */
 public class Libretto extends Generic{
 
+  @Attribute  
   @CsvBindByPosition (position = 0)   
   private long id;   
   
   private Types type;
-    
+  
+  @Element (required = false) 
   @CsvBindByPosition (position = 1)   
   private String text;  
   
-  @CsvCustomBindByPosition (converter = Opera.class, position = 2)
-  private Opera opera;
+  @Element (required = false)
+  @CsvBindByPosition (position = 2)
+  private long operaId;
   
-  private List<Generic> authors;
+  private List<Long> authors;
   
   public Libretto () {
       this.type = LIBRETTO;
@@ -33,13 +37,23 @@ public class Libretto extends Generic{
       this.type = LIBRETTO;
   };
 
-    public List<Generic> getAuthors() {
+    public long getOperaId() {
+        return operaId;
+    }
+
+    public void setOperaId(long operaId) {
+        this.operaId = operaId;
+    }
+
+    public List<Long> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<Generic> authors) {
+    public void setAuthors(List<Long> authors) {
         this.authors = authors;
     }
+
+    
 
     public String getText() {
         return text;
@@ -49,13 +63,7 @@ public class Libretto extends Generic{
         this.text = text;
     }
 
-    public Opera getOpera() {
-        return opera;
-    }
-
-    public void setOpera(Opera opera) {
-        this.opera = opera;
-    }
+   
 
     @Override
     public long getId() {
@@ -70,11 +78,6 @@ public class Libretto extends Generic{
     @Override
     public Types getType() {
         return type;
-    }
-
-    @Override
-    public void setType(Types type) {
-        this.type = type;
     }
  
 }

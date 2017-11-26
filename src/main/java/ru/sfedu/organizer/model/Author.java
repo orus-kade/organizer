@@ -3,34 +3,39 @@ package ru.sfedu.organizer.model;
 
 import com.opencsv.bean.CsvBindByPosition;
 import java.util.*;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
 import static ru.sfedu.organizer.model.Types.*;
     
 
 
 public class Author extends Human {
     
-    
+  @Attribute  
   @CsvBindByPosition (position = 0)    
   private long id;
   
   private Types type;
   
+  @Element (required = false)
   @CsvBindByPosition (position = 1)  
   private String name;
   
+  @Element (required = false)
   @CsvBindByPosition (position = 2)  
   private String biography;
   
+  @Element (required = false)
   @CsvBindByPosition (position = 3)   
   private String birthDate;
   
+  @Element (required = false)
   @CsvBindByPosition (position = 4)   
   private String deathDate;   
   
-  
 
-  private List<Generic> aries;
-  private List<Generic> librettos;
+  private List<Long> aries;
+  private List<Long> librettos;
   
 
   public Author () {
@@ -41,22 +46,24 @@ public class Author extends Human {
       this.id = id;
       this.type = AUTHOR;
   };
-  
-    public List<Generic> getAries() {
+
+    public List<Long> getAries() {
         return aries;
     }
 
-    public void setAries(List<Generic> aries) {
+    public void setAries(List<Long> aries) {
         this.aries = aries;
     }
 
-    public List<Generic> getLibrettos() {
+    public List<Long> getLibrettos() {
         return librettos;
     }
 
-    public void setLibrettos(List<Generic> librettos) {
+    public void setLibrettos(List<Long> librettos) {
         this.librettos = librettos;
     }
+  
+    
 
   @Override
     public long getId() {
@@ -71,11 +78,6 @@ public class Author extends Human {
   @Override
     public Types getType() {
         return type;
-    }
-
-  @Override
-    public void setType(Types type) {
-        this.type = type;
     }
 
   @Override

@@ -1,10 +1,5 @@
 package ru.sfedu.organizer.model;
 
-
-import java.time.LocalDate;
-import java.util.*;
-
-
 /**
  * Class Human
  */
@@ -25,5 +20,14 @@ public abstract class Human  extends Generic{
     public abstract String getDeathDate();
 
     public abstract void setDeathDate(String deathDate);
+    
+    @Override
+    public abstract long getId();
+
+    @Override
+    public abstract void setId(long id);
+    
+    @Override
+    public abstract Types getType();
 
 }

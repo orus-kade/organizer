@@ -4,6 +4,8 @@ package ru.sfedu.organizer.model;
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvCustomBindByPosition;
 import java.util.*;
+import org.simpleframework.xml.Attribute;
+import org.simpleframework.xml.Element;
 import static ru.sfedu.organizer.model.Types.*;
 
 
@@ -16,27 +18,33 @@ public class Singer extends Human {
   // Fields
   //
   
+  @Attribute
   @CsvBindByPosition (position = 0)    
   private long id;
   
   private Types type;
   
+  @Element (required = false)
   @CsvBindByPosition (position = 1)  
   private String name;
   
+  @Element (required = false)
   @CsvBindByPosition (position = 2)  
   private String biography;
   
+  @Element (required = false)
   @CsvBindByPosition (position = 3)   
   private String birthDate;
   
+  @Element (required = false)
   @CsvBindByPosition (position = 4)   
   private String deathDate;
 
+  @Element (required = false)
   @CsvBindByPosition (position = 5) 
   private String voice;
   
-  private List<Generic> aries;
+  private List<Long> aries;
 
   public Singer () {
       this.type = SINGER;
@@ -55,32 +63,27 @@ public class Singer extends Human {
         this.voice = voice;
     }
 
-    public List<Generic> getAries() {
+    public List<Long> getAries() {
         return aries;
     }
 
-    public void setAries(List<Generic> aries) {
+    public void setAries(List<Long> aries) {
         this.aries = aries;
-    }
+    }   
 
     @Override
     public long getId() {
         return id;
     }
 
-  @Override
+    @Override
     public void setId(long id) {
         this.id = id;
     }
 
-  @Override
+    @Override
     public Types getType() {
         return type;
-    }
-
-  @Override
-    public void setType(Types type) {
-        this.type = type;
     }
 
   @Override

@@ -123,21 +123,25 @@ public class XmlDataProviderTest {
     
     @Test
     public void test() throws IOException{
-        CsvDataProvider csv = new CsvDataProvider();
-        Generic aria = new Aria(1);
+//        CsvDataProvider csv = new CsvDataProvider();
+        Note aria = new Note(1);
         List<Generic> list = new ArrayList<Generic>();
-        list.addAll(csv.getAllRecords(aria).getList());
-        System.out.println(list);
+//        list.addAll(csv.getAllRecords(aria).getList());
+//        System.out.println(list);
+        aria.setObjectId(1);
+        aria.setObjectType(Types.AUTHOR);
+        list.add(aria);
         XmlListEntity ll = new XmlListEntity();
         ll.setList(list);
         Serializer serializer = new Persister();
-        File result = new File(getConfigurationEntry(XML_PATH_ARIA));
+        File result = new File(getConfigurationEntry(XML_PATH_NOTE));
         try {
             serializer.write(ll, result);
             XmlListEntity l = serializer.read(XmlListEntity.class, result);
             System.out.println(l.getList());
         } catch (Exception ex) {
             Logger.getLogger(XmlDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("ururur");
         }
     }
     
