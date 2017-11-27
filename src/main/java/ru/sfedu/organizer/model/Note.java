@@ -79,4 +79,11 @@ public class Note extends Generic{
     public Types getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return "Note{" + "id=" + id + ", type=" + type + ", description=" + description + ", objectId=" + objectId + ", objectType=" + objectType + '}';
+    }
+    
+    
 }

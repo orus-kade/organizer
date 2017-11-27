@@ -12,9 +12,5 @@
          <id1>2</id1>
          <id2>2</id2>
       </relation>
-      <relation>
-         <id1>0</id1>
-         <id2>0</id2>
-      </relation>
    </list>
 </xmlListRelations>

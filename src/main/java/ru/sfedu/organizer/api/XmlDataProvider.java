@@ -4,6 +4,7 @@ package ru.sfedu.organizer.api;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -17,26 +18,85 @@ import static ru.sfedu.organizer.utils.ConfigurationUtil.getConfigurationEntry;
  *
  * @author sterie
  */
-public class XmlDataProvider implements IDataProvider{
-
+public class XmlDataProvider implements IDataProvider{    
+    
     @Override
-    public Result addRecord(Generic obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Result addRecord(Note obj) {
+        Result r = checkNote(obj);        
+        if (!ResultStatuses.OK.equals(r.getStatus())) return r;
+        try {
+            Serializer serializer = new Persister();
+            File file = new File(getFileName(obj));
+            XmlListEntity readObj = serializer.read(XmlListEntity.class, file);
+            List<Generic> list = readObj.getList();          
+            if (list != null){
+               long lastId = list.stream().max(Comparator.comparingLong(e -> e.getId())).get().getId(); 
+               obj.setId(lastId+1); 
+            }
+            else 
+               obj.setId(1);
+            list.add(obj);
+            XmlListEntity writeObj = new XmlListEntity(list);
+            serializer.write(writeObj, file);
+            Result result = new Result(ResultStatuses.OK);
+            return result;
+        } catch (Exception ex) {
+            Logger.getLogger(XmlDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
+            return result;
+        }
+    }    
+    
+    @Override
+    public Result editRecord(Note obj) {
+        Result r = checkNote(obj);        
+        if (!ResultStatuses.OK.equals(r.getStatus())) return r;
+        try {
+            Serializer serializer = new Persister();
+            File file = new File(getFileName(obj));
+            XmlListEntity readObj = serializer.read(XmlListEntity.class, file);
+            List<Generic> list = readObj.getList();          
+            list.removeIf(e -> e.getId() == obj.getId());
+            list.add(obj);
+            XmlListEntity writeObj = new XmlListEntity(list);
+            serializer.write(writeObj, file);
+            Result result = new Result(ResultStatuses.OK);
+            return result;
+        } catch (Exception ex) {
+            Logger.getLogger(XmlDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
+            return result;
+        }    
     }
 
     @Override
-    public Result editRecord(Generic obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Result deleteRecord(Note obj) {
+        try {
+            Serializer serializer = new Persister();
+            File file = new File(getFileName(obj));
+            XmlListEntity readObj = serializer.read(XmlListEntity.class, file);
+            List<Generic> list = readObj.getList();
+            if (!list.removeIf(e -> e.getId() == obj.getId())){
+                Result result = new Result(ResultStatuses.ERROR, "Object " + obj + " not found");
+                return result; 
+            }
+            XmlListEntity writeObj = new XmlListEntity(list);
+            serializer.write(writeObj, file);
+            Result result = new Result(ResultStatuses.OK);
+            return result;
+        } catch (Exception ex) {
+            Logger.getLogger(XmlDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
+            return result;
+        }
     }
-
-    @Override
-    public Result deleteRecord(Generic obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    
     @Override
     public Result getRecordById(Generic obj) {
-        Result result; 
+        return getRecordById(obj, false);
+    }
+    
+    public Result getRecordById(Generic obj, boolean check) {
         try {
             XmlListEntity readObj = new XmlListEntity();
             Serializer serializer = new Persister();
@@ -44,21 +104,66 @@ public class XmlDataProvider implements IDataProvider{
             readObj = serializer.read(XmlListEntity.class, file);
             List<Generic> list = readObj.getList();
             list.removeIf(e -> e.getId()!=obj.getId());
-            if (list.isEmpty()) result = new Result(ResultStatuses.ERROR, "Can't find object " + obj.getType() + " with id = " + obj.getId());
-            else result = new Result(ResultStatuses.OK, list);            
+            if (list.isEmpty()){
+                Result result = new Result(ResultStatuses.ERROR, "Can't find object " + obj.getType() + " with id = " + obj.getId());
+                return result;
+            }
+            if (check){
+                Result result = new Result(ResultStatuses.OK, list);
+                return result;
+            }
+            Result result = new Result(ResultStatuses.OK);
+            list.stream().forEach(g -> {
+                try {
+                    g = getRelations(g);
+                } catch (Exception ex) {
+                    Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+                    result.setStatus(ResultStatuses.WARNING);
+                    result.setMessage(result.getMessage() + " " + ex.getMessage());
+                }
+            }); 
+            result.setList(list);
+            return result;
         } catch (IOException ex) {
             Logger.getLogger(XmlDataProvider.class.getName()).log(Level.SEVERE, null, ex);
-            result = new Result(ResultStatuses.ERROR, ex.getMessage());
+            Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
+            return result;
         } catch (Exception ex) {
             Logger.getLogger(XmlDataProvider.class.getName()).log(Level.SEVERE, null, ex);
-            result = new Result(ResultStatuses.ERROR, ex.getMessage());
+            Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
+            return result;
         }
-        return result;
     }
 
     @Override
     public Result getAllRecords(Generic obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            XmlListEntity readObj = new XmlListEntity();
+            Serializer serializer = new Persister();
+            File file = new File(getFileName(obj));
+            readObj = serializer.read(XmlListEntity.class, file);
+            List<Generic> list = readObj.getList();
+            Result result = new Result(ResultStatuses.OK);
+            list.stream().forEach(g -> {
+                try {
+                    g = getRelations(g);
+                } catch (Exception ex) {
+                    Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+                    result.setStatus(ResultStatuses.WARNING);
+                    result.setMessage(result.getMessage() + " " + ex.getMessage());
+                }
+            }); 
+            result.setList(list);
+            return result;            
+        } catch (IOException ex) {
+            Logger.getLogger(XmlDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
+            return result;
+        } catch (Exception ex) {
+            Logger.getLogger(XmlDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
+            return result;
+        }
     }
     
     private String getFileName(Generic obj) throws IOException {
@@ -83,25 +188,166 @@ public class XmlDataProvider implements IDataProvider{
         return file;
     }
     
-    private Class getClass(Generic obj) {
-        Types type = obj.getType();
-        Class cl = null;
+    private Generic getRelations(Generic obj) throws Exception{
+        Types type = obj.getType(); 
         switch (type){
-            case ARIA : cl = Aria.class;
+           case ARIA : obj = getRelationsAria(obj);
                 break;
-            case COMPOSER : cl = Composer.class;
+           case COMPOSER : obj = getRelationsComposer(obj);
                 break;
-            case LIBRETTO : cl = Libretto.class;
+           case LIBRETTO : obj = getRelationsLibretto(obj);
                 break;
-            case OPERA : cl = Opera.class; 
+           case OPERA : obj = getRelationsOpera(obj); 
                 break;
-            case SINGER : cl = Singer.class;
+           case SINGER : obj = getRelationsSinger(obj);
                 break;
-            case AUTHOR : cl = Author.class;
-                break;    
-            case NOTE: cl = Note.class;    
-                break; 
+           case AUTHOR : obj = getRelationsAuthor(obj);
+                break;
+           case NOTE: break;    
         }
-        return cl;
+        return obj;
+    }
+    
+    private Generic getRelationsAria(Generic obj) throws  Exception{
+        Serializer serializer = new Persister();
+        File file = new File(getConfigurationEntry(XML_PATH_ARIA_AUTHOR));
+        XmlListRelations xmlList = serializer.read(XmlListRelations.class, file);
+        List<Long> list = xmlList.getList().stream()
+            .filter(r -> r.getId1() == obj.getId())
+            .collect(ArrayList<Long>::new,
+                    (a, r) ->  a.add(r.getId2()),
+                    (a1, a2) -> a1.addAll(a2));
+        Aria object = (Aria)obj;
+        object.setAuthors(list);
+            
+        file = new File(getConfigurationEntry(XML_PATH_ARIA_COMPOSER));
+        xmlList = serializer.read(XmlListRelations.class, file);
+        list = xmlList.getList().stream()
+            .filter(r -> r.getId1() == obj.getId())
+            .collect(ArrayList<Long>::new,
+                    (a, r) ->  a.add(r.getId2()),
+                    (a1, a2) -> a1.addAll(a2));
+        object.setComposers(list); 
+            
+        file = new File(getConfigurationEntry(XML_PATH_ARIA_SINGER));
+        xmlList = serializer.read(XmlListRelations.class, file);
+        list = xmlList.getList().stream()
+            .filter(r -> r.getId1() == obj.getId())
+            .collect(ArrayList<Long>::new,
+                    (a, r) ->  a.add(r.getId2()),
+                    (a1, a2) -> a1.addAll(a2));
+        object.setSingers(list);   
+            
+        return object;
+    }
+    
+    private Generic getRelationsAuthor(Generic obj) throws  Exception{
+        Serializer serializer = new Persister();
+        File file = new File(getConfigurationEntry(XML_PATH_ARIA_AUTHOR));
+        XmlListRelations xmlList = serializer.read(XmlListRelations.class, file);
+        List<Long> list = xmlList.getList().stream()
+            .filter(r -> r.getId2() == obj.getId())
+            .collect(ArrayList<Long>::new,
+                    (a, r) ->  a.add(r.getId1()),
+                    (a1, a2) -> a1.addAll(a2));
+        Author object = (Author)obj;
+        object.setAries(list);
+            
+        file = new File(getConfigurationEntry(XML_PATH_AUTHOR_LIBRETTO));
+        xmlList = serializer.read(XmlListRelations.class, file);
+        list = xmlList.getList().stream()
+            .filter(r -> r.getId1() == obj.getId())
+            .collect(ArrayList<Long>::new,
+                    (a, r) ->  a.add(r.getId2()),
+                    (a1, a2) -> a1.addAll(a2));
+        object.setLibrettos(list); 
+        return object;
+    }
+    
+    private Generic getRelationsComposer(Generic obj) throws  Exception{
+        Serializer serializer = new Persister();
+        File file = new File(getConfigurationEntry(XML_PATH_ARIA_COMPOSER));
+        XmlListRelations xmlList = serializer.read(XmlListRelations.class, file);
+        List<Long> list = xmlList.getList().stream()
+            .filter(r -> r.getId2() == obj.getId())
+            .collect(ArrayList<Long>::new,
+                    (a, r) ->  a.add(r.getId1()),
+                    (a1, a2) -> a1.addAll(a2));
+        Composer object = (Composer)obj;
+        object.setAries(list);
+        return object;
+    }
+    
+    private Generic getRelationsLibretto(Generic obj) throws  Exception{
+        Serializer serializer = new Persister();
+        File file = new File(getConfigurationEntry(XML_PATH_AUTHOR_LIBRETTO));
+        XmlListRelations xmlList = serializer.read(XmlListRelations.class, file);
+        List<Long> list = xmlList.getList().stream()
+            .filter(r -> r.getId2() == obj.getId())
+            .collect(ArrayList<Long>::new,
+                    (a, r) ->  a.add(r.getId1()),
+                    (a1, a2) -> a1.addAll(a2));
+        Libretto object = (Libretto)obj;
+        object.setAuthors(list);
+        return object;
+    }
+    
+    private Generic getRelationsOpera(Generic obj) throws  Exception{
+        Serializer serializer = new Persister();
+        File file = new File(getConfigurationEntry(XML_PATH_ARIA));
+        XmlListEntity xmlList = serializer.read(XmlListEntity.class, file);
+        if (xmlList.getList().isEmpty()) return obj;
+        List<Long> list = xmlList.getList().stream()
+            .filter(r -> ((Aria)r).getOperaId() == obj.getId())
+            .collect(ArrayList<Long>::new,
+                    (a, r) ->  a.add(r.getId()),
+                    (a1, a2) -> a1.addAll(a2));
+        Opera object = (Opera)obj;
+        object.setAries(list);
+        return object;
+    }
+    
+    private Generic getRelationsSinger(Generic obj) throws  Exception{
+        Serializer serializer = new Persister();
+        File file = new File(getConfigurationEntry(XML_PATH_ARIA_SINGER));
+        XmlListRelations xmlList = serializer.read(XmlListRelations.class, file);
+        List<Long> list = xmlList.getList().stream()
+            .filter(r -> r.getId2() == obj.getId())
+            .collect(ArrayList<Long>::new,
+                    (a, r) ->  a.add(r.getId1()),
+                    (a1, a2) -> a1.addAll(a2));
+        Singer object = (Singer)obj;
+        object.setAries(list);
+        return object;
+    }
+
+    
+    
+    private Result checkNote(Generic obj){
+        Note note = (Note)obj;
+        Result result = new Result();
+        if (note == null){
+            result.setStatus(ResultStatuses.ERROR);
+            result.setMessage("Note: Object is null");
+        }
+        else{
+            Generic object = null;
+            switch (Types.valueOf(note.getObjectType())){
+                case ARIA : object = new Aria(note.getObjectId());
+                    break;
+                case AUTHOR : object = new Author(note.getObjectId());
+                    break;
+                case COMPOSER : object = new Composer(note.getObjectId());
+                    break;
+                case LIBRETTO : object = new Libretto(note.getObjectId());
+                    break;
+                case OPERA : object = new Opera(note.getObjectId());
+                    break;
+                case SINGER : object = new Singer(note.getObjectId());
+                    break;
+            }        
+            result = getRecordById(object, true);
+        }       
+        return result;
     }
 }

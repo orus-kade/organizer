@@ -30,6 +30,7 @@ public class Aria extends Generic{
   @CsvBindByPosition (position = 2) 
   private String text; 
   
+  @Element 
   @CsvBindByPosition (position = 3)
   private long operaId;
   
@@ -112,5 +113,12 @@ public class Aria extends Generic{
     public Types getType() {
         return type;
     }
+
+    @Override
+    public String toString() {
+        return "Aria{" + "id=" + id + ", type=" + type + ", title=" + title + ", text=" + text + ", operaId=" + operaId + ", composers=" + composers + ", authors=" + authors + ", singers=" + singers + '}';
+    }
+    
+    
   
 }

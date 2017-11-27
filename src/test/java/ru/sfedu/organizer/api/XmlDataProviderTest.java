@@ -55,7 +55,7 @@ public class XmlDataProviderTest {
     @Test
     public void testAddRecord() {
         System.out.println("addRecord");
-        Generic obj = null;
+        Note obj = null;
         XmlDataProvider instance = new XmlDataProvider();
         Result expResult = null;
         Result result = instance.addRecord(obj);
@@ -70,7 +70,7 @@ public class XmlDataProviderTest {
     @Test
     public void testEditRecord() {
         System.out.println("editRecord");
-        Generic obj = null;
+        Note obj = null;
         XmlDataProvider instance = new XmlDataProvider();
         Result expResult = null;
         Result result = instance.editRecord(obj);
@@ -85,7 +85,7 @@ public class XmlDataProviderTest {
     @Test
     public void testDeleteRecord() {
         System.out.println("deleteRecord");
-        Generic obj = null;
+        Note obj = null;
         XmlDataProvider instance = new XmlDataProvider();
         Result expResult = null;
         Result result = instance.deleteRecord(obj);
@@ -127,28 +127,93 @@ public class XmlDataProviderTest {
     
     @Test
     public void test() throws IOException{
-        Reader reader;  
-            reader = new FileReader(getConfigurationEntry(CSV_PATH_AUTHOR_LIBRETTO));
-            CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
-                    .withType(Relation.class)
-                    .withEscapeChar('\\')
-                    .withQuoteChar('\'')
-                    .withSeparator(';')
-                    .build();
-            List<Relation> list = csvToBean.parse();
-            reader.close();
+        CsvDataProvider pr = new CsvDataProvider();
+        List<Generic> list = pr.getAllRecords(new Aria()).getList();
         System.out.println(list);
-        XmlListRelations ll = new XmlListRelations();
+        XmlListEntity ll = new XmlListEntity();
         ll.setList(list);
         Serializer serializer = new Persister();
-        File result = new File(getConfigurationEntry(XML_PATH_AUTHOR_LIBRETTO));
+        File result = new File(getConfigurationEntry(XML_PATH_ARIA));
         try {
             serializer.write(ll, result);
-            XmlListRelations l = serializer.read(XmlListRelations.class, result);
+            XmlListEntity l = serializer.read(XmlListEntity.class, result);
             System.out.println(l.getList());
         } catch (Exception ex) {
             Logger.getLogger(XmlDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("ururur");
         }
-    }    
+    }
+
+    @Test
+    public void testGetById(){
+        XmlDataProvider provider = new XmlDataProvider();
+        Generic obj = new Note(6);
+        Result result = provider.getRecordById(obj);
+        System.out.println(result.getStatus());
+        if (result.getStatus().equals(ResultStatuses.OK)){
+            System.out.println(result.getList().get(0));             
+        }    
+        else
+            System.err.println(result.getMessage());
+    }
+    
+    @Test
+    public void testGetAll(){
+        XmlDataProvider provider = new XmlDataProvider();
+        Generic obj = new Singer();
+        Result result = provider.getAllRecords(obj);
+        System.out.println(result.getStatus());
+        if (result.getStatus().equals(ResultStatuses.OK)){
+            result.getList().stream().forEach(System.out::println);
+        }    
+        else
+            System.err.println(result.getMessage());
+    }
+    
+    @Test
+    public void testAdd(){
+        XmlDataProvider provider = new XmlDataProvider();
+        Note obj = new Note();
+        obj.setDescription("descqqq");
+        obj.setObjectId(3);
+        obj.setObjectType(Types.OPERA.toString());
+        Result result = provider.addRecord(obj);
+        System.out.println(result.getStatus());
+        if (result.getStatus().equals(ResultStatuses.OK)){
+            result = provider.getAllRecords(obj);
+            result.getList().stream().forEach(System.out::println);
+        }    
+        else
+            System.err.println(result.getMessage());
+    }
+    
+    @Test
+    public void testEdit(){
+        XmlDataProvider provider = new XmlDataProvider();
+        Note obj = new Note(6); 
+        obj.setObjectId(3);
+        obj.setDescription("descqqq");
+        obj.setObjectType(Types.LIBRETTO.toString());
+        Result result = provider.editRecord(obj);        
+        System.out.println(result.getStatus());
+        if (result.getStatus().equals(ResultStatuses.OK)){
+            result = provider.getAllRecords(obj);
+            result.getList().stream().forEach(System.out::println);
+        }    
+        else
+            System.err.println(result.getMessage());
+    }
+    
+    @Test
+    public void testDelete(){
+        XmlDataProvider provider = new XmlDataProvider();
+        Note obj = new Note();
+        Result result = provider.getAllRecords(obj);
+        System.out.println(result.getStatus());
+        if (result.getStatus().equals(ResultStatuses.OK)){
+            result.getList().stream().forEach(System.out::println);
+        }    
+        else
+            System.err.println(result.getMessage());
+    }
 }

@@ -19,10 +19,10 @@ import static ru.sfedu.organizer.utils.ConfigurationUtil.*;
 public class CsvDataProvider implements IDataProvider{
     
     @Override
-    public Result addRecord(Note obj) {        
+    public Result addRecord(Note obj) {
+        Result r = checkNote(obj);        
+        if (!ResultStatuses.OK.equals(r.getStatus())) return r;
         try {
-            Result r = checkNote(obj);
-            if (!ResultStatuses.OK.equals(r.getStatus())) return r;
             Reader reader;
             reader = new FileReader(getFileName(obj));        
             CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
@@ -89,10 +89,10 @@ public class CsvDataProvider implements IDataProvider{
     }
 
     @Override
-    public Result editRecord(Note obj) {
-        try {
-            Result r = checkNote(obj);
-            if (!ResultStatuses.OK.equals(r.getStatus())) return r;
+    public Result editRecord(Note obj) {        
+        Result r = checkNote(obj);
+        if (!ResultStatuses.OK.equals(r.getStatus())) return r;
+        try {    
             Reader reader;
             reader = new FileReader(getFileName(obj));        
             CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
@@ -102,8 +102,6 @@ public class CsvDataProvider implements IDataProvider{
                     .withSeparator(';')
                     .build();         
             List<Generic> list = csvToBean.parse();
-            List<Generic> oldList = new ArrayList<Generic>();
-            oldList.addAll(list);
             reader.close();  
             list.removeIf(e -> e.getId() == obj.getId());
             list.add(obj);
@@ -147,8 +145,6 @@ public class CsvDataProvider implements IDataProvider{
                     .withSeparator(';')
                     .build();         
             List<Generic> list = csvToBean.parse();
-            List<Generic> oldList = new ArrayList<Generic>();
-            oldList.addAll(list);
             reader.close(); 
             if (!list.removeIf(e -> e.getId() == obj.getId())){
                 Result result = new Result(ResultStatuses.ERROR, "Object " + obj + " not found");
@@ -424,13 +420,13 @@ public class CsvDataProvider implements IDataProvider{
             List<Relation> relations = csvToBean.parse();
             reader.close();
             if (relations.isEmpty()) return obj;
-            List<Long> arias = relations.stream()
+            List<Long> aries = relations.stream()
                     .filter(r -> r.getId2() == obj.getId())
                     .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId1()),
                             (a1, a2) -> a1.addAll(a2));
             Singer singer = (Singer)obj;
-            singer.setAries(arias);
+            singer.setAries(aries);
             return singer;
     }
                     

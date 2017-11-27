@@ -90,5 +90,11 @@ public class Opera extends Generic{
     public Types getType() {
         return type;
     }
-       
+
+    @Override
+    public String toString() {
+        return "Opera{" + "id=" + id + ", type=" + type + ", title=" + title + ", history=" + history + ", librettoId=" + librettoId + ", aries=" + aries + '}';
+    }
+    
+    
 }

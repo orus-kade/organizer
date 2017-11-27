@@ -21,6 +21,12 @@ public class Result {
     public Result() {
     }
 
+    public Result(ResultStatuses status) {
+        this.status = status;
+    }
+
+    
+    
     public Result(ResultStatuses status, String message, List<Generic> list) {
         this.list = list;
         this.status = status;

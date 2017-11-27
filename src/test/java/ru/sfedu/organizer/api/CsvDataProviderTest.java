@@ -112,7 +112,7 @@ public class CsvDataProviderTest {
     @Test
     public void testGetAll() {
         System.out.println("getAllRecords");
-        Aria obj = new Aria();
+        Generic obj = new Aria();
         CsvDataProvider instance = new CsvDataProvider();
         Result result = instance.getAllRecords(obj);
         System.out.println(result.getStatus());
@@ -167,7 +167,7 @@ public class CsvDataProviderTest {
     
     @Test
     public void testDelete() {
-       Note note = new Note(1);
+       Note note = new Note(112);
        CsvDataProvider instance = new CsvDataProvider();
        Result result = instance.deleteRecord(note);
        System.out.println(result.getStatus());

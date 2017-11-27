@@ -120,4 +120,10 @@ public class Author extends Human {
         this.deathDate = deathDate;
     }
 
+    @Override
+    public String toString() {
+        return "Author{" + "id=" + id + ", type=" + type + ", name=" + name + ", biography=" + biography + ", birthDate=" + birthDate + ", deathDate=" + deathDate + ", aries=" + aries + ", librettos=" + librettos + '}';
+    }
+
+    
 }

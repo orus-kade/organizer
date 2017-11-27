@@ -79,5 +79,11 @@ public class Libretto extends Generic{
     public Types getType() {
         return type;
     }
- 
+
+    @Override
+    public String toString() {
+        return "Libretto{" + "id=" + id + ", type=" + type + ", text=" + text + ", operaId=" + operaId + ", authors=" + authors + '}';
+    }
+    
+    
 }
