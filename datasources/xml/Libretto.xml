@@ -1,0 +1,16 @@
+<xmlListEntity>
+   <list class="java.util.ArrayList">
+      <generic class="ru.sfedu.organizer.model.Libretto" id="1">
+         <text>text libretto</text>
+         <operaId>1</operaId>
+      </generic>
+      <generic class="ru.sfedu.organizer.model.Libretto" id="3">
+         <text>text libretto</text>
+         <operaId>2</operaId>
+      </generic>
+      <generic class="ru.sfedu.organizer.model.Libretto" id="2">
+         <text>text libretto</text>
+         <operaId>3</operaId>
+      </generic>
+   </list>
+</xmlListEntity>

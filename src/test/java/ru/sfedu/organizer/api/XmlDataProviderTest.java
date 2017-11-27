@@ -1,8 +1,12 @@
 
 package ru.sfedu.organizer.api;
 
+import com.opencsv.bean.CsvToBean;
+import com.opencsv.bean.CsvToBeanBuilder;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -123,23 +127,28 @@ public class XmlDataProviderTest {
     
     @Test
     public void test() throws IOException{
-        CsvDataProvider csv = new CsvDataProvider();
-        Aria aria = new Aria(1);
-        List<Generic> list = new ArrayList<Generic>();
-        list.addAll(csv.getAllRecords(aria).getList());
+        Reader reader;  
+            reader = new FileReader(getConfigurationEntry(CSV_PATH_AUTHOR_LIBRETTO));
+            CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
+                    .withType(Relation.class)
+                    .withEscapeChar('\\')
+                    .withQuoteChar('\'')
+                    .withSeparator(';')
+                    .build();
+            List<Relation> list = csvToBean.parse();
+            reader.close();
         System.out.println(list);
-        XmlListEntity ll = new XmlListEntity();
+        XmlListRelations ll = new XmlListRelations();
         ll.setList(list);
         Serializer serializer = new Persister();
-        File result = new File(getConfigurationEntry(XML_PATH_ARIA));
+        File result = new File(getConfigurationEntry(XML_PATH_AUTHOR_LIBRETTO));
         try {
             serializer.write(ll, result);
-            XmlListEntity l = serializer.read(XmlListEntity.class, result);
+            XmlListRelations l = serializer.read(XmlListRelations.class, result);
             System.out.println(l.getList());
         } catch (Exception ex) {
             Logger.getLogger(XmlDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println("ururur");
         }
-    }
-    
+    }    
 }
