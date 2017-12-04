@@ -1,4 +1,4 @@
-package ru.sfedu.organizer.api;
+package ru.sfedu.organizer.model;
 
 import java.util.*;
 import ru.sfedu.organizer.model.Generic;

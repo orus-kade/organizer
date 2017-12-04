@@ -1,6 +1,8 @@
 
 package ru.sfedu.organizer.api;
 
+import ru.sfedu.organizer.model.ResultStatuses;
+import ru.sfedu.organizer.model.Result;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;

@@ -1,5 +1,7 @@
 
 package ru.sfedu.organizer.api;
+import ru.sfedu.organizer.model.ResultStatuses;
+import ru.sfedu.organizer.model.Result;
 import com.opencsv.bean.*;
 import com.opencsv.exceptions.*;
 import java.io.*;

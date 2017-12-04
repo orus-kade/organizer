@@ -1,6 +1,7 @@
 
 package ru.sfedu.organizer.api;
 
+import ru.sfedu.organizer.model.Result;
 import ru.sfedu.organizer.model.*;
 
 
