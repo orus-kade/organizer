@@ -4,11 +4,11 @@
          <text>text libretto</text>
          <operaId>1</operaId>
       </generic>
-      <generic class="ru.sfedu.organizer.model.Libretto" id="3">
+      <generic class="ru.sfedu.organizer.model.Libretto" id="2">
          <text>text libretto</text>
          <operaId>2</operaId>
       </generic>
-      <generic class="ru.sfedu.organizer.model.Libretto" id="2">
+      <generic class="ru.sfedu.organizer.model.Libretto" id="3">
          <text>text libretto</text>
          <operaId>3</operaId>
       </generic>

@@ -4,6 +4,7 @@ package ru.sfedu.organizer.api;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -125,38 +126,32 @@ public class DbDataProviderTest {
     @Test 
     public void my_test(){
         System.out.println("------ Проверка подключения к PostgreSQL ------");
- 
-        Connection connection = null;
-        Statement statement = null;
         try {
+            Connection connection = null;
             connection = DriverManager.getConnection(
-                    getConfigurationEntry(DB_DRIVER), getConfigurationEntry(DB_USER), getConfigurationEntry(DB_PASS));
-        } catch (SQLException ex) {
-            Logger.getLogger(DbDataProvider.class.getName()).log(
-                    Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+                    getConfigurationEntry(DB_URL), getConfigurationEntry(DB_USER), getConfigurationEntry(DB_PASS));
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO t1 values(DEFAULT, ?)");
+        
         
         if (null != connection) {
             System.out.println("------ Подключение установлено ------");
             System.out.println("Executing statement...");
-            try {
-                statement = connection.createStatement();
-                String sql;
-                sql = "insert into t1 values(default, 2)";
-                System.out.println(statement.executeUpdate(sql));
+                statement.setInt(1, 23);
+                
+                System.out.println(statement.executeQuery());
                 //ResultSet resultSet = statement.executeQuery(sql);
 //                while (resultSet.next()){
 //                    int id = resultSet.getInt("id");
 //                    String str = resultSet.getString("str");
 //                    System.out.println("id: " + id + " str: " + str);
-//                }
-            } catch (SQLException ex) {
-                Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
-            }   
-        } else {
+        }
+        else {
             System.out.println("------ Подключение НЕ установлено ------");
         }
+        } catch (IOException ex) {
+            Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+                Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);  
+        } 
     }
 }

@@ -1,5 +1,12 @@
 <xmlListEntity>
    <list class="java.util.ArrayList">
+      <generic class="ru.sfedu.organizer.model.Singer" id="1">
+         <name>name</name>
+         <biography>biography</biography>
+         <birthDate>12.12.1959</birthDate>
+         <deathDate>11.11.1990</deathDate>
+         <voice>Soprano</voice>
+      </generic>
       <generic class="ru.sfedu.organizer.model.Singer" id="2">
          <name>name</name>
          <biography>biography</biography>
@@ -22,13 +29,6 @@
          <voice>Soprano</voice>
       </generic>
       <generic class="ru.sfedu.organizer.model.Singer" id="5">
-         <name>name</name>
-         <biography>biography</biography>
-         <birthDate>12.12.1959</birthDate>
-         <deathDate>11.11.1990</deathDate>
-         <voice>Soprano</voice>
-      </generic>
-      <generic class="ru.sfedu.organizer.model.Singer" id="1">
          <name>name1</name>
          <biography>biography</biography>
          <birthDate>12.12.1959</birthDate>

@@ -5,32 +5,32 @@
          <text>tyext1</text>
          <operaId>3</operaId>
       </generic>
-      <generic class="ru.sfedu.organizer.model.Aria" id="3">
+      <generic class="ru.sfedu.organizer.model.Aria" id="2">
          <title>title3</title>
          <text>tyext3</text>
          <operaId>1</operaId>
       </generic>
-      <generic class="ru.sfedu.organizer.model.Aria" id="4">
+      <generic class="ru.sfedu.organizer.model.Aria" id="3">
          <title>title4</title>
          <text>tyext4</text>
          <operaId>2</operaId>
       </generic>
-      <generic class="ru.sfedu.organizer.model.Aria" id="5">
+      <generic class="ru.sfedu.organizer.model.Aria" id="4">
          <title>NewTitle</title>
          <text>erw</text>
          <operaId>5</operaId>
       </generic>
-      <generic class="ru.sfedu.organizer.model.Aria" id="55">
+      <generic class="ru.sfedu.organizer.model.Aria" id="5">
          <title>NewTitle</title>
          <text>333</text>
          <operaId>5</operaId>
       </generic>
-      <generic class="ru.sfedu.organizer.model.Aria" id="56">
+      <generic class="ru.sfedu.organizer.model.Aria" id="6">
          <title>NewTitle</title>
          <text>24</text>
          <operaId>5</operaId>
       </generic>
-      <generic class="ru.sfedu.organizer.model.Aria" id="57">
+      <generic class="ru.sfedu.organizer.model.Aria" id="7">
          <title>NewTitle</title>
          <text>11</text>
          <operaId>5</operaId>

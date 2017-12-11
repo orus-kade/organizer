@@ -1,29 +1,24 @@
 <xmlListEntity>
    <list class="java.util.ArrayList">
-      <generic class="ru.sfedu.organizer.model.Note" id="2">
+      <generic class="ru.sfedu.organizer.model.Note" id="1">
          <description>desc</description>
          <objectId>3</objectId>
          <objectType>LIBRETTO</objectType>
       </generic>
-      <generic class="ru.sfedu.organizer.model.Note" id="4">
+      <generic class="ru.sfedu.organizer.model.Note" id="2">
          <description>desc</description>
          <objectId>3</objectId>
          <objectType>AUTHOR</objectType>
       </generic>
-      <generic class="ru.sfedu.organizer.model.Note" id="5">
+      <generic class="ru.sfedu.organizer.model.Note" id="3">
          <description>desc</description>
          <objectId>1</objectId>
          <objectType>COMPOSER</objectType>
       </generic>
-      <generic class="ru.sfedu.organizer.model.Note" id="3">
+      <generic class="ru.sfedu.organizer.model.Note" id="4">
          <description>desc</description>
          <objectId>55</objectId>
          <objectType>ARIA</objectType>
-      </generic>
-      <generic class="ru.sfedu.organizer.model.Note" id="6">
-         <description>descqqq</description>
-         <objectId>3</objectId>
-         <objectType>LIBRETTO</objectType>
       </generic>
    </list>
 </xmlListEntity>

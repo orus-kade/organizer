@@ -38,7 +38,7 @@ public class Constants {
     public static final String XML_PATH_AUTHOR_LIBRETTO = "xml_author_libretto";
     
     
-    public static final String DB_DRIVER = "db_driver";
+    public static final String DB_URL = "db_driver";
     public static final String DB_USER = "db_user";
     public static final String DB_PASS = "db_pass";
     
