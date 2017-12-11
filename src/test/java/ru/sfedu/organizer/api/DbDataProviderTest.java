@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
@@ -18,6 +19,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static ru.sfedu.organizer.utils.ConfigurationUtil.*;
 import static ru.sfedu.organizer.Constants.*;
+import ru.sfedu.organizer.model.*;
 
 import ru.sfedu.organizer.model.Generic;
 import ru.sfedu.organizer.model.Note;
@@ -126,19 +128,39 @@ public class DbDataProviderTest {
     @Test 
     public void my_test(){
         System.out.println("------ Проверка подключения к PostgreSQL ------");
+        Generic o = new Singer();
+        String tname = "singer";
+        XmlDataProvider provider = new XmlDataProvider();        
+        List<Generic> list = provider.getAllRecords(o).getList();
+        System.out.println(list);
+        Connection connection = null;
         try {
-            Connection connection = null;
-            connection = DriverManager.getConnection(
+            connection  = DriverManager.getConnection(
                     getConfigurationEntry(DB_URL), getConfigurationEntry(DB_USER), getConfigurationEntry(DB_PASS));
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO t1 values(DEFAULT, ?)");
-        
-        
+            //Statement statement = null;        
         if (null != connection) {
             System.out.println("------ Подключение установлено ------");
             System.out.println("Executing statement...");
-                statement.setInt(1, 23);
-                
-                System.out.println(statement.executeQuery());
+                //String sql = "";
+                connection.setAutoCommit(false);  
+                final Statement statement = connection.createStatement(); 
+                list.stream().forEach(e ->{
+                    String sql = "insert into " + tname + 
+                           " values (DEFAULT, '" + 
+                            ((Singer)e).getName()+ "', '" +
+                            ((Singer)e).getBiography()+ "', '" +
+                            ((Singer)e).getBirthDate()+ "', '" +
+                            ((Singer)e).getDeathDate()+ "', '" +
+                            ((Singer)e).getVoice()+  "');";
+                    System.out.println(sql);
+                try {                    
+                    statement.executeUpdate(sql);
+                } catch (SQLException ex) {
+                    Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                });
+                connection.commit();
+                connection.setAutoCommit(true);
                 //ResultSet resultSet = statement.executeQuery(sql);
 //                while (resultSet.next()){
 //                    int id = resultSet.getInt("id");
@@ -152,6 +174,17 @@ public class DbDataProviderTest {
             Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
                 Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);  
+                if (connection != null){
+                    try {
+                        connection.rollback();
+                        connection.setAutoCommit(true);
+                    } catch (SQLException ex1) {
+                        Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex1);
+                    }
+                    
+                }
         } 
     }
+    
+    
 }
