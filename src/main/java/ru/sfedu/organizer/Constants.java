@@ -1,7 +1,6 @@
 
 package ru.sfedu.organizer;
 
-import static ru.sfedu.organizer.utils.ConfigurationUtil.getConfigurationEntry;
 
 /**
  *

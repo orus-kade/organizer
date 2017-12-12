@@ -2,13 +2,6 @@
 package ru.sfedu.organizer.api;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
@@ -17,8 +10,6 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static ru.sfedu.organizer.utils.ConfigurationUtil.*;
-import static ru.sfedu.organizer.Constants.*;
 import ru.sfedu.organizer.model.*;
 
 import ru.sfedu.organizer.model.Generic;
@@ -127,70 +118,19 @@ public class DbDataProviderTest {
     
     @Test 
     public void my_test(){
-//          DbDataProvider provider = new DbDataProvider();
-//          Result result = provider.init_connection();
-//          System.out.println(result.getStatus());
-          Aria a = new Aria();
-          System.out.println(a.getClass().getSimpleName());
+        try {
+            DbDataProvider provider = new DbDataProvider();
+            Aria aria = new Aria(1);
+            Result result = provider.getRecordById(aria);
+            System.out.println(result.getStatus());
+            if (result.getStatus().equals(ResultStatuses.OK)){
+                System.out.println(result.getList());
+            }
+            
+        } catch (IOException ex) {
+            Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
           
-//        System.out.println("------ Проверка подключения к PostgreSQL ------");
-//        Generic o = new Singer();
-//        String tname = "singer";
-//        XmlDataProvider provider = new XmlDataProvider();        
-//        List<Generic> list = provider.getAllRecords(o).getList();
-//        //System.out.println(list);
-//        Connection connection = null;
-//        try {
-//            connection  = DriverManager.getConnection(
-//                    //getConfigurationEntry(DB_URL), getConfigurationEntry(DB_USER), getConfigurationEntry(DB_PASS));
-//                    getConfigurationEntry(DB_URL), getConfigurationEntry("hgfd"), getConfigurationEntry(DB_PASS));
-//            //Statement statement = null;        
-//        if (null != connection) {
-//            System.out.println("------ Подключение установлено ------");
-//            System.out.println("Executing statement...");
-//                //String sql = "";
-//                connection.setAutoCommit(false);  
-//                final Statement statement = connection.createStatement(); 
-//                list.stream().forEach(e ->{
-//                    String sql = "insert into " + tname + 
-//                           " values (DEFAULT, '" + 
-//                            ((Singer)e).getName()+ "', '" +
-//                            ((Singer)e).getBiography()+ "', '" +
-//                            ((Singer)e).getBirthDate()+ "', '" +
-//                            ((Singer)e).getDeathDate()+ "', '" +
-//                            ((Singer)e).getVoice()+  "');";
-//                    System.out.println(sql);
-//                try {                    
-//                    statement.executeUpdate(sql);
-//                } catch (SQLException ex) {
-//                    Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
-//                }
-//                });
-//                connection.commit();
-//                connection.setAutoCommit(true);
-//                //ResultSet resultSet = statement.executeQuery(sql);
-////                while (resultSet.next()){
-////                    int id = resultSet.getInt("id");
-////                    String str = resultSet.getString("str");
-////                    System.out.println("id: " + id + " str: " + str);
-//        }
-//        else {
-//            System.out.println("------ Подключение НЕ установлено ------");
-//        }
-//        } catch (IOException ex) {
-//            Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
-//        } catch (SQLException ex) {
-//                Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);  
-//                if (connection != null){
-//                    try {
-//                        connection.rollback();
-//                        connection.setAutoCommit(true);
-//                    } catch (SQLException ex1) {
-//                        Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex1);
-//                    }
-//                    
-//            }
-//        } 
     }
     
     

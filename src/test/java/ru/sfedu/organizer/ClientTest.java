@@ -8,10 +8,13 @@ import com.opencsv.exceptions.CsvDataTypeMismatchException;
 import com.opencsv.exceptions.CsvRequiredFieldEmptyException;
 import java.io.*;
 import java.sql.Connection;
+import java.util.Date;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.*;
@@ -87,6 +90,24 @@ public class ClientTest {
             System.out.println("------ Подключение НЕ установлено ------");
         }
     }
-
+    
+    @Test
+    public void eqe(){
+        Date date = new Date(1990, 12, 12);
+        System.out.println(date.getTime());
+        
+//        SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd"); 
+//       String str = "1990-12-12";
+//
+//      System.out.print("Строка " + str + " распаршена как "); 
+//      Date parsingDate;
+//      try {
+//         date = ft.parse(str); 
+//         System.out.println(date); 
+//      }catch (ParseException e) { 
+//         System.out.println("Нераспаршена с помощью " + ft); 
+//      }
+//        
+    }
  
 }

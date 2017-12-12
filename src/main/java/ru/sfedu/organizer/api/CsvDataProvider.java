@@ -6,11 +6,7 @@ import com.opencsv.bean.*;
 import com.opencsv.exceptions.*;
 import java.io.*;
 import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-//import org.apache.log4j.Level;
-//import org.apache.log4j.Logger;
-//import org.apache.log4j.Priority;
+import org.apache.log4j.Logger;
 import static ru.sfedu.organizer.Constants.*;
 import ru.sfedu.organizer.model.*;
 import static ru.sfedu.organizer.model.Types.*;
@@ -19,6 +15,7 @@ import static ru.sfedu.organizer.utils.ConfigurationUtil.*;
 
 
 public class CsvDataProvider implements IDataProvider{
+    private static final Logger log = Logger.getLogger(CsvDataProvider.class);
     
     @Override
     public Result addRecord(Note obj) {
@@ -55,8 +52,8 @@ public class CsvDataProvider implements IDataProvider{
             result.setStatus(ResultStatuses.OK);
             result.setMessage("Record added");
             return result;
-        } catch (IOException | CsvDataTypeMismatchException | CsvRequiredFieldEmptyException ex) {
-            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
             Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
             return result;
         }        
@@ -120,19 +117,11 @@ public class CsvDataProvider implements IDataProvider{
             result.setStatus(ResultStatuses.OK);
             result.setMessage("Record edited");
             return result;
-        } catch (IOException ex) {
-            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
             Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
             return result;
-        } catch (CsvDataTypeMismatchException ex) {
-            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
-            Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
-            return result;
-        } catch (CsvRequiredFieldEmptyException ex) {
-            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
-            Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
-            return result;
-        }  
+        } 
     }
 
     @Override
@@ -165,17 +154,8 @@ public class CsvDataProvider implements IDataProvider{
             result.setStatus(ResultStatuses.OK);
             result.setMessage("Record deleted");
             return result;
-        } catch (IOException ex) {
-            //Logger.getLogger(CsvDataProvider.class.getName()).log(Priority.DEBUG, null, ex);
-            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
-            Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
-            return result;
-        } catch (CsvDataTypeMismatchException ex) {
-            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
-            Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
-            return result;
-        } catch (CsvRequiredFieldEmptyException ex) {
-            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (Exception ex) {
+            log.error(ex.getMessage()); 
             Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
             return result;
         }        
@@ -214,7 +194,7 @@ public class CsvDataProvider implements IDataProvider{
                 try {
                     g = getRelations(g);
                 } catch (IOException ex) {
-                    Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+                    log.warn(ex.getMessage());
                     result.setStatus(ResultStatuses.WARNING);
                     result.setMessage(result.getMessage() + " " + ex.getMessage());
                 }
@@ -222,7 +202,7 @@ public class CsvDataProvider implements IDataProvider{
             result.setList(list);
             return result;            
         } catch (IOException ex) {
-            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            log.error(ex.getMessage());
             Result result = new Result(ResultStatuses.ERROR,ex.getMessage());
             return result;
         }
@@ -486,7 +466,7 @@ public class CsvDataProvider implements IDataProvider{
                 try {
                     g = getRelations(g);
                 } catch (IOException ex) {
-                    Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+                    log.warn(ex.getMessage());
                     result.setStatus(ResultStatuses.WARNING);
                     result.setMessage(result.getMessage() + " " + ex.getMessage());
                 }
@@ -494,7 +474,7 @@ public class CsvDataProvider implements IDataProvider{
             result.setList(list);
             return result;            
         } catch (IOException ex) {
-            Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            log.error(ex.getMessage());
             Result result = new Result(ResultStatuses.ERROR,ex.getMessage());
             return result;
         } 

@@ -8,8 +8,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
+
 import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 import static ru.sfedu.organizer.Constants.*;
@@ -21,7 +21,7 @@ import static ru.sfedu.organizer.utils.ConfigurationUtil.getConfigurationEntry;
  * @author sterie
  */
 public class XmlDataProvider implements IDataProvider{    
-    
+    private static final Logger log = Logger.getLogger(XmlDataProvider.class);
     @Override
     public Result addRecord(Note obj) {
         Result r = checkNote(obj);        
@@ -43,7 +43,7 @@ public class XmlDataProvider implements IDataProvider{
             Result result = new Result(ResultStatuses.OK);
             return result;
         } catch (Exception ex) {
-            Logger.getLogger(XmlDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            log.error(ex.getMessage());
             Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
             return result;
         }
@@ -65,7 +65,7 @@ public class XmlDataProvider implements IDataProvider{
             Result result = new Result(ResultStatuses.OK);
             return result;
         } catch (Exception ex) {
-            Logger.getLogger(XmlDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            log.error(ex.getMessage());
             Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
             return result;
         }    
@@ -87,7 +87,7 @@ public class XmlDataProvider implements IDataProvider{
             Result result = new Result(ResultStatuses.OK);
             return result;
         } catch (Exception ex) {
-            Logger.getLogger(XmlDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            log.error(ex.getMessage());
             Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
             return result;
         }
@@ -119,19 +119,15 @@ public class XmlDataProvider implements IDataProvider{
                 try {
                     g = getRelations(g);
                 } catch (Exception ex) {
-                    Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+                    log.error(ex.getMessage());
                     result.setStatus(ResultStatuses.WARNING);
                     result.setMessage(result.getMessage() + " " + ex.getMessage());
                 }
             }); 
             result.setList(list);
             return result;
-        } catch (IOException ex) {
-            Logger.getLogger(XmlDataProvider.class.getName()).log(Level.SEVERE, null, ex);
-            Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
-            return result;
         } catch (Exception ex) {
-            Logger.getLogger(XmlDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            log.error(ex.getMessage());
             Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
             return result;
         }
@@ -150,22 +146,18 @@ public class XmlDataProvider implements IDataProvider{
                 try {
                     g = getRelations(g);
                 } catch (Exception ex) {
-                    Logger.getLogger(CsvDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+                    log.warn(ex.getMessage());
                     result.setStatus(ResultStatuses.WARNING);
                     result.setMessage(result.getMessage() + " " + ex.getMessage());
                 }
             }); 
             result.setList(list);
             return result;            
-        } catch (IOException ex) {
-            Logger.getLogger(XmlDataProvider.class.getName()).log(Level.SEVERE, null, ex);
-            Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
-            return result;
         } catch (Exception ex) {
-            Logger.getLogger(XmlDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+            log.error(ex.getMessage());
             Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
             return result;
-        }
+        } 
     }
     
     private String getFileName(Generic obj) throws IOException {

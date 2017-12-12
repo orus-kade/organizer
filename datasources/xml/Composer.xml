@@ -1,16 +1,20 @@
 <xmlListEntity>
    <list class="java.util.ArrayList">
       <generic class="ru.sfedu.organizer.model.Composer" id="1">
-         <name>11name</name>
-         <biography>11biography</biography>
-         <birthDate>12.12.1959</birthDate>
-         <deathDate>11.11.1990</deathDate>
+         <name>name</name>
+         <surname>sur</surname>
+         <patronymic>pat</patronymic>
+         <biography>biography</biography>
+         <birthDate>60621858000000</birthDate>
+         <deathDate>60621858000000</deathDate>
       </generic>
       <generic class="ru.sfedu.organizer.model.Composer" id="2">
          <name>name</name>
+         <surname>sur2</surname>
+         <patronymic>pat2</patronymic>
          <biography>biography</biography>
-         <birthDate>12.12.1959</birthDate>
-         <deathDate>11.11.1990</deathDate>
+         <birthDate>60621858000000</birthDate>
+         <deathDate>60621858000000</deathDate>
       </generic>
    </list>
 </xmlListEntity>

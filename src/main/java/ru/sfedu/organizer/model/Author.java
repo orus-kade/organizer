@@ -17,21 +17,29 @@ public class Author extends Human {
   
   private Types type;
   
-  @Element (required = false)
+  @Element
   @CsvBindByPosition (position = 1)  
   private String name;
   
-  @Element (required = false)
+  @Element 
   @CsvBindByPosition (position = 2)  
+  private String surname;
+  
+  @Element (required = false)
+  @CsvBindByPosition (position = 3)  
+  private String patronymic;
+  
+  @Element (required = false)
+  @CsvBindByPosition (position = 4)  
   private String biography;
   
   @Element (required = false)
-  @CsvBindByPosition (position = 3)   
-  private String birthDate;
+  @CsvBindByPosition (position = 5)   
+  private long birthDate;
   
   @Element (required = false)
-  @CsvBindByPosition (position = 4)   
-  private String deathDate;   
+  @CsvBindByPosition (position = 6)   
+  private long deathDate;   
   
 
   private List<Long> aries;
@@ -101,29 +109,48 @@ public class Author extends Human {
     }
 
   @Override
-    public String getBirthDate() {
+    public long getBirthDate() {
         return birthDate;
     }
 
   @Override
-    public void setBirthDate(String birthDate) {
+    public void setBirthDate(long birthDate) {
         this.birthDate = birthDate;
     }
 
   @Override
-    public String getDeathDate() {
+    public long getDeathDate() {
         return deathDate;
     }
 
   @Override
-    public void setDeathDate(String deathDate) {
+    public void setDeathDate(long deathDate) {
         this.deathDate = deathDate;
     }
 
     @Override
-    public String toString() {
-        return "Author{" + "id=" + id + ", type=" + type + ", name=" + name + ", biography=" + biography + ", birthDate=" + birthDate + ", deathDate=" + deathDate + ", aries=" + aries + ", librettos=" + librettos + '}';
+    public String getSurname() {
+        return this.surname;
     }
 
-    
+    @Override
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    @Override
+    public String getPatronymic() {
+        return this.patronymic;
+    }
+
+    @Override
+    public void setPatronymic(String patronymic) {
+        this.patronymic = patronymic;
+    }
+
+    @Override
+    public String toString() {
+        return "Author{" + "id=" + id + ", type=" + type + ", name=" + name + ", surname=" + surname + ", patronymic=" + patronymic + ", biography=" + biography + ", birthDate=" + birthDate + ", deathDate=" + deathDate + ", aries=" + aries + ", librettos=" + librettos + '}';
+    }
+ 
 }
