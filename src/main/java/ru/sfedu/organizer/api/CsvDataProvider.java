@@ -72,7 +72,7 @@ public class CsvDataProvider implements IDataProvider{
         else{
             Generic object = null;
             switch (Types.valueOf(note.getObjectType())){
-                case ARIA : object = new Aria(note.getObjectId());
+            case ARIA : object = new Aria(note.getObjectId());
                     break;
                 case AUTHOR : object = new Author(note.getObjectId());
                     break;
@@ -83,7 +83,7 @@ public class CsvDataProvider implements IDataProvider{
                 case OPERA : object = new Opera(note.getObjectId());
                     break;
                 case SINGER : object = new Singer(note.getObjectId());
-                    break;
+                    break;    
             }        
             result = getRecordById(object, true);
         }       

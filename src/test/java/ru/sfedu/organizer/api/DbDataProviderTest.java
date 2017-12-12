@@ -127,9 +127,11 @@ public class DbDataProviderTest {
     
     @Test 
     public void my_test(){
-          DbDataProvider provider = new DbDataProvider();
-          Result result = provider.init_connection();
-          System.out.println(result.getStatus());
+//          DbDataProvider provider = new DbDataProvider();
+//          Result result = provider.init_connection();
+//          System.out.println(result.getStatus());
+          Aria a = new Aria();
+          System.out.println(a.getClass().getSimpleName());
           
 //        System.out.println("------ Проверка подключения к PostgreSQL ------");
 //        Generic o = new Singer();
