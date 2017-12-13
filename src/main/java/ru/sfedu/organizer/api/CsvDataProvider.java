@@ -33,7 +33,7 @@ public class CsvDataProvider implements IDataProvider{
             List<Generic> list = csvToBean.parse();
             reader.close();
             if (list != null){
-               long lastId = list.stream().max(Comparator.comparingLong(e -> e.getId())).get().getId(); 
+                long lastId = list.stream().max(Comparator.comparingLong(e -> e.getId())).get().getId(); 
                 obj.setId(lastId+1); 
             }
             else 
@@ -50,7 +50,6 @@ public class CsvDataProvider implements IDataProvider{
             writer.close();
             Result result = new Result();
             result.setStatus(ResultStatuses.OK);
-            result.setMessage("Record added");
             return result;
         } catch (Exception ex) {
             log.error(ex.getMessage());
@@ -65,6 +64,7 @@ public class CsvDataProvider implements IDataProvider{
         if (note == null){
             result.setStatus(ResultStatuses.ERROR);
             result.setMessage("Note: Object is null");
+            log.error(result.getMessage());
         }
         else{
             try{
@@ -108,7 +108,11 @@ public class CsvDataProvider implements IDataProvider{
                     .build();         
             List<Generic> list = csvToBean.parse();
             reader.close();  
-            list.removeIf(e -> e.getId() == obj.getId());
+            if (!list.removeIf(e -> e.getId() == obj.getId())){
+                Result result = new Result(ResultStatuses.ERROR, "Object " + obj + " not found");
+                log.error(result.getMessage());
+                return result; 
+            }
             list.add(obj);
             Writer writer;
             writer = new FileWriter(getFileName(obj));             
@@ -121,7 +125,6 @@ public class CsvDataProvider implements IDataProvider{
             writer.close();
             Result result = new Result();            
             result.setStatus(ResultStatuses.OK);
-            result.setMessage("Record edited");
             return result;
         } catch (Exception ex) {
             log.error(ex.getMessage());
@@ -145,6 +148,7 @@ public class CsvDataProvider implements IDataProvider{
             reader.close(); 
             if (!list.removeIf(e -> e.getId() == obj.getId())){
                 Result result = new Result(ResultStatuses.ERROR, "Object " + obj + " not found");
+                log.error(result.getMessage());
                 return result; 
             }
             Writer writer;
@@ -158,7 +162,6 @@ public class CsvDataProvider implements IDataProvider{
             writer.close();
             Result result = new Result();
             result.setStatus(ResultStatuses.OK);
-            result.setMessage("Record deleted");
             return result;
         } catch (Exception ex) {
             log.error(ex.getMessage()); 
@@ -189,6 +192,7 @@ public class CsvDataProvider implements IDataProvider{
             reader.close();
             if (list.isEmpty()){
                 Result result = new Result(ResultStatuses.ERROR, "Can't find object "+obj.getType()+" with id = "+obj.getId());
+                log.error(result.getMessage());
                 return result;
             }
             if (check){
@@ -325,8 +329,7 @@ public class CsvDataProvider implements IDataProvider{
                     .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId2()),
                             (a1, a2) -> a1.addAll(a2));
-            aria.setSingers(list);   
-            
+            aria.setSingers(list);              
             return aria;
     }
     

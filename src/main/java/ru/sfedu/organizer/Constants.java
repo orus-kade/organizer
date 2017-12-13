@@ -41,5 +41,17 @@ public class Constants {
     public static final String DB_USER = "db_user";
     public static final String DB_PASS = "db_pass";
     
- 
+    public static final String DB_TABLE_ARIA = "table_aria";
+    public static final String DB_TABLE_AUTHOR = "table_author";
+    public static final String DB_TABLE_COMPOSER = "table_composer";
+    public static final String DB_TABLE_LIBRETTO = "table_libretto";
+    public static final String DB_TABLE_OPERA = "table_opera";
+    public static final String DB_TABLE_SINGER = "table_singer";
+    public static final String DB_TABLE_NOTE = "table_note";  
+    
+    public static final String DB_TABLE_ARIA_AUTHOR = "table_aria_author";
+    public static final String DB_TABLE_ARIA_COMPOSER = "table_aria_composer";
+    public static final String DB_TABLE_ARIA_SINGER = "table_aria_singer";
+    public static final String DB_TABLE_AUTHOR_LIBRETTO = "table_author_libretto";
+    
 }

@@ -57,8 +57,12 @@ public class XmlDataProvider implements IDataProvider{
             Serializer serializer = new Persister();
             File file = new File(getFileName(obj));
             XmlListEntity readObj = serializer.read(XmlListEntity.class, file);
-            List<Generic> list = readObj.getList();          
-            list.removeIf(e -> e.getId() == obj.getId());
+            List<Generic> list = readObj.getList();
+            if(!list.removeIf(e -> e.getId() == obj.getId())){
+                Result result = new Result(ResultStatuses.ERROR, "Object " + obj + " not found");
+                log.error(result.getMessage());
+                return result; 
+            }
             list.add(obj);
             XmlListEntity writeObj = new XmlListEntity(list);
             serializer.write(writeObj, file);
@@ -80,6 +84,7 @@ public class XmlDataProvider implements IDataProvider{
             List<Generic> list = readObj.getList();
             if (!list.removeIf(e -> e.getId() == obj.getId())){
                 Result result = new Result(ResultStatuses.ERROR, "Object " + obj + " not found");
+                log.error(result.getMessage());
                 return result; 
             }
             XmlListEntity writeObj = new XmlListEntity(list);
@@ -108,6 +113,7 @@ public class XmlDataProvider implements IDataProvider{
             list.removeIf(e -> e.getId()!=obj.getId());
             if (list.isEmpty()){
                 Result result = new Result(ResultStatuses.ERROR, "Can't find object " + obj.getType() + " with id = " + obj.getId());
+                log.error(result.getMessage());
                 return result;
             }
             if (check){
@@ -313,9 +319,7 @@ public class XmlDataProvider implements IDataProvider{
         Singer object = (Singer)obj;
         object.setAries(list);
         return object;
-    }
-
-    
+    }   
     
     private Result checkNote(Generic obj){
         Note note = (Note)obj;
@@ -323,6 +327,8 @@ public class XmlDataProvider implements IDataProvider{
         if (note == null){
             result.setStatus(ResultStatuses.ERROR);
             result.setMessage("Note: Object is null");
+            log.error(result.getMessage());
+            return result;
         }
         else{
             try{

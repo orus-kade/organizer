@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
-import java.util.logging.Level;
 
 import org.apache.log4j.Logger;
 import static ru.sfedu.organizer.Constants.*;
@@ -45,10 +44,12 @@ public class DbDataProvider implements IDataProvider<Generic>{
                     obj.getDescription() + "' , " +
                     obj.getObjectId() + ", '" +
                     obj.getObjectType() + "');";
-            if (statement.executeUpdate(sql) == 0)
+            if (statement.executeUpdate(sql) == 0){
+                log.error("Adding failed");
                 return new Result(ResultStatuses.ERROR);
+            }
             else return new Result(ResultStatuses.OK);
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             log.error(ex.getMessage());
             return new Result(ResultStatuses.ERROR, ex.getMessage());
         }        
@@ -60,6 +61,8 @@ public class DbDataProvider implements IDataProvider<Generic>{
         if (note == null){
             result.setStatus(ResultStatuses.ERROR);
             result.setMessage("Note: Object is null");
+            log.error(result.getMessage());
+            return result;
         }
         else{
             try{
@@ -91,49 +94,91 @@ public class DbDataProvider implements IDataProvider<Generic>{
     
     @Override
     public Result editRecord(Note obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Result r = checkNote(obj);  
+        if (!ResultStatuses.OK.equals(r.getStatus())) return r;
+        r = getRecordById(obj, true);
+        if (!ResultStatuses.OK.equals(r.getStatus())) return r;
+        try {
+            Connection connection = initConnection();
+            Statement statement = connection.createStatement();
+            String sql = "Update " + getTableName(obj) + 
+                    " set description = '" + obj.getDescription() + 
+                    "' , set objectid = " + obj.getObjectId() +
+                    ", set objecttype = '" + obj.getObjectType()
+                    + "' where id = " + obj.getId() + ";";
+            if (statement.executeUpdate(sql) == 0){
+                log.error("Updating failed");
+                return new Result(ResultStatuses.ERROR);
+            }                
+            else return new Result(ResultStatuses.OK);
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+            return new Result(ResultStatuses.ERROR, ex.getMessage());
+        } 
     }
 
     @Override
     public Result deleteRecord(Note obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Result r = checkNote(obj);  
+        if (!ResultStatuses.OK.equals(r.getStatus())) return r;
+        r = getRecordById(obj, true);
+        if (!ResultStatuses.OK.equals(r.getStatus())) return r;
+        try {
+            Connection connection = initConnection();
+            Statement statement = connection.createStatement();
+            String sql = "delete from " + getTableName(obj) + 
+                    " where id = " + obj.getId() + ";";
+            if (statement.executeUpdate(sql) == 0){
+                log.error("Deleting failed");
+                return new Result(ResultStatuses.ERROR);
+            }                
+            else return new Result(ResultStatuses.OK);
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+            return new Result(ResultStatuses.ERROR, ex.getMessage());
+        } 
     }
 
     @Override
     public Result getRecordById(Generic obj) {
+        return getRecordById(obj, false);
+    }
+    
+    
+    public Result getRecordById(Generic obj, boolean check) {
         try {
             Connection connection = initConnection();            
             Statement stmt = connection.createStatement();
             String sql = "SELECT * from " + getTableName(obj) + " where id = " + obj.getId() + ";";
-           
             ResultSet resultSet = stmt.executeQuery(sql);
             List<Generic> list = new ArrayList<Generic>(); 
             Types type = obj.getType();
             switch (type){
-                case ARIA : list = getAria(resultSet);
+                case ARIA : list = getAria(resultSet, connection, check);
                     break;
-                case AUTHOR : list = getAuthor(resultSet);
+                case AUTHOR : list = getAuthor(resultSet, connection, check);
                     break;
-                case COMPOSER : list = getComposer(resultSet);
+                case COMPOSER : list = getComposer(resultSet, connection, check);
                     break;
-                case LIBRETTO : list = getLibretto(resultSet);
+                case LIBRETTO : list = getLibretto(resultSet, connection, check);
                     break;
-                case OPERA : list = getOpera(resultSet);
+                case OPERA : list = getOpera(resultSet, connection, check);
                     break;
-                case SINGER : list = getSinger(resultSet);
+                case SINGER : list = getSinger(resultSet, connection, check);
                     break;
                 case NOTE : list = getNote(resultSet);
                     break;                
             }
+            if (list.isEmpty()) return new Result(ResultStatuses.ERROR, "Can't find object " + obj.getType() + " with id = " + obj.getId());
             return new Result(ResultStatuses.OK, list);
-        } catch (SQLException ex) {
+        } catch (Exception ex) {
             log.error(ex.getMessage());
             return new Result(ResultStatuses.ERROR, ex.getMessage());
         }
 
     }
 
-    private List<Generic> getAria(ResultSet resultSet) throws SQLException{
+    private List<Generic> getAria(ResultSet resultSet, Connection connection, boolean check) throws SQLException, IOException{
         List<Generic> list = new ArrayList<Generic>(); 
         while(resultSet.next()){
             Aria aria = new Aria(resultSet.getLong(1));
@@ -142,10 +187,13 @@ public class DbDataProvider implements IDataProvider<Generic>{
             aria.setOperaId(resultSet.getLong(4));
             list.add(aria);
         }
+        if (!check && !list.isEmpty()){
+            list = getRelationsAria(list, connection);
+        }
         return list;
     }
     
-    private List<Generic> getAuthor(ResultSet resultSet) throws SQLException{
+    private List<Generic> getAuthor(ResultSet resultSet, Connection connection, boolean check) throws SQLException, IOException{
         List<Generic> list = new ArrayList<Generic>(); 
         while(resultSet.next()){
             Author author = new Author(resultSet.getLong(1));
@@ -157,10 +205,13 @@ public class DbDataProvider implements IDataProvider<Generic>{
             author.setDeathDate(resultSet.getLong(7));
             list.add(author);
         }
+        if (!check){
+            list = getRelationsAuthor(list, connection);
+        }
         return list;
     }
     
-    private List<Generic> getComposer(ResultSet resultSet) throws SQLException{
+    private List<Generic> getComposer(ResultSet resultSet, Connection connection, boolean check) throws SQLException, IOException{
         List<Generic> list = new ArrayList<Generic>(); 
         while(resultSet.next()){
             Composer composer = new Composer(resultSet.getLong(1));
@@ -172,10 +223,13 @@ public class DbDataProvider implements IDataProvider<Generic>{
             composer.setDeathDate(resultSet.getLong(7));
             list.add(composer);
         }
+        if (!check){
+            list = getRelationsComposer(list, connection);
+        }
         return list;
     }
     
-    private List<Generic> getLibretto(ResultSet resultSet) throws SQLException{
+    private List<Generic> getLibretto(ResultSet resultSet, Connection connection, boolean check) throws SQLException, IOException{
         List<Generic> list = new ArrayList<Generic>(); 
         while(resultSet.next()){
             Libretto libretto = new Libretto(resultSet.getLong(1));
@@ -183,10 +237,13 @@ public class DbDataProvider implements IDataProvider<Generic>{
             libretto.setOperaId(resultSet.getLong(3));
             list.add(libretto);
         }
+        if (!check){
+            list = getRelationsLibretto(list, connection);
+        }
         return list;
     }
     
-    private List<Generic> getOpera(ResultSet resultSet) throws SQLException{
+    private List<Generic> getOpera(ResultSet resultSet, Connection connection, boolean check) throws SQLException, IOException{
         List<Generic> list = new ArrayList<Generic>(); 
         while(resultSet.next()){
             Opera opera = new Opera(resultSet.getLong(1));
@@ -194,6 +251,9 @@ public class DbDataProvider implements IDataProvider<Generic>{
             opera.setHistory(resultSet.getString(3));
             opera.setLibrettoId(resultSet.getLong(4));
             list.add(opera);
+        }
+        if (!check){
+            list = getRelationsOpera(list, connection);
         }
         return list;
     }
@@ -210,7 +270,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
         return list;
     }
     
-    private List<Generic> getSinger(ResultSet resultSet) throws SQLException{
+    private List<Generic> getSinger(ResultSet resultSet, Connection connection, boolean check) throws SQLException, IOException{
         List<Generic> list = new ArrayList<Generic>(); 
         while(resultSet.next()){
             Singer singer = new Singer(resultSet.getLong(1));
@@ -223,14 +283,224 @@ public class DbDataProvider implements IDataProvider<Generic>{
             singer.setVoice(resultSet.getString(8));
             list.add(singer);
         }
+        if (!check){
+            list = getRelationsSinger(list, connection);
+        }
         return list;
     }
     
+    private List<Generic> getRelationsAria(List<Generic> list, Connection connection) throws IOException, SQLException{                   
+            String sql = "select * from " + getConfigurationEntry(DB_TABLE_ARIA_AUTHOR) + ";";
+            List<Relation> allRelaations = new ArrayList<Relation>();
+            Statement stmt = connection.createStatement();            
+            ResultSet relations = stmt.executeQuery(sql);
+            while(relations.next()){
+                allRelaations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+            }
+            List<Long> relationList = new ArrayList<Long>();
+            list.stream().forEach(e -> {
+                    relationList.clear();
+                    relationList.addAll(allRelaations
+                            .stream()
+                            .filter(r -> r.getId1() == e.getId())
+                            .collect(ArrayList<Long>::new,
+                                    (a, r) ->  a.add(r.getId2()),
+                                    (a1, a2) -> a1.addAll(a2)));                            
+                    ((Aria)e).setAuthors(relationList);
+            });
+            
+            sql = "select * from " + getConfigurationEntry(DB_TABLE_ARIA_COMPOSER) + ";";          
+            relations = stmt.executeQuery(sql);            
+            while(relations.next()){
+                allRelaations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+            }
+            list.stream().forEach(e -> {
+                    relationList.clear();
+                    relationList.addAll(allRelaations
+                            .stream()
+                            .filter(r -> r.getId1() == e.getId())
+                            .collect(ArrayList<Long>::new,
+                                    (a, r) ->  a.add(r.getId2()),
+                                    (a1, a2) -> a1.addAll(a2)));                            
+                    ((Aria)e).setComposers(relationList);
+            });
+            
+            sql = "select * from " + getConfigurationEntry(DB_TABLE_ARIA_SINGER) + ";";          
+            relations = stmt.executeQuery(sql);            
+            while(relations.next()){
+                allRelaations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+            }
+            list.stream().forEach(e -> {
+                    relationList.clear();
+                    relationList.addAll(allRelaations
+                            .stream()
+                            .filter(r -> r.getId1() == e.getId())
+                            .collect(ArrayList<Long>::new,
+                                    (a, r) ->  a.add(r.getId2()),
+                                    (a1, a2) -> a1.addAll(a2)));                            
+                    ((Aria)e).setComposers(relationList);
+            });
+            return list;
+    }
     
+    private List<Generic> getRelationsAuthor(List<Generic> list, Connection connection) throws IOException, SQLException{                   
+            String sql = "select * from " + getConfigurationEntry(DB_TABLE_ARIA_AUTHOR) + ";";
+            List<Relation> allRelaations = new ArrayList<Relation>();
+            Statement stmt = connection.createStatement();            
+            ResultSet relations = stmt.executeQuery(sql);
+            while(relations.next()){
+                allRelaations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+            }
+            List<Long> relationList = new ArrayList<Long>();
+            list.stream().forEach(e -> {
+                    relationList.clear();
+                    relationList.addAll(allRelaations
+                            .stream()
+                            .filter(r -> r.getId2() == e.getId())
+                            .collect(ArrayList<Long>::new,
+                                    (a, r) ->  a.add(r.getId1()),
+                                    (a1, a2) -> a1.addAll(a2)));                            
+                    ((Author)e).setAries(relationList);
+            });
+            
+            sql = "select * from " + getConfigurationEntry(DB_TABLE_AUTHOR_LIBRETTO) + ";";          
+            relations = stmt.executeQuery(sql);            
+            while(relations.next()){
+                allRelaations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+            }
+            list.stream().forEach(e -> {
+                    relationList.clear();
+                    relationList.addAll(allRelaations
+                            .stream()
+                            .filter(r -> r.getId1() == e.getId())
+                            .collect(ArrayList<Long>::new,
+                                    (a, r) ->  a.add(r.getId2()),
+                                    (a1, a2) -> a1.addAll(a2)));                            
+                    ((Author)e).setLibrettos(relationList);
+            });
+            return list;
+    }
+    
+    private List<Generic> getRelationsComposer(List<Generic> list, Connection connection) throws IOException, SQLException{                   
+            String sql = "select * from " + getConfigurationEntry(DB_TABLE_ARIA_COMPOSER) + ";";
+            List<Relation> allRelaations = new ArrayList<Relation>();
+            Statement stmt = connection.createStatement();            
+            ResultSet relations = stmt.executeQuery(sql);
+            while(relations.next()){
+                allRelaations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+            }
+            List<Long> relationList = new ArrayList<Long>();
+            list.stream().forEach(e -> {
+                    relationList.clear();
+                    relationList.addAll(allRelaations
+                            .stream()
+                            .filter(r -> r.getId2() == e.getId())
+                            .collect(ArrayList<Long>::new,
+                                    (a, r) ->  a.add(r.getId1()),
+                                    (a1, a2) -> a1.addAll(a2)));                            
+                    ((Composer)e).setAries(relationList);
+            });
+            return list;
+    }   
+    
+    private List<Generic> getRelationsLibretto(List<Generic> list, Connection connection) throws IOException, SQLException{                   
+            String sql = "select * from " + getConfigurationEntry(DB_TABLE_AUTHOR_LIBRETTO) + ";";
+            List<Relation> allRelaations = new ArrayList<Relation>();
+            Statement stmt = connection.createStatement();            
+            ResultSet relations = stmt.executeQuery(sql);
+            while(relations.next()){
+                allRelaations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+            }
+            List<Long> relationList = new ArrayList<Long>();
+            list.stream().forEach(e -> {
+                    relationList.clear();
+                    relationList.addAll(allRelaations
+                            .stream()
+                            .filter(r -> r.getId2() == e.getId())
+                            .collect(ArrayList<Long>::new,
+                                    (a, r) ->  a.add(r.getId1()),
+                                    (a1, a2) -> a1.addAll(a2)));                            
+                    ((Libretto)e).setAuthors(relationList);
+            });
+            return list;
+    }
+    
+    private List<Generic> getRelationsOpera(List<Generic> list, Connection connection) throws IOException, SQLException{                   
+            String sql = "select id, operaid from " + getConfigurationEntry(DB_TABLE_ARIA) + ";";
+            List<Relation> allRelaations = new ArrayList<Relation>();
+            Statement stmt = connection.createStatement();            
+            ResultSet relations = stmt.executeQuery(sql);
+            while(relations.next()){
+                allRelaations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+            }
+            List<Long> relationList = new ArrayList<Long>();
+            list.stream().forEach(e -> {
+                    relationList.clear();
+                    relationList.addAll(allRelaations
+                            .stream()
+                            .filter(r -> r.getId2() == e.getId())
+                            .collect(ArrayList<Long>::new,
+                                    (a, r) ->  a.add(r.getId1()),
+                                    (a1, a2) -> a1.addAll(a2)));                            
+                    ((Opera)e).setAries(relationList);
+            });
+            return list;
+    }
+    
+    private List<Generic> getRelationsSinger(List<Generic> list, Connection connection) throws IOException, SQLException{                   
+            String sql = "select * from " + getConfigurationEntry(DB_TABLE_ARIA_SINGER) + ";";
+            List<Relation> allRelaations = new ArrayList<Relation>();
+            Statement stmt = connection.createStatement();            
+            ResultSet relations = stmt.executeQuery(sql);
+            while(relations.next()){
+                allRelaations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+            }
+            List<Long> relationList = new ArrayList<Long>();
+            list.stream().forEach(e -> {
+                    relationList.clear();
+                    relationList.addAll(allRelaations
+                            .stream()
+                            .filter(r -> r.getId2() == e.getId())
+                            .collect(ArrayList<Long>::new,
+                                    (a, r) ->  a.add(r.getId1()),
+                                    (a1, a2) -> a1.addAll(a2)));                            
+                    ((Singer)e).setAries(relationList);
+            });
+            return list;
+    }
     
     @Override
     public Result getAllRecords(Generic obj) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            boolean check = false;
+            Connection connection = initConnection();            
+            Statement stmt = connection.createStatement();
+            String sql = "SELECT * from " + getTableName(obj) + ";";
+            ResultSet resultSet = stmt.executeQuery(sql);
+            List<Generic> list = new ArrayList<Generic>(); 
+            Types type = obj.getType();
+            switch (type){
+                case ARIA : list = getAria(resultSet, connection, check);
+                    break;
+                case AUTHOR : list = getAuthor(resultSet, connection, check);
+                    break;
+                case COMPOSER : list = getComposer(resultSet, connection, check);
+                    break;
+                case LIBRETTO : list = getLibretto(resultSet, connection, check);
+                    break;
+                case OPERA : list = getOpera(resultSet, connection, check);
+                    break;
+                case SINGER : list = getSinger(resultSet, connection, check);
+                    break;
+                case NOTE : list = getNote(resultSet);
+                    break;                
+            }
+            if (list.isEmpty()) return new Result(ResultStatuses.ERROR, "Can't find object " + obj.getType() + " with id = " + obj.getId());
+            return new Result(ResultStatuses.OK, list);
+        } catch (Exception ex) {
+            log.error(ex.getMessage());
+            return new Result(ResultStatuses.ERROR, ex.getMessage());
+        }
     }
     
     public Connection initConnection() throws SQLException{
@@ -240,23 +510,23 @@ public class DbDataProvider implements IDataProvider<Generic>{
     }       
 
     
-    private String getTableName(Generic obj){
+    private String getTableName(Generic obj) throws IOException{
         Types type = obj.getType();
         String tname = "";
         switch (type){
-            case ARIA : tname = "aria";
+            case ARIA : tname = getConfigurationEntry(DB_TABLE_ARIA);
                 break;
-            case AUTHOR : tname = "author";
+            case AUTHOR : tname = getConfigurationEntry(DB_TABLE_AUTHOR);
                 break;
-            case COMPOSER : tname = "composer";
+            case COMPOSER : tname = getConfigurationEntry(DB_TABLE_COMPOSER);
                 break;
-            case LIBRETTO : tname = "libretto";
+            case LIBRETTO : tname = getConfigurationEntry(DB_TABLE_LIBRETTO);
                 break;
-            case OPERA : tname = "opera";
+            case OPERA : tname = getConfigurationEntry(DB_TABLE_OPERA);
                 break;
-            case SINGER : tname = "singer";
+            case SINGER : tname = getConfigurationEntry(DB_TABLE_SINGER);
                 break;
-            case NOTE : tname = "note";
+            case NOTE : tname = getConfigurationEntry(DB_TABLE_NOTE);
                 break;
         }
         return tname;

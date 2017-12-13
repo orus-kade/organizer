@@ -28,28 +28,28 @@ public class DbDataProviderTest {
     @Test 
     public void my_test(){
         
-            //        try {
-//            DbDataProvider provider = new DbDataProvider();
-//            Aria aria = new Aria(1);
-//            Result result = provider.getRecordById(aria);
-//            System.out.println(result.getStatus());
-//            if (result.getStatus().equals(ResultStatuses.OK)){
-//                System.out.println(result.getList());
-//            }
-//            
-//        } catch (IOException ex) {
-//            Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
-//        }
         try {
             DbDataProvider provider = new DbDataProvider();
-            Note note = new Note();
-            note.setDescription("ertet");
-            note.setObjectId(2);
-            note.setObjectType("ARIA");
-            System.out.println(provider.addRecord(note).getStatus());
+            Note obj = new Note(1);
+            Result result = provider.getAllRecords(obj);
+            System.out.println(result.getStatus());
+            if (result.getStatus().equals(ResultStatuses.OK)){
+                System.out.println(result.getList());
+            }
+            
         } catch (IOException ex) {
             Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
         }
+//        try {
+//            DbDataProvider provider = new DbDataProvider();
+//            Note note = new Note();
+//            note.setDescription("ertet");
+//            note.setObjectId(2);
+//            note.setObjectType("ARIA");
+//            System.out.println(provider.addRecord(note).getStatus());
+//        } catch (IOException ex) {
+//            Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
+//        }
     }
     
     
