@@ -30,7 +30,7 @@ public class DbDataProviderTest {
         
         try {
             DbDataProvider provider = new DbDataProvider();
-            Note obj = new Note(1);
+            Opera obj = new Opera(1);
             Result result = provider.getAllRecords(obj);
             System.out.println(result.getStatus());
             if (result.getStatus().equals(ResultStatuses.OK)){

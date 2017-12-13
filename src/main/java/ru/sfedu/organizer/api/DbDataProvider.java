@@ -197,12 +197,17 @@ public class DbDataProvider implements IDataProvider<Generic>{
         List<Generic> list = new ArrayList<Generic>(); 
         while(resultSet.next()){
             Author author = new Author(resultSet.getLong(1));
+            Date date = null;
             author.setName(resultSet.getString(2));
             author.setSurname(resultSet.getString(3));
             author.setPatronymic(resultSet.getString(4));
             author.setBiography(resultSet.getString(5));
-            author.setBirthDate(resultSet.getLong(6));
-            author.setDeathDate(resultSet.getLong(7));
+            date = resultSet.getDate(6);
+            if (date != null) 
+                author.setBirthDate(date.getTime());
+            date = resultSet.getDate(7);
+            if (date != null)
+                author.setDeathDate(date.getTime());
             list.add(author);
         }
         if (!check){
@@ -214,13 +219,18 @@ public class DbDataProvider implements IDataProvider<Generic>{
     private List<Generic> getComposer(ResultSet resultSet, Connection connection, boolean check) throws SQLException, IOException{
         List<Generic> list = new ArrayList<Generic>(); 
         while(resultSet.next()){
+            Date date = null;
             Composer composer = new Composer(resultSet.getLong(1));
             composer.setName(resultSet.getString(2));
             composer.setSurname(resultSet.getString(3));
             composer.setPatronymic(resultSet.getString(4));
             composer.setBiography(resultSet.getString(5));
-            composer.setBirthDate(resultSet.getLong(6));
-            composer.setDeathDate(resultSet.getLong(7));
+            date = resultSet.getDate(6);
+            if (date != null) 
+                composer.setBirthDate(date.getTime());
+            date = resultSet.getDate(7);
+            if (date != null) 
+                composer.setDeathDate(date.getTime());
             list.add(composer);
         }
         if (!check){
@@ -273,13 +283,18 @@ public class DbDataProvider implements IDataProvider<Generic>{
     private List<Generic> getSinger(ResultSet resultSet, Connection connection, boolean check) throws SQLException, IOException{
         List<Generic> list = new ArrayList<Generic>(); 
         while(resultSet.next()){
+            Date date = null;
             Singer singer = new Singer(resultSet.getLong(1));
             singer.setName(resultSet.getString(2));
             singer.setSurname(resultSet.getString(3));
             singer.setPatronymic(resultSet.getString(4));
             singer.setBiography(resultSet.getString(5));
-            singer.setBirthDate(resultSet.getLong(6));
-            singer.setDeathDate(resultSet.getLong(7));
+            date = resultSet.getDate(6);
+            if (date != null) 
+                singer.setBirthDate(date.getTime());
+            date = resultSet.getDate(7);
+            if (date != null) 
+                singer.setDeathDate(date.getTime());
             singer.setVoice(resultSet.getString(8));
             list.add(singer);
         }
@@ -291,16 +306,16 @@ public class DbDataProvider implements IDataProvider<Generic>{
     
     private List<Generic> getRelationsAria(List<Generic> list, Connection connection) throws IOException, SQLException{                   
             String sql = "select * from " + getConfigurationEntry(DB_TABLE_ARIA_AUTHOR) + ";";
-            List<Relation> allRelaations = new ArrayList<Relation>();
+            List<Relation> allRelations = new ArrayList<Relation>();
             Statement stmt = connection.createStatement();            
             ResultSet relations = stmt.executeQuery(sql);
             while(relations.next()){
-                allRelaations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+                allRelations.add(new Relation(relations.getLong(1), relations.getLong(2)));
             }
-            List<Long> relationList = new ArrayList<Long>();
+            
             list.stream().forEach(e -> {
-                    relationList.clear();
-                    relationList.addAll(allRelaations
+                    List<Long> relationList = new ArrayList<Long>();
+                    relationList.addAll(allRelations
                             .stream()
                             .filter(r -> r.getId1() == e.getId())
                             .collect(ArrayList<Long>::new,
@@ -310,13 +325,14 @@ public class DbDataProvider implements IDataProvider<Generic>{
             });
             
             sql = "select * from " + getConfigurationEntry(DB_TABLE_ARIA_COMPOSER) + ";";          
-            relations = stmt.executeQuery(sql);            
+            relations = stmt.executeQuery(sql);  
+            allRelations.clear();
             while(relations.next()){
-                allRelaations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+                allRelations.add(new Relation(relations.getLong(1), relations.getLong(2)));
             }
             list.stream().forEach(e -> {
-                    relationList.clear();
-                    relationList.addAll(allRelaations
+                    List<Long> relationList = new ArrayList<Long>();
+                    relationList.addAll(allRelations
                             .stream()
                             .filter(r -> r.getId1() == e.getId())
                             .collect(ArrayList<Long>::new,
@@ -326,13 +342,14 @@ public class DbDataProvider implements IDataProvider<Generic>{
             });
             
             sql = "select * from " + getConfigurationEntry(DB_TABLE_ARIA_SINGER) + ";";          
-            relations = stmt.executeQuery(sql);            
+            relations = stmt.executeQuery(sql);
+            allRelations.clear();            
             while(relations.next()){
-                allRelaations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+                allRelations.add(new Relation(relations.getLong(1), relations.getLong(2)));
             }
             list.stream().forEach(e -> {
-                    relationList.clear();
-                    relationList.addAll(allRelaations
+                    List<Long> relationList = new ArrayList<Long>();
+                    relationList.addAll(allRelations
                             .stream()
                             .filter(r -> r.getId1() == e.getId())
                             .collect(ArrayList<Long>::new,
@@ -345,16 +362,15 @@ public class DbDataProvider implements IDataProvider<Generic>{
     
     private List<Generic> getRelationsAuthor(List<Generic> list, Connection connection) throws IOException, SQLException{                   
             String sql = "select * from " + getConfigurationEntry(DB_TABLE_ARIA_AUTHOR) + ";";
-            List<Relation> allRelaations = new ArrayList<Relation>();
+            List<Relation> allRelations = new ArrayList<Relation>();
             Statement stmt = connection.createStatement();            
             ResultSet relations = stmt.executeQuery(sql);
             while(relations.next()){
-                allRelaations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+                allRelations.add(new Relation(relations.getLong(1), relations.getLong(2)));
             }
-            List<Long> relationList = new ArrayList<Long>();
             list.stream().forEach(e -> {
-                    relationList.clear();
-                    relationList.addAll(allRelaations
+                    List<Long> relationList = new ArrayList<Long>();
+                    relationList.addAll(allRelations
                             .stream()
                             .filter(r -> r.getId2() == e.getId())
                             .collect(ArrayList<Long>::new,
@@ -364,13 +380,14 @@ public class DbDataProvider implements IDataProvider<Generic>{
             });
             
             sql = "select * from " + getConfigurationEntry(DB_TABLE_AUTHOR_LIBRETTO) + ";";          
-            relations = stmt.executeQuery(sql);            
+            relations = stmt.executeQuery(sql);
+            allRelations.clear();            
             while(relations.next()){
-                allRelaations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+                allRelations.add(new Relation(relations.getLong(1), relations.getLong(2)));
             }
             list.stream().forEach(e -> {
-                    relationList.clear();
-                    relationList.addAll(allRelaations
+                    List<Long> relationList = new ArrayList<Long>();
+                    relationList.addAll(allRelations
                             .stream()
                             .filter(r -> r.getId1() == e.getId())
                             .collect(ArrayList<Long>::new,
@@ -383,16 +400,15 @@ public class DbDataProvider implements IDataProvider<Generic>{
     
     private List<Generic> getRelationsComposer(List<Generic> list, Connection connection) throws IOException, SQLException{                   
             String sql = "select * from " + getConfigurationEntry(DB_TABLE_ARIA_COMPOSER) + ";";
-            List<Relation> allRelaations = new ArrayList<Relation>();
+            List<Relation> allRelations = new ArrayList<Relation>();
             Statement stmt = connection.createStatement();            
             ResultSet relations = stmt.executeQuery(sql);
             while(relations.next()){
-                allRelaations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+                allRelations.add(new Relation(relations.getLong(1), relations.getLong(2)));
             }
-            List<Long> relationList = new ArrayList<Long>();
             list.stream().forEach(e -> {
-                    relationList.clear();
-                    relationList.addAll(allRelaations
+                    List<Long> relationList = new ArrayList<Long>();
+                    relationList.addAll(allRelations
                             .stream()
                             .filter(r -> r.getId2() == e.getId())
                             .collect(ArrayList<Long>::new,
@@ -405,16 +421,15 @@ public class DbDataProvider implements IDataProvider<Generic>{
     
     private List<Generic> getRelationsLibretto(List<Generic> list, Connection connection) throws IOException, SQLException{                   
             String sql = "select * from " + getConfigurationEntry(DB_TABLE_AUTHOR_LIBRETTO) + ";";
-            List<Relation> allRelaations = new ArrayList<Relation>();
+            List<Relation> allRelations = new ArrayList<Relation>();
             Statement stmt = connection.createStatement();            
             ResultSet relations = stmt.executeQuery(sql);
             while(relations.next()){
-                allRelaations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+                allRelations.add(new Relation(relations.getLong(1), relations.getLong(2)));
             }
-            List<Long> relationList = new ArrayList<Long>();
             list.stream().forEach(e -> {
-                    relationList.clear();
-                    relationList.addAll(allRelaations
+                    List<Long> relationList = new ArrayList<Long>();
+                    relationList.addAll(allRelations
                             .stream()
                             .filter(r -> r.getId2() == e.getId())
                             .collect(ArrayList<Long>::new,
@@ -427,16 +442,15 @@ public class DbDataProvider implements IDataProvider<Generic>{
     
     private List<Generic> getRelationsOpera(List<Generic> list, Connection connection) throws IOException, SQLException{                   
             String sql = "select id, operaid from " + getConfigurationEntry(DB_TABLE_ARIA) + ";";
-            List<Relation> allRelaations = new ArrayList<Relation>();
+            List<Relation> allRelations = new ArrayList<Relation>();
             Statement stmt = connection.createStatement();            
             ResultSet relations = stmt.executeQuery(sql);
             while(relations.next()){
-                allRelaations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+                allRelations.add(new Relation(relations.getLong(1), relations.getLong(2)));
             }
-            List<Long> relationList = new ArrayList<Long>();
             list.stream().forEach(e -> {
-                    relationList.clear();
-                    relationList.addAll(allRelaations
+                    List<Long> relationList = new ArrayList<Long>();
+                    relationList.addAll(allRelations
                             .stream()
                             .filter(r -> r.getId2() == e.getId())
                             .collect(ArrayList<Long>::new,
@@ -449,16 +463,15 @@ public class DbDataProvider implements IDataProvider<Generic>{
     
     private List<Generic> getRelationsSinger(List<Generic> list, Connection connection) throws IOException, SQLException{                   
             String sql = "select * from " + getConfigurationEntry(DB_TABLE_ARIA_SINGER) + ";";
-            List<Relation> allRelaations = new ArrayList<Relation>();
+            List<Relation> allRelations = new ArrayList<Relation>();
             Statement stmt = connection.createStatement();            
             ResultSet relations = stmt.executeQuery(sql);
             while(relations.next()){
-                allRelaations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+                allRelations.add(new Relation(relations.getLong(1), relations.getLong(2)));
             }
-            List<Long> relationList = new ArrayList<Long>();
             list.stream().forEach(e -> {
-                    relationList.clear();
-                    relationList.addAll(allRelaations
+                    List<Long> relationList = new ArrayList<Long>();
+                    relationList.addAll(allRelations
                             .stream()
                             .filter(r -> r.getId2() == e.getId())
                             .collect(ArrayList<Long>::new,
