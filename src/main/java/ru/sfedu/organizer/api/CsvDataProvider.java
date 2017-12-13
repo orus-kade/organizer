@@ -67,6 +67,12 @@ public class CsvDataProvider implements IDataProvider{
             result.setMessage("Note: Object is null");
         }
         else{
+            try{
+                Types.valueOf(note.getObjectType());
+            } catch(IllegalArgumentException ex){
+                log.error(ex.getMessage());
+                return new Result(ResultStatuses.ERROR, ex.getMessage());
+            }
             Generic object = null;
             switch (Types.valueOf(note.getObjectType())){
             case ARIA : object = new Aria(note.getObjectId());
