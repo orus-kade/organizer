@@ -18,7 +18,7 @@ import static ru.sfedu.organizer.utils.ConfigurationUtil.getConfigurationEntry;
 
 /**
  *
- * @author user
+ * @author orus-kade
  */
 public class DbDataProvider implements IDataProvider<Generic>{
     private static final Logger log = Logger.getLogger(DbDataProvider.class);

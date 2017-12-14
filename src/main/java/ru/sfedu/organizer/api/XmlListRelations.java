@@ -11,7 +11,7 @@ import org.simpleframework.xml.ElementList;
 
 /**
  *
- * @author sterie
+ * @author orus-kade
  */
 public class XmlListRelations {
     

@@ -3,7 +3,7 @@ package ru.sfedu.organizer.model;
 
 /**
  *
- * @author sterie
+ * @author orus-kade
  */
 public enum Types {
     ARIA("ARIA"),
