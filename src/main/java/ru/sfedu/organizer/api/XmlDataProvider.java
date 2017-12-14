@@ -18,7 +18,7 @@ import static ru.sfedu.organizer.utils.ConfigurationUtil.getConfigurationEntry;
 
 /**
  *
- * @author sterie
+ * @author orus-kade
  */
 public class XmlDataProvider implements IDataProvider{    
     private static final Logger log = Logger.getLogger(XmlDataProvider.class);

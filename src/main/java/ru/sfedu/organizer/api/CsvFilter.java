@@ -6,7 +6,7 @@ import com.opencsv.bean.CsvToBeanFilter;
 
 /**
  *
- * @author sterie
+ * @author orus-kade
  */
 public class CsvFilter implements CsvToBeanFilter{
     

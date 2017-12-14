@@ -28,15 +28,12 @@ import static ru.sfedu.organizer.utils.ConfigurationUtil.getConfigurationEntry;
 
 /**
  *
- * @author sterie
+ * @author orus-kade
  */
 public class XmlDataProviderTest {
     
     public XmlDataProviderTest() {
     }
-    
-    
-    
     
     @Test
     public void test() throws IOException{

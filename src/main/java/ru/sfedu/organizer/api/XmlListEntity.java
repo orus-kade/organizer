@@ -11,7 +11,7 @@ import ru.sfedu.organizer.model.Generic;
 
 /**
  *
- * @author sterie
+ * @author orus-kade
  */
 public class XmlListEntity {
     

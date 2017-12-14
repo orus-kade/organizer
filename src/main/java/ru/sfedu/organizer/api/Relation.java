@@ -9,7 +9,7 @@ import com.opencsv.bean.CsvBindByPosition;
 
 /**
  *
- * @author user
+ * @author orus-kade
  */
 public class Relation {
     
