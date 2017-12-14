@@ -2,6 +2,7 @@
 package ru.sfedu.organizer.api;
 
 import java.io.IOException;
+import java.sql.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.After;
@@ -18,7 +19,7 @@ import ru.sfedu.organizer.model.Result;
 
 /**
  *
- * @author user
+ * @author orus-kade
  */
 public class DbDataProviderTest {
     
@@ -30,14 +31,17 @@ public class DbDataProviderTest {
         
         try {
             DbDataProvider provider = new DbDataProvider();
-            Opera obj = new Opera(1);
+            Composer obj = new Composer(1);
             Result result = provider.getAllRecords(obj);
             System.out.println(result.getStatus());
             if (result.getStatus().equals(ResultStatuses.OK)){
                 System.out.println(result.getList());
+                Date date = new Date(((Composer)(result.getList().get(0))).getBirthDate());
+                System.out.println(date);
             }
             
         } catch (IOException ex) {
+
             Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
         }
 //        try {
