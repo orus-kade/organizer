@@ -2,7 +2,6 @@
 package ru.sfedu.organizer;
 
 import org.apache.log4j.Logger;
-import org.apache.log4j.PropertyConfigurator;
 
 
 /**
@@ -26,7 +25,6 @@ public class Client {
         log.info("User Home Directory: " + System.getProperty("user.home"));
         log.info("User Working Directory: " + System.getProperty("user.dir"));
         log.info("Test INFO logging.");
-    }
-    
-    
+    }   
+
 }
