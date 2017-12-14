@@ -1,6 +1,7 @@
 package ru.sfedu.organizer;
 
-import ru.sfedu.organizer.api.Relation;
+import ru.sfedu.organizer.api.CsvDataProviderTest;
+
 import ru.sfedu.organizer.model.Result;
 import com.opencsv.bean.StatefulBeanToCsv;
 import com.opencsv.bean.StatefulBeanToCsvBuilder;
