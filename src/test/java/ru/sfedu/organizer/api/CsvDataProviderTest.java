@@ -5,7 +5,6 @@ import ru.sfedu.organizer.model.ResultStatuses;
 import ru.sfedu.organizer.model.Result;
 import java.util.ArrayList;
 import java.util.List;
-import org.apache.log4j.Logger;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -15,14 +14,12 @@ import static org.junit.Assert.*;
 import ru.sfedu.organizer.model.*;
 
 
-
 /**
  *
  * @author sterie
  */
 public class CsvDataProviderTest {
     
-    private static final Logger log = Logger.getLogger(CsvDataProviderTest.class);
     public CsvDataProviderTest() {
     }
     
