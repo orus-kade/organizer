@@ -20,5 +20,20 @@
          <objectId>55</objectId>
          <objectType>ARIA</objectType>
       </generic>
+      <generic class="ru.sfedu.organizer.model.Note" id="5">
+         <description>descqqq</description>
+         <objectId>3</objectId>
+         <objectType>OPERA</objectType>
+      </generic>
+      <generic class="ru.sfedu.organizer.model.Note" id="7">
+         <description>descqqq</description>
+         <objectId>3</objectId>
+         <objectType>OPERA</objectType>
+      </generic>
+      <generic class="ru.sfedu.organizer.model.Note" id="6">
+         <description>descqqq</description>
+         <objectId>3</objectId>
+         <objectType>LIBRETTO</objectType>
+      </generic>
    </list>
 </xmlListEntity>

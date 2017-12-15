@@ -13,15 +13,15 @@ import java.util.Date;
  */
 public class Generator {
     
-    public String generateString(int length){
-        return generateString(length, length);
-    }
+//    public String generateString(int length){
+//        return generateString(length, length);
+//    }
     
     
-    public String generateString(int begin, int end){
-        int length = Math.round((float)Math.random() );
-        
-    }
+//    public String generateString(int begin, int end){
+//        int length = Math.round((float)Math.random() );
+//        
+//    }
     
     public Long generateDateLong() throws ParseException, Exception{
         return generateDateLong("1800-01-01", "2017-01-01");
