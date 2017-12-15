@@ -27,7 +27,7 @@ public class CsvDataProviderTest {
     @Test
     public void testGetAll() {
         System.out.println("getAllRecords");
-        Generic obj = new Author();
+        Generic obj = new Composer();
         CsvDataProvider instance = new CsvDataProvider();
         Result result = instance.getAllRecords(obj);
         System.out.println(result.getStatus());
@@ -39,7 +39,7 @@ public class CsvDataProviderTest {
     @Test
     public void testGetById() {
         System.out.println("getAllRecords");
-        Generic obj = new Author();
+        Generic obj = new Aria();
         //Generic obj = new Author();
         //Generic obj = new Composer();
         //Generic obj = new Libretto();

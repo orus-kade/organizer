@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import org.apache.log4j.Logger;
 
 import org.simpleframework.xml.Serializer;
@@ -237,7 +238,16 @@ public class XmlDataProvider implements IDataProvider{
                     (a, r) ->  a.add(r.getId2()),
                     (a1, a2) -> a1.addAll(a2));
         object.setSingers(list);   
-            
+        
+        Optional<List<Generic>> notes = Optional.ofNullable(getAllRecords(new Note()).getList());
+            if(notes.isPresent()){
+                list = notes.get().stream()
+                        .filter(e -> (obj.getId() == ((Note)e).getObjectId() && ((Note)e).getObjectType().equals(obj.getType().toString())))
+                        .collect(ArrayList<Long>::new,
+                            (a, r) ->  a.add(r.getId()),
+                            (a1, a2) -> a1.addAll(a2));
+                object.setNotes(list); 
+            }
         return object;
     }
     
@@ -261,6 +271,16 @@ public class XmlDataProvider implements IDataProvider{
                     (a, r) ->  a.add(r.getId2()),
                     (a1, a2) -> a1.addAll(a2));
         object.setLibrettos(list); 
+        
+        Optional<List<Generic>> notes = Optional.ofNullable(getAllRecords(new Note()).getList());
+            if(notes.isPresent()){
+                list = notes.get().stream()
+                        .filter(e -> (obj.getId() == ((Note)e).getObjectId() && ((Note)e).getObjectType().equals(obj.getType().toString())))
+                        .collect(ArrayList<Long>::new,
+                            (a, r) ->  a.add(r.getId()),
+                            (a1, a2) -> a1.addAll(a2));
+                object.setNotes(list); 
+            }
         return object;
     }
     
@@ -275,6 +295,16 @@ public class XmlDataProvider implements IDataProvider{
                     (a1, a2) -> a1.addAll(a2));
         Composer object = (Composer)obj;
         object.setAries(list);
+        
+        Optional<List<Generic>> notes = Optional.ofNullable(getAllRecords(new Note()).getList());
+            if(notes.isPresent()){
+                list = notes.get().stream()
+                        .filter(e -> (obj.getId() == ((Note)e).getObjectId() && ((Note)e).getObjectType().equals(obj.getType().toString())))
+                        .collect(ArrayList<Long>::new,
+                            (a, r) ->  a.add(r.getId()),
+                            (a1, a2) -> a1.addAll(a2));
+                object.setNotes(list); 
+            }
         return object;
     }
     
@@ -289,6 +319,16 @@ public class XmlDataProvider implements IDataProvider{
                     (a1, a2) -> a1.addAll(a2));
         Libretto object = (Libretto)obj;
         object.setAuthors(list);
+        
+        Optional<List<Generic>> notes = Optional.ofNullable(getAllRecords(new Note()).getList());
+            if(notes.isPresent()){
+                list = notes.get().stream()
+                        .filter(e -> (obj.getId() == ((Note)e).getObjectId() && ((Note)e).getObjectType().equals(obj.getType().toString())))
+                        .collect(ArrayList<Long>::new,
+                            (a, r) ->  a.add(r.getId()),
+                            (a1, a2) -> a1.addAll(a2));
+                object.setNotes(list); 
+            }
         return object;
     }
     
@@ -304,6 +344,15 @@ public class XmlDataProvider implements IDataProvider{
                     (a1, a2) -> a1.addAll(a2));
         Opera object = (Opera)obj;
         object.setAries(list);
+        Optional<List<Generic>> notes = Optional.ofNullable(getAllRecords(new Note()).getList());
+            if(notes.isPresent()){
+                list = notes.get().stream()
+                        .filter(e -> (obj.getId() == ((Note)e).getObjectId() && ((Note)e).getObjectType().equals(obj.getType().toString())))
+                        .collect(ArrayList<Long>::new,
+                            (a, r) ->  a.add(r.getId()),
+                            (a1, a2) -> a1.addAll(a2));
+                object.setNotes(list); 
+            }
         return object;
     }
     
@@ -318,6 +367,15 @@ public class XmlDataProvider implements IDataProvider{
                     (a1, a2) -> a1.addAll(a2));
         Singer object = (Singer)obj;
         object.setAries(list);
+        Optional<List<Generic>> notes = Optional.ofNullable(getAllRecords(new Note()).getList());
+            if(notes.isPresent()){
+                list = notes.get().stream()
+                        .filter(e -> (obj.getId() == ((Note)e).getObjectId() && ((Note)e).getObjectType().equals(obj.getType().toString())))
+                        .collect(ArrayList<Long>::new,
+                            (a, r) ->  a.add(r.getId()),
+                            (a1, a2) -> a1.addAll(a2));
+                object.setNotes(list); 
+            }
         return object;
     }   
     
@@ -355,5 +413,10 @@ public class XmlDataProvider implements IDataProvider{
             result = getRecordById(object, true);
         }       
         return result;
+    }
+
+    @Override
+    public Result findRecord(Generic obj) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

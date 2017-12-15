@@ -12,5 +12,6 @@ package ru.sfedu.organizer.model;
 public enum ResultStatuses {
     OK,
     ERROR,
-    WARNING    
+    WARNING,
+    NOTFOUND
 }

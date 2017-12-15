@@ -27,6 +27,7 @@ public class Libretto extends Generic{
   private long operaId;
   
   private List<Long> authors;
+  private List<Long> notes;
   
   public Libretto () {
       this.type = LIBRETTO;
@@ -51,6 +52,14 @@ public class Libretto extends Generic{
 
     public void setAuthors(List<Long> authors) {
         this.authors = authors;
+    }
+
+    public List<Long> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<Long> notes) {
+        this.notes = notes;
     }
 
     
@@ -82,7 +91,7 @@ public class Libretto extends Generic{
 
     @Override
     public String toString() {
-        return "Libretto{" + "id=" + id + ", type=" + type + ", text=" + text + ", operaId=" + operaId + ", authors=" + authors + '}';
+        return "Libretto{" + "id=" + id + ", type=" + type + ", text=" + text + ", operaId=" + operaId + ", authors=" + authors + ", notes=" + notes +'}';
     }
     
     

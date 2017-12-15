@@ -37,7 +37,8 @@ public class Aria extends Generic{
   
   private List<Long> composers;
   private List<Long> authors;
-  private List<Long> singers;  
+  private List<Long> singers; 
+  private List<Long> notes;
 
   public Aria () { 
       this.type = ARIA;
@@ -97,7 +98,13 @@ public class Aria extends Generic{
         this.singers = singers;
     }
 
-    
+    public List<Long> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<Long> notes) {
+        this.notes = notes;
+    }    
     
     @Override
     public long getId() {
@@ -116,7 +123,7 @@ public class Aria extends Generic{
 
     @Override
     public String toString() {
-        return "Aria{" + "id=" + id + ", type=" + type + ", title=" + title + ", text=" + text + ", operaId=" + operaId + ", composers=" + composers + ", authors=" + authors + ", singers=" + singers + '}';
+        return "Aria{" + "id=" + id + ", type=" + type + ", title=" + title + ", text=" + text + ", operaId=" + operaId + ", composers=" + composers + ", authors=" + authors + ", singers=" + singers + ", notes=" + notes +'}';
     }
     
     

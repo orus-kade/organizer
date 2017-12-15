@@ -9,6 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
+import java.util.logging.Level;
 
 import org.apache.log4j.Logger;
 import static ru.sfedu.organizer.Constants.*;
@@ -39,17 +40,27 @@ public class DbDataProvider implements IDataProvider<Generic>{
         if (!ResultStatuses.OK.equals(r.getStatus())) return r;
         try {
             Connection connection = initConnection();
-            Statement statement = connection.createStatement();
-            String sql = "Insert into " + getTableName(obj) + " values (default, '" +
-                    obj.getDescription() + "' , " +
-                    obj.getObjectId() + ", '" +
-                    obj.getObjectType() + "');";
-            if (statement.executeUpdate(sql) == 0){
-                log.error("Adding failed");
+            try{
+                Statement statement = connection.createStatement();
+                String sql = "Insert into " + getTableName(obj) + " values (default, '" +
+                        obj.getDescription() + "' , " +
+                        obj.getObjectId() + ", '" +
+                        obj.getObjectType() + "');";
+                if (statement.executeUpdate(sql) == 0){
+                    log.error("Adding failed");
+                    connection.close();
+                    return new Result(ResultStatuses.ERROR);
+                }
+                else {
+                    connection.close();
+                    return new Result(ResultStatuses.OK);
+                }  
+            } catch (SQLException ex) {
+                connection.close();
+                log.error(ex.getMessage());
                 return new Result(ResultStatuses.ERROR);
             }
-            else return new Result(ResultStatuses.OK);
-        } catch (Exception ex) {
+        } catch (IOException | SQLException  ex) {
             log.error(ex.getMessage());
             return new Result(ResultStatuses.ERROR, ex.getMessage());
         }        
@@ -100,18 +111,25 @@ public class DbDataProvider implements IDataProvider<Generic>{
         if (!ResultStatuses.OK.equals(r.getStatus())) return r;
         try {
             Connection connection = initConnection();
-            Statement statement = connection.createStatement();
-            String sql = "Update " + getTableName(obj) + 
-                    " set description = '" + obj.getDescription() + 
-                    "' , set objectid = " + obj.getObjectId() +
-                    ", set objecttype = '" + obj.getObjectType()
-                    + "' where id = " + obj.getId() + ";";
-            if (statement.executeUpdate(sql) == 0){
-                log.error("Updating failed");
-                return new Result(ResultStatuses.ERROR);
-            }                
-            else return new Result(ResultStatuses.OK);
-        } catch (Exception ex) {
+            try{
+                Statement statement = connection.createStatement();
+                String sql = "Update " + getTableName(obj) + 
+                        " set description = '" + obj.getDescription() + 
+                        "' , set objectid = " + obj.getObjectId() +
+                        ", set objecttype = '" + obj.getObjectType()
+                        + "' where id = " + obj.getId() + ";";
+                if (statement.executeUpdate(sql) == 0){
+                    log.error("Updating failed");
+                    connection.close();
+                    return new Result(ResultStatuses.ERROR);
+                }                
+                else return new Result(ResultStatuses.OK);
+            } catch (SQLException ex) {
+                log.error(ex.getMessage());
+                connection.close();
+                return new Result(ResultStatuses.ERROR, ex.getMessage());
+            }
+        } catch (IOException  | SQLException ex) {
             log.error(ex.getMessage());
             return new Result(ResultStatuses.ERROR, ex.getMessage());
         } 
@@ -125,15 +143,22 @@ public class DbDataProvider implements IDataProvider<Generic>{
         if (!ResultStatuses.OK.equals(r.getStatus())) return r;
         try {
             Connection connection = initConnection();
-            Statement statement = connection.createStatement();
-            String sql = "delete from " + getTableName(obj) + 
-                    " where id = " + obj.getId() + ";";
-            if (statement.executeUpdate(sql) == 0){
-                log.error("Deleting failed");
-                return new Result(ResultStatuses.ERROR);
-            }                
-            else return new Result(ResultStatuses.OK);
-        } catch (Exception ex) {
+            try {
+                Statement statement = connection.createStatement();
+                String sql = "delete from " + getTableName(obj) + 
+                        " where id = " + obj.getId() + ";";
+                if (statement.executeUpdate(sql) == 0){
+                    log.error("Deleting failed");
+                    connection.close();
+                    return new Result(ResultStatuses.ERROR);
+                }                
+                else return new Result(ResultStatuses.OK);
+            } catch (SQLException ex) {
+                log.error(ex.getMessage());
+                connection.close();
+                return new Result(ResultStatuses.ERROR, ex.getMessage());
+            }
+        } catch (IOException | SQLException ex) {
             log.error(ex.getMessage());
             return new Result(ResultStatuses.ERROR, ex.getMessage());
         } 
@@ -142,36 +167,42 @@ public class DbDataProvider implements IDataProvider<Generic>{
     @Override
     public Result getRecordById(Generic obj) {
         return getRecordById(obj, false);
-    }
-    
+    }    
     
     public Result getRecordById(Generic obj, boolean check) {
         try {
-            Connection connection = initConnection();            
-            Statement stmt = connection.createStatement();
-            String sql = "SELECT * from " + getTableName(obj) + " where id = " + obj.getId() + ";";
-            ResultSet resultSet = stmt.executeQuery(sql);
-            List<Generic> list = new ArrayList<Generic>(); 
-            Types type = obj.getType();
-            switch (type){
-                case ARIA : list = getAria(resultSet, connection, check);
-                    break;
-                case AUTHOR : list = getAuthor(resultSet, connection, check);
-                    break;
-                case COMPOSER : list = getComposer(resultSet, connection, check);
-                    break;
-                case LIBRETTO : list = getLibretto(resultSet, connection, check);
-                    break;
-                case OPERA : list = getOpera(resultSet, connection, check);
-                    break;
-                case SINGER : list = getSinger(resultSet, connection, check);
-                    break;
-                case NOTE : list = getNote(resultSet);
-                    break;                
+            Connection connection = initConnection();   
+            try{
+                Statement stmt = connection.createStatement();
+                String sql = "SELECT * from " + getTableName(obj) + " where id = " + obj.getId() + ";";
+                ResultSet resultSet = stmt.executeQuery(sql);
+                List<Generic> list = new ArrayList<Generic>(); 
+                Types type = obj.getType();
+                switch (type){
+                    case ARIA : list = getAria(resultSet, connection, check);
+                        break;
+                    case AUTHOR : list = getAuthor(resultSet, connection, check);
+                        break;
+                    case COMPOSER : list = getComposer(resultSet, connection, check);
+                        break;
+                    case LIBRETTO : list = getLibretto(resultSet, connection, check);
+                        break;
+                    case OPERA : list = getOpera(resultSet, connection, check);
+                        break;
+                    case SINGER : list = getSinger(resultSet, connection, check);
+                        break;
+                    case NOTE : list = getNote(resultSet);
+                        break;                
+                }
+                connection.close();
+                if (list.isEmpty()) return new Result(ResultStatuses.NOTFOUND, "Can't find object " + obj.getType() + " with id = " + obj.getId());
+                return new Result(ResultStatuses.OK, list);
+            } catch (SQLException ex) {
+                log.error(ex.getMessage());
+                connection.close();
+                return new Result(ResultStatuses.ERROR, ex.getMessage());
             }
-            if (list.isEmpty()) return new Result(ResultStatuses.ERROR, "Can't find object " + obj.getType() + " with id = " + obj.getId());
-            return new Result(ResultStatuses.OK, list);
-        } catch (Exception ex) {
+        } catch (IOException | SQLException ex) {
             log.error(ex.getMessage());
             return new Result(ResultStatuses.ERROR, ex.getMessage());
         }
@@ -197,20 +228,20 @@ public class DbDataProvider implements IDataProvider<Generic>{
         List<Generic> list = new ArrayList<Generic>(); 
         while(resultSet.next()){
             Author author = new Author(resultSet.getLong(1));
-            Date date = null;
+            Optional<Date> date = Optional.empty();
             author.setName(resultSet.getString(2));
             author.setSurname(resultSet.getString(3));
             author.setPatronymic(resultSet.getString(4));
             author.setBiography(resultSet.getString(5));
-            date = resultSet.getDate(6);
-            if (date != null) 
-                author.setBirthDate(date.getTime());
-            date = resultSet.getDate(7);
-            if (date != null)
-                author.setDeathDate(date.getTime());
+            date.ofNullable(resultSet.getDate(6));
+            if (date.isPresent()) 
+                author.setBirthDate(date.get().getTime());
+            date.ofNullable(resultSet.getDate(7));
+            if (date.isPresent())
+                author.setDeathDate(date.get().getTime());
             list.add(author);
         }
-        if (!check){
+        if (!check  && !list.isEmpty()){
             list = getRelationsAuthor(list, connection);
         }
         return list;
@@ -219,21 +250,21 @@ public class DbDataProvider implements IDataProvider<Generic>{
     private List<Generic> getComposer(ResultSet resultSet, Connection connection, boolean check) throws SQLException, IOException{
         List<Generic> list = new ArrayList<Generic>(); 
         while(resultSet.next()){
-            Date date = null;
+            Optional<Date> date = null;
             Composer composer = new Composer(resultSet.getLong(1));
             composer.setName(resultSet.getString(2));
             composer.setSurname(resultSet.getString(3));
             composer.setPatronymic(resultSet.getString(4));
             composer.setBiography(resultSet.getString(5));
-            date = resultSet.getDate(6);
-            if (date != null) 
-                composer.setBirthDate(date.getTime());
-            date = resultSet.getDate(7);
-            if (date != null) 
-                composer.setDeathDate(date.getTime());
+            date.ofNullable(resultSet.getDate(6));
+            if (date.isPresent()) 
+                composer.setBirthDate(date.get().getTime());
+            date.ofNullable(resultSet.getDate(7));
+            if (date.isPresent())
+                composer.setDeathDate(date.get().getTime());
             list.add(composer);
         }
-        if (!check){
+        if (!check && !list.isEmpty()){
             list = getRelationsComposer(list, connection);
         }
         return list;
@@ -247,7 +278,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
             libretto.setOperaId(resultSet.getLong(3));
             list.add(libretto);
         }
-        if (!check){
+        if (!check && !list.isEmpty()){
             list = getRelationsLibretto(list, connection);
         }
         return list;
@@ -262,7 +293,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
             opera.setLibrettoId(resultSet.getLong(4));
             list.add(opera);
         }
-        if (!check){
+        if (!check && !list.isEmpty()){
             list = getRelationsOpera(list, connection);
         }
         return list;
@@ -283,22 +314,22 @@ public class DbDataProvider implements IDataProvider<Generic>{
     private List<Generic> getSinger(ResultSet resultSet, Connection connection, boolean check) throws SQLException, IOException{
         List<Generic> list = new ArrayList<Generic>(); 
         while(resultSet.next()){
-            Date date = null;
+            Optional<Date> date = null;
             Singer singer = new Singer(resultSet.getLong(1));
             singer.setName(resultSet.getString(2));
             singer.setSurname(resultSet.getString(3));
             singer.setPatronymic(resultSet.getString(4));
             singer.setBiography(resultSet.getString(5));
-            date = resultSet.getDate(6);
-            if (date != null) 
-                singer.setBirthDate(date.getTime());
-            date = resultSet.getDate(7);
-            if (date != null) 
-                singer.setDeathDate(date.getTime());
+             date.ofNullable(resultSet.getDate(6));
+            if (date.isPresent()) 
+                singer.setBirthDate(date.get().getTime());
+            date.ofNullable(resultSet.getDate(7));
+            if (date.isPresent())
+                singer.setDeathDate(date.get().getTime());
             singer.setVoice(resultSet.getString(8));
             list.add(singer);
         }
-        if (!check){
+        if (!check && !list.isEmpty()){
             list = getRelationsSinger(list, connection);
         }
         return list;
@@ -357,6 +388,24 @@ public class DbDataProvider implements IDataProvider<Generic>{
                                     (a1, a2) -> a1.addAll(a2)));                            
                     ((Aria)e).setComposers(relationList);
             });
+            
+            sql = "select t.id, n.id from " + getConfigurationEntry(DB_TABLE_ARIA )
+                    + " t join " + getConfigurationEntry(DB_TABLE_NOTE) + " n on t.id = n.objectId;";          
+            relations = stmt.executeQuery(sql);
+            allRelations.clear();            
+            while(relations.next()){
+                allRelations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+            }
+            list.stream().forEach(e -> {
+                    List<Long> relationList = new ArrayList<Long>();
+                    relationList.addAll(allRelations
+                            .stream()
+                            .filter(r -> r.getId1() == e.getId())
+                            .collect(ArrayList<Long>::new,
+                                    (a, r) ->  a.add(r.getId2()),
+                                    (a1, a2) -> a1.addAll(a2)));                            
+                    ((Aria)e).setNotes(relationList);
+            });            
             return list;
     }
     
@@ -395,13 +444,31 @@ public class DbDataProvider implements IDataProvider<Generic>{
                                     (a1, a2) -> a1.addAll(a2)));                            
                     ((Author)e).setLibrettos(relationList);
             });
+            
+            sql = "select t.id, n.id from " + getConfigurationEntry(DB_TABLE_AUTHOR)
+                    + " t join " + getConfigurationEntry(DB_TABLE_NOTE) + " n on t.id = n.objectId;";          
+            relations = stmt.executeQuery(sql);
+            allRelations.clear();            
+            while(relations.next()){
+                allRelations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+            }
+            list.stream().forEach(e -> {
+                    List<Long> relationList = new ArrayList<Long>();
+                    relationList.addAll(allRelations
+                            .stream()
+                            .filter(r -> r.getId1() == e.getId())
+                            .collect(ArrayList<Long>::new,
+                                    (a, r) ->  a.add(r.getId2()),
+                                    (a1, a2) -> a1.addAll(a2)));                            
+                    ((Author)e).setNotes(relationList);
+            });            
             return list;
     }
     
     private List<Generic> getRelationsComposer(List<Generic> list, Connection connection) throws IOException, SQLException{                   
             String sql = "select * from " + getConfigurationEntry(DB_TABLE_ARIA_COMPOSER) + ";";
             List<Relation> allRelations = new ArrayList<Relation>();
-            Statement stmt = connection.createStatement();            
+            Statement stmt = connection.createStatement();   
             ResultSet relations = stmt.executeQuery(sql);
             while(relations.next()){
                 allRelations.add(new Relation(relations.getLong(1), relations.getLong(2)));
@@ -415,6 +482,23 @@ public class DbDataProvider implements IDataProvider<Generic>{
                                     (a, r) ->  a.add(r.getId1()),
                                     (a1, a2) -> a1.addAll(a2)));                            
                     ((Composer)e).setAries(relationList);
+            });
+            sql = "select t.id, n.id from " + getConfigurationEntry(DB_TABLE_COMPOSER)
+                    + " t join " + getConfigurationEntry(DB_TABLE_NOTE) + " n on t.id = n.objectId;";          
+            relations = stmt.executeQuery(sql);
+            allRelations.clear();            
+            while(relations.next()){
+                allRelations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+            }
+            list.stream().forEach(e -> {
+                    List<Long> relationList = new ArrayList<Long>();
+                    relationList.addAll(allRelations
+                            .stream()
+                            .filter(r -> r.getId1() == e.getId())
+                            .collect(ArrayList<Long>::new,
+                                    (a, r) ->  a.add(r.getId2()),
+                                    (a1, a2) -> a1.addAll(a2)));                            
+                    ((Composer)e).setNotes(relationList);
             });
             return list;
     }   
@@ -437,6 +521,23 @@ public class DbDataProvider implements IDataProvider<Generic>{
                                     (a1, a2) -> a1.addAll(a2)));                            
                     ((Libretto)e).setAuthors(relationList);
             });
+            sql = "select t.id, n.id from " + getConfigurationEntry(DB_TABLE_LIBRETTO)
+                    + " t join " + getConfigurationEntry(DB_TABLE_NOTE) + " n on t.id = n.objectId;";          
+            relations = stmt.executeQuery(sql);
+            allRelations.clear();            
+            while(relations.next()){
+                allRelations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+            }
+            list.stream().forEach(e -> {
+                    List<Long> relationList = new ArrayList<Long>();
+                    relationList.addAll(allRelations
+                            .stream()
+                            .filter(r -> r.getId1() == e.getId())
+                            .collect(ArrayList<Long>::new,
+                                    (a, r) ->  a.add(r.getId2()),
+                                    (a1, a2) -> a1.addAll(a2)));                            
+                    ((Libretto)e).setNotes(relationList);
+            });
             return list;
     }
     
@@ -457,6 +558,23 @@ public class DbDataProvider implements IDataProvider<Generic>{
                                     (a, r) ->  a.add(r.getId1()),
                                     (a1, a2) -> a1.addAll(a2)));                            
                     ((Opera)e).setAries(relationList);
+            });
+            sql = "select t.id, n.id from " + getConfigurationEntry(DB_TABLE_OPERA)
+                    + " t join " + getConfigurationEntry(DB_TABLE_NOTE) + " n on t.id = n.objectId;";          
+            relations = stmt.executeQuery(sql);
+            allRelations.clear();            
+            while(relations.next()){
+                allRelations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+            }
+            list.stream().forEach(e -> {
+                    List<Long> relationList = new ArrayList<Long>();
+                    relationList.addAll(allRelations
+                            .stream()
+                            .filter(r -> r.getId1() == e.getId())
+                            .collect(ArrayList<Long>::new,
+                                    (a, r) ->  a.add(r.getId2()),
+                                    (a1, a2) -> a1.addAll(a2)));                            
+                    ((Opera)e).setNotes(relationList);
             });
             return list;
     }
@@ -479,6 +597,23 @@ public class DbDataProvider implements IDataProvider<Generic>{
                                     (a1, a2) -> a1.addAll(a2)));                            
                     ((Singer)e).setAries(relationList);
             });
+            sql = "select t.id, n.id from " + getConfigurationEntry(DB_TABLE_SINGER)
+                    + " t join " + getConfigurationEntry(DB_TABLE_NOTE) + " n on t.id = n.objectId;";          
+            relations = stmt.executeQuery(sql);
+            allRelations.clear();            
+            while(relations.next()){
+                allRelations.add(new Relation(relations.getLong(1), relations.getLong(2)));
+            }
+            list.stream().forEach(e -> {
+                    List<Long> relationList = new ArrayList<Long>();
+                    relationList.addAll(allRelations
+                            .stream()
+                            .filter(r -> r.getId1() == e.getId())
+                            .collect(ArrayList<Long>::new,
+                                    (a, r) ->  a.add(r.getId2()),
+                                    (a1, a2) -> a1.addAll(a2)));                            
+                    ((Singer)e).setNotes(relationList);
+            });
             return list;
     }
     
@@ -486,7 +621,8 @@ public class DbDataProvider implements IDataProvider<Generic>{
     public Result getAllRecords(Generic obj) {
         try {
             boolean check = false;
-            Connection connection = initConnection();            
+            Connection connection = initConnection();     
+            try{
             Statement stmt = connection.createStatement();
             String sql = "SELECT * from " + getTableName(obj) + ";";
             ResultSet resultSet = stmt.executeQuery(sql);
@@ -508,9 +644,15 @@ public class DbDataProvider implements IDataProvider<Generic>{
                 case NOTE : list = getNote(resultSet);
                     break;                
             }
-            if (list.isEmpty()) return new Result(ResultStatuses.ERROR, "Can't find object " + obj.getType() + " with id = " + obj.getId());
+            connection.close();
+            if (list.isEmpty()) return new Result(ResultStatuses.NOTFOUND, "Can't find object " + obj.getType() + " with id = " + obj.getId());
             return new Result(ResultStatuses.OK, list);
-        } catch (Exception ex) {
+            } catch (SQLException ex) {
+                log.error(ex.getMessage());
+                connection.close();
+                return new Result(ResultStatuses.ERROR, ex.getMessage());
+            }
+        } catch (IOException | SQLException ex) {
             log.error(ex.getMessage());
             return new Result(ResultStatuses.ERROR, ex.getMessage());
         }
@@ -543,5 +685,192 @@ public class DbDataProvider implements IDataProvider<Generic>{
                 break;
         }
         return tname;
+    }
+
+    @Override
+    public Result findRecord(Generic obj) {
+        Optional<Generic> object = Optional.ofNullable(obj);
+        if (!object.isPresent()) {
+            log.error("Object is null");
+            return new Result(ResultStatuses.ERROR, "Object is null");
+        }
+        else{
+            Optional<Types> type = Optional.ofNullable(obj.getType());
+            if (!type.isPresent()){
+                log.error("Object type is null");
+                return new Result(ResultStatuses.ERROR, "Object type is null");
+            }  
+            Result result = new Result();
+            try{
+                switch (type.get()){
+                    case ARIA : result = findAria((Aria)obj);
+                        break;
+                    case COMPOSER : result = findComposer((Composer)obj);
+                        break;
+                    case LIBRETTO : result = new Result(ResultStatuses.WARNING, "Unsupported type");
+                        break;
+                    case OPERA : result = findOpera((Opera)obj);
+                        break;
+                    case SINGER : result = findSinger((Singer)obj);
+                        break;
+                    case AUTHOR : result = findAuthor((Author)obj);
+                        break;    
+                    case NOTE: result = findNote((Note)obj);  
+                        break; 
+                }  
+            } catch (SQLException ex) {
+                log.error(ex.getMessage());
+                return new Result(ResultStatuses.ERROR, ex.getMessage());
+            }
+            return result;
+        }
+    }
+    
+    private Result findAria(Aria obj) throws SQLException{
+        Connection connection = initConnection();
+        try{
+            List<String> conditions = new ArrayList<String>();
+            String query = "Select * from " + getTableName(obj) + " ";
+            if (obj.getTitle() != null) conditions.add(" title LIKE '%" + obj.getTitle() + "%' ");
+            if (obj.getText()!= null) conditions.add(" title LIKE '%" + obj.getText()+ "%' ");
+            if (!conditions.isEmpty()){
+                query += " where " + String.join(" AND ", conditions.toArray(new String[conditions.size()]));
+                Statement stmt = connection.createStatement();
+                ResultSet resultSet = stmt.executeQuery(query);
+                List<Generic> list = new ArrayList<Generic>();
+                list.addAll(getAria(resultSet, connection, false)); 
+                if (list.isEmpty()) return new Result(ResultStatuses.NOTFOUND);
+                return new Result(ResultStatuses.OK, list);
+            }
+            return new Result(ResultStatuses.NOTFOUND);
+        } catch (IOException ex) {
+            log.error(ex.getMessage());
+            connection.close();
+            return new Result(ResultStatuses.ERROR, ex.getMessage());
+        }        
+    }
+    
+    private Result findComposer(Composer obj) throws SQLException{
+        Connection connection = initConnection();
+        try{
+            List<String> conditions = new ArrayList<String>();
+            String query = "Select * from " + getTableName(obj) + " ";
+            if (obj.getName()!= null) conditions.add(" title LIKE '%" + obj.getName() + "%' ");
+            if (obj.getSurname()!= null) conditions.add(" title LIKE '%" + obj.getSurname()+ "%' ");
+            if (obj.getPatronymic()!= null) conditions.add(" title LIKE '%" + obj.getPatronymic()+ "%' ");            
+            if (!conditions.isEmpty()){
+                query += " where " + String.join(" AND ", conditions.toArray(new String[conditions.size()]));
+                Statement stmt = connection.createStatement();
+                ResultSet resultSet = stmt.executeQuery(query);
+                List<Generic> list = new ArrayList<Generic>();
+                list.addAll(getComposer(resultSet, connection, false)); 
+                if (list.isEmpty()) return new Result(ResultStatuses.NOTFOUND);
+                return new Result(ResultStatuses.OK, list);
+            }
+            return new Result(ResultStatuses.NOTFOUND);
+        } catch (IOException ex) {
+            log.error(ex.getMessage());
+            connection.close();
+            return new Result(ResultStatuses.ERROR, ex.getMessage());
+        }        
+    }
+    
+    private Result findAuthor(Author obj) throws SQLException{
+        Connection connection = initConnection();
+        try{
+            List<String> conditions = new ArrayList<String>();
+            String query = "Select * from " + getTableName(obj) + " ";
+            if (obj.getName()!= null) conditions.add(" title LIKE '%" + obj.getName() + "%' ");
+            if (obj.getSurname()!= null) conditions.add(" title LIKE '%" + obj.getSurname()+ "%' ");
+            if (obj.getPatronymic()!= null) conditions.add(" title LIKE '%" + obj.getPatronymic()+ "%' ");            
+            if (!conditions.isEmpty()){
+                query += " where " + String.join(" AND ", conditions.toArray(new String[conditions.size()]));
+                Statement stmt = connection.createStatement();
+                ResultSet resultSet = stmt.executeQuery(query);
+                List<Generic> list = new ArrayList<Generic>();
+                list.addAll(getAuthor(resultSet, connection, false)); 
+                if (list.isEmpty()) return new Result(ResultStatuses.NOTFOUND);
+                return new Result(ResultStatuses.OK, list);
+            }
+            return new Result(ResultStatuses.NOTFOUND);
+        } catch (IOException ex) {
+            log.error(ex.getMessage());
+            connection.close();
+            return new Result(ResultStatuses.ERROR, ex.getMessage());
+        }        
+    }
+    
+    private Result findSinger(Singer obj) throws SQLException{
+        Connection connection = initConnection();
+        try{
+            List<String> conditions = new ArrayList<String>();
+            String query = "Select * from " + getTableName(obj) + " ";
+            if (obj.getName()!= null) conditions.add(" title LIKE '%" + obj.getName() + "%' ");
+            if (obj.getSurname()!= null) conditions.add(" title LIKE '%" + obj.getSurname()+ "%' ");
+            if (obj.getPatronymic()!= null) conditions.add(" title LIKE '%" + obj.getPatronymic()+ "%' "); 
+            if (obj.getVoice()!= null) conditions.add(" title LIKE '%" + obj.getVoice()+ "%' ");   
+            if (!conditions.isEmpty()){
+                query += " where " + String.join(" AND ", conditions.toArray(new String[conditions.size()]));
+                Statement stmt = connection.createStatement();
+                ResultSet resultSet = stmt.executeQuery(query);
+                List<Generic> list = new ArrayList<Generic>();
+                list.addAll(getSinger(resultSet, connection, false)); 
+                if (list.isEmpty()) return new Result(ResultStatuses.NOTFOUND);
+                return new Result(ResultStatuses.OK, list);
+            }
+            return new Result(ResultStatuses.NOTFOUND);
+        } catch (IOException ex) {
+            log.error(ex.getMessage());
+            connection.close();
+            return new Result(ResultStatuses.ERROR, ex.getMessage());
+        }        
+    }
+    
+    private Result findOpera(Opera obj) throws SQLException{
+        Connection connection = initConnection();
+        try{
+            List<String> conditions = new ArrayList<String>();
+            String query = "Select * from " + getTableName(obj) + " ";
+            if (obj.getTitle() != null) conditions.add(" title LIKE '%" + obj.getTitle() + "%' ");
+
+            if (!conditions.isEmpty()){
+                query += " where " + String.join(" AND ", conditions.toArray(new String[conditions.size()]));
+                Statement stmt = connection.createStatement();
+                ResultSet resultSet = stmt.executeQuery(query);
+                List<Generic> list = new ArrayList<Generic>();
+                list.addAll(getAria(resultSet, connection, false)); 
+                if (list.isEmpty()) return new Result(ResultStatuses.NOTFOUND);
+                return new Result(ResultStatuses.OK, list);
+            }
+            return new Result(ResultStatuses.NOTFOUND);
+        } catch (IOException ex) {
+            log.error(ex.getMessage());
+            connection.close();
+            return new Result(ResultStatuses.ERROR, ex.getMessage());
+        }        
+    }
+    
+    private Result findNote(Note obj) throws SQLException{
+        Connection connection = initConnection();
+        try{
+            List<String> conditions = new ArrayList<String>();
+            String query = "Select * from " + getTableName(obj) + " ";
+            if (obj.getObjectType()!= null) conditions.add(" title LIKE '%" + obj.getObjectType()+ "%' ");
+            
+            if (!conditions.isEmpty()){
+                query += " where " + String.join(" AND ", conditions.toArray(new String[conditions.size()]));
+                Statement stmt = connection.createStatement();
+                ResultSet resultSet = stmt.executeQuery(query);
+                List<Generic> list = new ArrayList<Generic>();
+                list.addAll(getAria(resultSet, connection, false)); 
+                if (list.isEmpty()) return new Result(ResultStatuses.NOTFOUND);
+                return new Result(ResultStatuses.OK, list);
+            }
+            return new Result(ResultStatuses.NOTFOUND);
+        } catch (IOException ex) {
+            log.error(ex.getMessage());
+            connection.close();
+            return new Result(ResultStatuses.ERROR, ex.getMessage());
+        }        
     }
 }

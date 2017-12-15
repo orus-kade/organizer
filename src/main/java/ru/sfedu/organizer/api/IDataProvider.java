@@ -15,5 +15,7 @@ public interface IDataProvider<T extends Generic> {
     public Result getRecordById(T obj);
     
     public Result getAllRecords(T obj);
+    
+    public Result findRecord(T obj);
    
 }

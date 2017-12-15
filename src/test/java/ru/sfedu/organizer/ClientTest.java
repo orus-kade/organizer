@@ -95,34 +95,7 @@ public class ClientTest {
     
     @Test
     public void eqe(){
-        try {
-            SimpleDateFormat ft = new SimpleDateFormat ("yyyy-MM-dd");
-//            long begin = ft.parse("1990-12-12").getTime();      
-//            long end = ft.parse("2017-12-12").getTime();
-            
-            Date begin = ft.parse("1990-12-12");      
-            Date end = ft.parse("2017-12-12");
-            
-            
-            Generator g = new Generator();
-            long date = g.generateDateLong(begin, end);
-            System.out.println(date);
-            System.out.println(new Date(date));
-            
-            
-//
-//      System.out.print("Строка " + str + " распаршена как "); 
-//      Date parsingDate;
-//      try {
-//         date = ft.parse(str);
-//         System.out.println(date);
-//      }catch (ParseException e) {
-//         System.out.println("Нераспаршена с помощью " + ft); 
-//      }
-//        
-        } catch (Exception ex) {
-            Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }
  
 }

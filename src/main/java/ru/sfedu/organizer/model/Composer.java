@@ -47,6 +47,7 @@ public class Composer extends Human {
   private long deathDate;  
 
   private List<Long> aries;
+  private List<Long> notes;
   
   //
   // Constructors
@@ -67,8 +68,15 @@ public class Composer extends Human {
     public void setAries(List<Long> aries) {
         this.aries = aries;
     }
-  
-    
+
+    public List<Long> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<Long> notes) {
+        this.notes = notes;
+    }
+
 
     @Override
     public long getId() {
@@ -148,7 +156,7 @@ public class Composer extends Human {
 
     @Override
     public String toString() {
-        return "Composer{" + "id=" + id + ", type=" + type + ", name=" + name + ", surname=" + surname + ", patronymic=" + patronymic + ", biography=" + biography + ", birthDate=" + birthDate + ", deathDate=" + deathDate + ", aries=" + aries + '}';
+        return "Composer{" + "id=" + id + ", type=" + type + ", name=" + name + ", surname=" + surname + ", patronymic=" + patronymic + ", biography=" + biography + ", birthDate=" + birthDate + ", deathDate=" + deathDate + ", aries=" + aries + ", notes=" + notes +'}';
     }
     
     

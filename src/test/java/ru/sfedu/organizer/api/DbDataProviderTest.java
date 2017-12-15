@@ -31,13 +31,11 @@ public class DbDataProviderTest {
         
         try {
             DbDataProvider provider = new DbDataProvider();
-            Composer obj = new Composer(1);
+            Aria obj = new Aria(1);
             Result result = provider.getAllRecords(obj);
             System.out.println(result.getStatus());
             if (result.getStatus().equals(ResultStatuses.OK)){
                 System.out.println(result.getList());
-                Date date = new Date(((Composer)(result.getList().get(0))).getBirthDate());
-                System.out.println(date);
             }
             
         } catch (IOException ex) {

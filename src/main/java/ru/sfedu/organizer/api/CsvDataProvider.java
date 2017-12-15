@@ -51,22 +51,22 @@ public class CsvDataProvider implements IDataProvider{
             Result result = new Result();
             result.setStatus(ResultStatuses.OK);
             return result;
-        } catch (Exception ex) {
+        } catch (CsvDataTypeMismatchException | CsvRequiredFieldEmptyException | IOException | IllegalStateException ex) {
             log.error(ex.getMessage());
             Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
             return result;
         }        
     }
         
-    private Result checkNote(Generic obj){
-        Note note = (Note)obj;
+    private Result checkNote(Generic obj){        
         Result result = new Result();
-        if (note == null){
+        if (obj == null){
             result.setStatus(ResultStatuses.ERROR);
             result.setMessage("Note: Object is null");
             log.error(result.getMessage());
         }
         else{
+            Note note = (Note)obj;
             try{
                 Types.valueOf(note.getObjectType());
             } catch(IllegalArgumentException ex){
@@ -126,7 +126,7 @@ public class CsvDataProvider implements IDataProvider{
             Result result = new Result();            
             result.setStatus(ResultStatuses.OK);
             return result;
-        } catch (Exception ex) {
+        } catch (CsvDataTypeMismatchException | CsvRequiredFieldEmptyException | IOException | IllegalStateException ex) {
             log.error(ex.getMessage());
             Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
             return result;
@@ -163,7 +163,7 @@ public class CsvDataProvider implements IDataProvider{
             Result result = new Result();
             result.setStatus(ResultStatuses.OK);
             return result;
-        } catch (Exception ex) {
+        } catch (CsvDataTypeMismatchException | CsvRequiredFieldEmptyException | IOException | IllegalStateException ex) {
             log.error(ex.getMessage()); 
             Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
             return result;
@@ -191,7 +191,7 @@ public class CsvDataProvider implements IDataProvider{
             List<Generic> list = csvToBean.parse();
             reader.close();
             if (list.isEmpty()){
-                Result result = new Result(ResultStatuses.ERROR, "Can't find object "+obj.getType()+" with id = "+obj.getId());
+                Result result = new Result(ResultStatuses.NOTFOUND, "Can't find object "+obj.getType()+" with id = "+obj.getId());
                 log.error(result.getMessage());
                 return result;
             }
@@ -329,7 +329,17 @@ public class CsvDataProvider implements IDataProvider{
                     .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId2()),
                             (a1, a2) -> a1.addAll(a2));
-            aria.setSingers(list);              
+            aria.setSingers(list); 
+            
+            Optional<List<Generic>> notes = Optional.ofNullable(getAllRecords(new Note()).getList());
+            if(notes.isPresent()){
+                list = notes.get().stream()
+                        .filter(e -> (obj.getId() == ((Note)e).getObjectId() && ((Note)e).getObjectType().equals(obj.getType().toString())))
+                        .collect(ArrayList<Long>::new,
+                            (a, r) ->  a.add(r.getId()),
+                            (a1, a2) -> a1.addAll(a2));
+                aria.setNotes(list); 
+            }            
             return aria;
     }
     
@@ -345,13 +355,24 @@ public class CsvDataProvider implements IDataProvider{
             List<Relation> relations = csvToBean.parse();
             reader.close();
             if (relations.isEmpty()) return obj;
-            List<Long> aries = relations.stream()
+            List<Long> list = relations.stream()
                     .filter(r -> r.getId2() == obj.getId())
                     .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId1()),
                             (a1, a2) -> a1.addAll(a2));
             Composer composer = (Composer)obj;
-            composer.setAries(aries);
+            composer.setAries(list);
+            
+            Optional<List<Generic>> notes = Optional.ofNullable(getAllRecords(new Note()).getList());
+            if(notes.isPresent()){
+                list = notes.get().stream()
+                        .filter(e -> (obj.getId() == ((Note)e).getObjectId() && ((Note)e).getObjectType().equals(obj.getType().toString())))
+                        .collect(ArrayList<Long>::new,
+                            (a, r) ->  a.add(r.getId()),
+                            (a1, a2) -> a1.addAll(a2));
+                composer.setNotes(list); 
+            }
+            
             return composer;
     }
         
@@ -367,13 +388,23 @@ public class CsvDataProvider implements IDataProvider{
             List<Relation> relations = csvToBean.parse();
             reader.close();
             if (relations.isEmpty()) return obj;
-            List<Long> authors = relations.stream()
+            List<Long> list = relations.stream()
                     .filter(r -> r.getId2() == obj.getId())
                     .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId1()),
                             (a1, a2) -> a1.addAll(a2));
             Libretto libretto = (Libretto)obj;
-            libretto.setAuthors(authors);
+            libretto.setAuthors(list);
+            
+            Optional<List<Generic>> notes = Optional.ofNullable(getAllRecords(new Note()).getList());
+            if(notes.isPresent()){
+                list = notes.get().stream()
+                        .filter(e -> (obj.getId() == ((Note)e).getObjectId() && ((Note)e).getObjectType().equals(obj.getType().toString())))
+                        .collect(ArrayList<Long>::new,
+                            (a, r) ->  a.add(r.getId()),
+                            (a1, a2) -> a1.addAll(a2));
+                libretto.setNotes(list); 
+            }
             return libretto;
     }    
             
@@ -389,13 +420,23 @@ public class CsvDataProvider implements IDataProvider{
             List<Aria> aries = csvToBean.parse();
             reader.close();
             if (aries.isEmpty()) return obj;
-            List<Long> ar = aries.stream()
+            List<Long> list = aries.stream()
                     .filter(r -> r.getOperaId() == obj.getId())
                     .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId()),
                             (a1, a2) -> a1.addAll(a2));
             Opera opera = (Opera)obj;
-            opera.setAries(ar);
+            opera.setAries(list);
+            
+            Optional<List<Generic>> notes = Optional.ofNullable(getAllRecords(new Note()).getList());
+            if(notes.isPresent()){
+                list = notes.get().stream()
+                        .filter(e -> (obj.getId() == ((Note)e).getObjectId() && ((Note)e).getObjectType().equals(obj.getType().toString())))
+                        .collect(ArrayList<Long>::new,
+                            (a, r) ->  a.add(r.getId()),
+                            (a1, a2) -> a1.addAll(a2));
+                opera.setNotes(list); 
+            }
             return opera;
     }
                 
@@ -411,13 +452,22 @@ public class CsvDataProvider implements IDataProvider{
             List<Relation> relations = csvToBean.parse();
             reader.close();
             if (relations.isEmpty()) return obj;
-            List<Long> aries = relations.stream()
+            List<Long> list = relations.stream()
                     .filter(r -> r.getId2() == obj.getId())
                     .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId1()),
                             (a1, a2) -> a1.addAll(a2));
             Singer singer = (Singer)obj;
-            singer.setAries(aries);
+            singer.setAries(list);
+            Optional<List<Generic>> notes = Optional.ofNullable(getAllRecords(new Note()).getList());
+            if(notes.isPresent()){
+                list = notes.get().stream()
+                        .filter(e -> (obj.getId() == ((Note)e).getObjectId() && ((Note)e).getObjectType().equals(obj.getType().toString())))
+                        .collect(ArrayList<Long>::new,
+                            (a, r) ->  a.add(r.getId()),
+                            (a1, a2) -> a1.addAll(a2));
+                singer.setNotes(list); 
+            }
             return singer;
     }
                     
@@ -453,7 +503,16 @@ public class CsvDataProvider implements IDataProvider{
                     .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId2()),
                             (a1, a2) -> a1.addAll(a2));
-            author.setLibrettos(list);            
+            author.setLibrettos(list); 
+            Optional<List<Generic>> notes = Optional.ofNullable(getAllRecords(new Note()).getList());
+            if(notes.isPresent()){
+                list = notes.get().stream()
+                        .filter(e -> (obj.getId() == ((Note)e).getObjectId() && ((Note)e).getObjectType().equals(obj.getType().toString())))
+                        .collect(ArrayList<Long>::new,
+                            (a, r) ->  a.add(r.getId()),
+                            (a1, a2) -> a1.addAll(a2));
+                author.setNotes(list); 
+            }
             return author;
     }
 
@@ -487,5 +546,43 @@ public class CsvDataProvider implements IDataProvider{
             Result result = new Result(ResultStatuses.ERROR,ex.getMessage());
             return result;
         } 
-    }    
+    }
+
+    @Override
+    public Result findRecord(Generic obj) {
+        Optional<Generic> object = Optional.ofNullable(obj);
+        if (!object.isPresent()) {
+            log.error("Object is null");
+            return new Result(ResultStatuses.ERROR, "Object is null");
+        }
+        else{
+            Optional<Types> type = Optional.ofNullable(obj.getType());
+            if (!type.isPresent()){
+                log.error("Object type is null");
+                return new Result(ResultStatuses.ERROR, "Object type is null");
+            }  
+            Result result = new Result();
+//            switch (type.get()){
+//                case ARIA : result = findAria((Aria)obj);
+//                    break;
+//                case COMPOSER : result = findComposer((Composer)obj);
+//                    break;
+//                case LIBRETTO : result = findLibretto((Libretto)obj);
+//                    break;
+//                case OPERA : result = findOpera((Opera)obj);
+//                    break;
+//                case SINGER : result = findSinger((Singer)obj);
+//                    break;
+//                case AUTHOR : result = findAuthor((Author)obj);
+//                    break;    
+//                case NOTE: result = findNote((Note)obj);  
+//                    break; 
+//            }
+            return result;
+        }
+    }
+    
+//    private Result findAria(Aria obj){
+//        
+//    }
 }

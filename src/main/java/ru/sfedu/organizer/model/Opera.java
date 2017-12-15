@@ -30,6 +30,7 @@ public class Opera extends Generic{
   private long librettoId;
   
   private List<Long> aries;
+  private List<Long> notes;
   
   public Opera () {
       this.type = OPERA;
@@ -72,7 +73,13 @@ public class Opera extends Generic{
         this.aries = aries;
     }
 
-    
+    public List<Long> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<Long> notes) {
+        this.notes = notes;
+    }
 
     
 
@@ -93,7 +100,7 @@ public class Opera extends Generic{
 
     @Override
     public String toString() {
-        return "Opera{" + "id=" + id + ", type=" + type + ", title=" + title + ", history=" + history + ", librettoId=" + librettoId + ", aries=" + aries + '}';
+        return "Opera{" + "id=" + id + ", type=" + type + ", title=" + title + ", history=" + history + ", librettoId=" + librettoId + ", aries=" + aries + ", notes=" + notes +'}';
     }
     
     

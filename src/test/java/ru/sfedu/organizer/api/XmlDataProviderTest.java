@@ -70,7 +70,7 @@ public class XmlDataProviderTest {
     @Test
     public void testGetAll(){
         XmlDataProvider provider = new XmlDataProvider();
-        Generic obj = new Singer();
+        Generic obj = new Opera();
         Result result = provider.getAllRecords(obj);
         System.out.println(result.getStatus());
         if (result.getStatus().equals(ResultStatuses.OK)){

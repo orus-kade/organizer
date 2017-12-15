@@ -53,6 +53,7 @@ public class Singer extends Human {
   private String voice;
   
   private List<Long> aries;
+  private List<Long> notes;
 
   public Singer () {
       this.type = SINGER;
@@ -79,6 +80,16 @@ public class Singer extends Human {
         this.aries = aries;
     }   
 
+    public List<Long> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<Long> notes) {
+        this.notes = notes;
+    }
+
+    
+    
     @Override
     public long getId() {
         return id;
@@ -157,7 +168,7 @@ public class Singer extends Human {
 
     @Override
     public String toString() {
-        return "Singer{" + "id=" + id + ", type=" + type + ", name=" + name + ", surname=" + surname + ", patronymic=" + patronymic + ", biography=" + biography + ", birthDate=" + birthDate + ", deathDate=" + deathDate + ", voice=" + voice + ", aries=" + aries + '}';
+        return "Singer{" + "id=" + id + ", type=" + type + ", name=" + name + ", surname=" + surname + ", patronymic=" + patronymic + ", biography=" + biography + ", birthDate=" + birthDate + ", deathDate=" + deathDate + ", voice=" + voice + ", aries=" + aries + ", notes=" + notes +'}';
     }
         
     
