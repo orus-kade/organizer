@@ -103,7 +103,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
                 case SINGER : object = new Singer(note.getObjectId());
                     break;
             }        
-            result = getRecordById(object);
+            result = getRecordById(object, true);
         }       
         return result;
     }
@@ -121,8 +121,8 @@ public class DbDataProvider implements IDataProvider<Generic>{
                 Statement statement = connection.createStatement();
                 String sql = "Update " + getTableName(obj) + 
                         " set description = '" + obj.getDescription() + 
-                        "' , set objectid = " + obj.getObjectId() +
-                        ", set objecttype = '" + obj.getObjectType()
+                        "' , objectid = " + obj.getObjectId() +
+                        ", objecttype = '" + obj.getObjectType()
                         + "' where id = " + obj.getId() + ";";
                 if (statement.executeUpdate(sql) == 0){
                     log.error("Updating failed");
@@ -251,7 +251,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
         }
         if (!check  && !list.isEmpty()){
             List<Generic> listWithRelations = new ArrayList<Generic>();
-            listWithRelations.addAll(getRelationsAria(list, connection));
+            listWithRelations.addAll(getRelationsAuthor(list, connection));
             return listWithRelations;
         }
         return list;
@@ -260,7 +260,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
     private List<Generic> getComposer(ResultSet resultSet, Connection connection, boolean check) throws SQLException, IOException{
         List<Generic> list = new ArrayList<Generic>(); 
         while(resultSet.next()){
-            Optional<Date> date = null;
+            Optional<Date> date = Optional.empty();
             Composer composer = new Composer(resultSet.getLong(1));
             composer.setName(resultSet.getString(2));
             composer.setSurname(resultSet.getString(3));
@@ -276,7 +276,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
         }
         if (!check && !list.isEmpty()){
             List<Generic> listWithRelations = new ArrayList<Generic>();
-            listWithRelations.addAll(getRelationsAria(list, connection));
+            listWithRelations.addAll(getRelationsComposer(list, connection));
             return listWithRelations;
         }
         return list;
@@ -292,7 +292,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
         }
         if (!check && !list.isEmpty()){
             List<Generic> listWithRelations = new ArrayList<Generic>();
-            listWithRelations.addAll(getRelationsAria(list, connection));
+            listWithRelations.addAll(getRelationsLibretto(list, connection));
             return listWithRelations;
         }
         return list;
@@ -309,7 +309,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
         }
         if (!check && !list.isEmpty()){
             List<Generic> listWithRelations = new ArrayList<Generic>();
-            listWithRelations.addAll(getRelationsAria(list, connection));
+            listWithRelations.addAll(getRelationsOpera(list, connection));
             return listWithRelations;
         }
         return list;
@@ -330,7 +330,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
     private List<Generic> getSinger(ResultSet resultSet, Connection connection, boolean check) throws SQLException, IOException{
         List<Generic> list = new ArrayList<Generic>(); 
         while(resultSet.next()){
-            Optional<Date> date = null;
+            Optional<Date> date = Optional.empty();
             Singer singer = new Singer(resultSet.getLong(1));
             singer.setName(resultSet.getString(2));
             singer.setSurname(resultSet.getString(3));
@@ -347,7 +347,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
         }
         if (!check && !list.isEmpty()){
             List<Generic> listWithRelations = new ArrayList<Generic>();
-            listWithRelations.addAll(getRelationsAria(list, connection));
+            listWithRelations.addAll(getRelationsSinger(list, connection));
             return listWithRelations;
         }
         return list;

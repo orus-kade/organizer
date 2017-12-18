@@ -1,6 +1,7 @@
 
 package ru.sfedu.organizer.api;
 
+import javax.swing.text.html.HTML;
 import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.FixMethodOrder;
@@ -19,7 +20,7 @@ import static ru.sfedu.organizer.utils.MyGenerator.generateType;
 
 //@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CsvDataProviderTest {
-    private static final Logger log = Logger.getLogger(CsvDataProviderTest.class);
+    //private static final Logger log = Logger.getLogger(CsvDataProviderTest.class);
     
     public CsvDataProviderTest() {
     }
@@ -113,8 +114,7 @@ public class CsvDataProviderTest {
                 System.out.println(note);
                 Assert.assertFalse("TestEdit faild", equals);
             }
-        }
-        
+        }        
         System.out.println("ru.sfedu.organizer.api.CsvDataProviderTest.TestDelete");
         result = provider.deleteRecord(note);
         System.out.println("Deleting : " + result.getStatus());
@@ -122,8 +122,8 @@ public class CsvDataProviderTest {
             System.out.println("Note : " + note);
             result = provider.getRecordById(note);
             System.out.println("Get by id : " + result.getStatus());
-            boolean equals = result.getStatus().equals(ResultStatuses.NOTFOUND);
-            //Assert.assertFalse("TestDeleted faild", result.getStatus().equals(ResultStatuses.NOTFOUND));
+            if (!result.getStatus().equals(ResultStatuses.NOTFOUND))
+                Assert.fail("TestDeleted faild");
         }
     }
  
