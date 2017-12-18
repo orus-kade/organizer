@@ -50,10 +50,13 @@ public class CsvDataProvider implements IDataProvider{
             beanWriter.write(list);
             writer.close();
             Result result = new Result();
-            result.setStatus(ResultStatuses.OK);
+            List<Generic> resultList = new ArrayList<Generic>();
+            resultList.add(obj);
+            result.setList(resultList);
+            result.setStatus(ResultStatuses.OK);            
             return result;
         } catch (CsvDataTypeMismatchException | CsvRequiredFieldEmptyException | IOException | IllegalStateException ex) {
-            log.error(ex.getMessage());
+            log.error(ex);
             Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
             return result;
         }        
@@ -71,7 +74,7 @@ public class CsvDataProvider implements IDataProvider{
             try{
                 Types.valueOf(note.getObjectType());
             } catch(IllegalArgumentException ex){
-                log.error(ex.getMessage());
+                log.error(ex);
                 return new Result(ResultStatuses.ERROR, ex.getMessage());
             }
             Generic object = null;
@@ -129,7 +132,7 @@ public class CsvDataProvider implements IDataProvider{
             result.setStatus(ResultStatuses.OK);
             return result;
         } catch (CsvDataTypeMismatchException | CsvRequiredFieldEmptyException | IOException | IllegalStateException ex) {
-            log.error(ex.getMessage());
+            log.error(ex);
             Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
             return result;
         } 
@@ -147,7 +150,7 @@ public class CsvDataProvider implements IDataProvider{
                     .withSeparator(';')
                     .build();         
             List<Generic> list = new ArrayList<Generic>();
-            list.adaAll(csvToBean.parse());
+            list.addAll(csvToBean.parse());
             reader.close(); 
             if (!list.removeIf(e -> e.getId() == obj.getId())){
                 Result result = new Result(ResultStatuses.ERROR, "Object " + obj + " not found");
@@ -167,7 +170,7 @@ public class CsvDataProvider implements IDataProvider{
             result.setStatus(ResultStatuses.OK);
             return result;
         } catch (CsvDataTypeMismatchException | CsvRequiredFieldEmptyException | IOException | IllegalStateException ex) {
-            log.error(ex.getMessage()); 
+            log.error(ex); 
             Result result = new Result(ResultStatuses.ERROR, ex.getMessage());
             return result;
         }        
@@ -207,7 +210,7 @@ public class CsvDataProvider implements IDataProvider{
                 try {
                     g = getRelations(g);
                 } catch (IOException ex) {
-                    log.warn(ex.getMessage());
+                    log.warn(ex);
                     result.setStatus(ResultStatuses.WARNING);
                     result.setMessage(result.getMessage() + " " + ex.getMessage());
                 }
@@ -215,7 +218,7 @@ public class CsvDataProvider implements IDataProvider{
             result.setList(list);
             return result;            
         } catch (IOException ex) {
-            log.error(ex.getMessage());
+            log.error(ex);
             Result result = new Result(ResultStatuses.ERROR,ex.getMessage());
             return result;
         }
@@ -490,71 +493,89 @@ public class CsvDataProvider implements IDataProvider{
             .withSeparator(';')
             .build();
         List<Relation> relations = new ArrayList<Relation>();
-                csvToBean.parse();
-            reader.close();
-            if (relations.isEmpty()) return obj;
-            List<Long> list = relations.stream()
+        relations.addAll(csvToBean.parse());
+        reader.close();
+        List<Long> list = new ArrayList<Long>();
+        if (!relations.isEmpty()){            
+            list.addAll(relations.stream()
                     .filter(r -> r.getId2() == obj.getId())
                     .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId1()),
-                            (a1, a2) -> a1.addAll(a2));
-            
+                            (a1, a2) -> a1.addAll(a2)));            
             singer.setAries(list);
-            Optional<List<Generic>> notes = Optional.ofNullable(getAllRecords(new Note()).getList());
-            if(notes.isPresent()){
-                list = notes.get().stream()
+        }
+        
+        Result resultNotes = getAllRecords(new Note());            
+        if (!resultNotes.getStatus().equals(ResultStatuses.OK)){
+            log.warn(resultNotes.getStatus() + " " + resultNotes.getMessage());
+        }
+        else{
+            list.clear();
+            list.addAll(resultNotes.getList().stream()
                         .filter(e -> (obj.getId() == ((Note)e).getObjectId() && ((Note)e).getObjectType().equals(obj.getType().toString())))
                         .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId()),
-                            (a1, a2) -> a1.addAll(a2));
-                singer.setNotes(list); 
-            }
-            return singer;
+                            (a1, a2) -> a1.addAll(a2)));
+            singer.setNotes(list); 
+        }
+        return singer;
     }
                     
     private Generic getRelationsAuthor(Generic obj) throws IOException{
         Reader reader;  
-            reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_AUTHOR));
-            CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
-                    .withType(Relation.class)
-                    .withEscapeChar('\\')
-                    .withQuoteChar('\'')
-                    .withSeparator(';')
-                    .build();
-            List<Relation> relations = csvToBean.parse();
-            reader.close();
-            List<Long> list = relations.stream()
+        Author author = (Author)obj;
+        reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_AUTHOR));
+        CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
+            .withType(Relation.class)
+            .withEscapeChar('\\')
+            .withQuoteChar('\'')
+            .withSeparator(';')
+            .build();
+        List<Relation> relations = csvToBean.parse();
+        reader.close();
+        List<Long> list = new ArrayList<Long>();   
+        if (!relations.isEmpty()){
+            list.addAll(relations.stream()
                     .filter(r -> r.getId2() == obj.getId())
                     .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId1()),
-                            (a1, a2) -> a1.addAll(a2));
-            Author author = (Author)obj;
+                            (a1, a2) -> a1.addAll(a2)));            
             author.setAries(list);
+        }            
             
-            reader = new FileReader(getConfigurationEntry(CSV_PATH_AUTHOR_LIBRETTO));
-            csvToBean = new CsvToBeanBuilder(reader)
-                    .withType(Relation.class)
-                    .withEscapeChar('\\')
-                    .withQuoteChar('\'')
-                    .withSeparator(';')
-                    .build();
-            relations = csvToBean.parse();
-            list = relations.stream()
+        reader = new FileReader(getConfigurationEntry(CSV_PATH_AUTHOR_LIBRETTO));
+        csvToBean = new CsvToBeanBuilder(reader)
+            .withType(Relation.class)
+            .withEscapeChar('\\')
+            .withQuoteChar('\'')
+            .withSeparator(';')
+            .build();
+        relations.clear();
+        relations.addAll(csvToBean.parse());
+        if (!relations.isEmpty()){
+            list.clear();        
+            list.addAll(relations.stream()
                     .filter(r -> r.getId1() == obj.getId())
                     .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId2()),
-                            (a1, a2) -> a1.addAll(a2));
+                            (a1, a2) -> a1.addAll(a2)));
             author.setLibrettos(list); 
-            Optional<List<Generic>> notes = Optional.ofNullable(getAllRecords(new Note()).getList());
-            if(notes.isPresent()){
-                list = notes.get().stream()
+        }
+        
+        Result resultNotes = getAllRecords(new Note());            
+        if (!resultNotes.getStatus().equals(ResultStatuses.OK)){
+            log.warn(resultNotes.getStatus() + " " + resultNotes.getMessage());
+        }
+        else{
+            list.clear();
+            list.addAll(resultNotes.getList().stream()
                         .filter(e -> (obj.getId() == ((Note)e).getObjectId() && ((Note)e).getObjectType().equals(obj.getType().toString())))
                         .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId()),
-                            (a1, a2) -> a1.addAll(a2));
-                author.setNotes(list); 
-            }
-            return author;
+                            (a1, a2) -> a1.addAll(a2)));
+            author.setNotes(list); 
+        }
+        return author;
     }
 
    @Override
@@ -568,22 +589,29 @@ public class CsvDataProvider implements IDataProvider{
                     .withQuoteChar('\'')
                     .withSeparator(';')
                     .build();         
-            List<Generic> list = csvToBean.parse();
+            List<Generic> list = new ArrayList<Generic>();
+            list.addAll(csvToBean.parse());
             reader.close();
-            Result result = new Result(ResultStatuses.OK, "Success");
-            list.stream().forEach(g -> {
-                try {
-                    g = getRelations(g);
-                } catch (IOException ex) {
-                    log.warn(ex.getMessage());
-                    result.setStatus(ResultStatuses.WARNING);
-                    result.setMessage(result.getMessage() + " " + ex.getMessage());
-                }
-            });
-            result.setList(list);
+            Result result = new Result(ResultStatuses.OK);
+            if(!list.isEmpty()){
+                list.stream().forEach(g -> {
+                    try {
+                        g = getRelations(g);
+                    } catch (IOException ex) {
+                        log.warn(ex);
+                        result.setStatus(ResultStatuses.WARNING);
+                        result.setMessage(result.getMessage() + " " + ex.getMessage());
+                    }
+                });
+                result.setList(list);
+            }
+            else{
+                result.setStatus(ResultStatuses.NOTFOUND);
+                result.setMessage(obj.getType().toString());
+            }            
             return result;            
         } catch (IOException ex) {
-            log.error(ex.getMessage());
+            log.error(ex);
             Result result = new Result(ResultStatuses.ERROR,ex.getMessage());
             return result;
         } 
@@ -608,7 +636,8 @@ public class CsvDataProvider implements IDataProvider{
                     break;
                 case COMPOSER : result = findComposer((Composer)obj);
                     break;
-                case LIBRETTO : result = findLibretto((Libretto)obj);
+                case LIBRETTO : //result = findLibretto((Libretto)obj);
+                    result = new Result(ResultStatuses.WARNING, "Unsupported type");
                     break;
                 case OPERA : result = findOpera((Opera)obj);
                     break;
@@ -618,6 +647,18 @@ public class CsvDataProvider implements IDataProvider{
                     break;    
                 case NOTE: result = findNote((Note)obj);  
                     break; 
+            }
+            if (result.getStatus().equals(ResultStatuses.OK)){
+                List<Generic> list = new ArrayList<Generic>();
+                list.addAll(result.getList());
+                list.stream().forEach(g -> {
+                    try {
+                        g = getRelations(g);
+                    } catch (IOException ex) {
+                        log.warn(ex);
+                    }
+                });
+                result.setList(list);
             }
             return result;
         }
@@ -629,11 +670,134 @@ public class CsvDataProvider implements IDataProvider{
         if (!result.getStatus().equals(ResultStatuses.OK)){
             return new Result(result.getStatus(), result.getMessage());
         }
-        Optional<List<Generic>> list = Optional.ofNullable(result.getList());
-        if (!list.isPresent()) return new Result(ResultStatuses.NOTFOUND);
+        list.addAll(result.getList());
         List<Generic> resultList = new ArrayList<Generic>();
-        resultList.addAll(list.get().removeIf( e ->{
-            
-        }));
+        list.removeIf( e ->{
+            if (obj.getTitle() != null && !((Aria)e).getTitle().toLowerCase().contains(obj.getTitle().toLowerCase()))
+                return true;                
+            if (obj.getText() != null)
+                if(!((Aria)e).getText().toLowerCase().contains(obj.getText().toLowerCase()))
+                    return true;
+                else return false;
+            return true;                       
+        });
+        resultList.addAll(list);
+        if (resultList.isEmpty()) return new Result(ResultStatuses.NOTFOUND, obj.toString());
+        return new Result(ResultStatuses.OK, list);
+    }
+    
+    private Result findComposer(Composer obj){
+        Result result = getAllRecords(obj);
+        List<Generic> list = new ArrayList();
+        if (!result.getStatus().equals(ResultStatuses.OK)){
+            return new Result(result.getStatus(), result.getMessage());
+        }
+        list.addAll(result.getList());
+        List<Generic> resultList = new ArrayList<Generic>();
+        list.removeIf( e ->{
+            if (obj.getName()!= null && !((Composer)e).getName().toLowerCase().contains(obj.getName().toLowerCase()))
+                return true;
+            if (obj.getSurname()!= null && !((Composer)e).getSurname().toLowerCase().contains(obj.getSurname().toLowerCase()))
+                return true;
+            if (obj.getPatronymic()!= null)
+                if(!((Composer)e).getPatronymic().toLowerCase().contains(obj.getPatronymic().toLowerCase()))
+                    return true;
+                else return false;                    
+            return true;                       
+        });
+        resultList.addAll(list);
+        if (resultList.isEmpty()) return new Result(ResultStatuses.NOTFOUND, obj.toString());
+        return new Result(ResultStatuses.OK, list);
+    }
+    
+    private Result findAuthor(Author obj){
+        Result result = getAllRecords(obj);
+        List<Generic> list = new ArrayList();
+        if (!result.getStatus().equals(ResultStatuses.OK)){
+            return new Result(result.getStatus(), result.getMessage());
+        }
+        list.addAll(result.getList());
+        List<Generic> resultList = new ArrayList<Generic>();
+        list.removeIf( e ->{
+            if (obj.getName()!= null && !((Author)e).getName().toLowerCase().contains(obj.getName().toLowerCase()))
+                return true;
+            if (obj.getSurname()!= null && !((Author)e).getSurname().toLowerCase().contains(obj.getSurname().toLowerCase()))
+                return true;
+            if (obj.getPatronymic()!= null)
+                if(!((Author)e).getPatronymic().toLowerCase().contains(obj.getPatronymic().toLowerCase()))
+                    return true;
+                else return false;
+            return true;                       
+        });
+        resultList.addAll(list);
+        if (resultList.isEmpty()) return new Result(ResultStatuses.NOTFOUND, obj.toString());
+        return new Result(ResultStatuses.OK, list);
+    }
+    
+    private Result findSinger(Singer obj){
+        Result result = getAllRecords(obj);
+        List<Generic> list = new ArrayList();
+        if (!result.getStatus().equals(ResultStatuses.OK)){
+            return new Result(result.getStatus(), result.getMessage());
+        }
+        list.addAll(result.getList());
+        List<Generic> resultList = new ArrayList<Generic>();
+        list.removeIf( e ->{
+            if (obj.getName()!= null && !((Singer)e).getName().toLowerCase().contains(obj.getName().toLowerCase()))
+                return true;
+            if (obj.getSurname()!= null && !((Singer)e).getSurname().toLowerCase().contains(obj.getSurname().toLowerCase()))
+                return true;
+            if (obj.getPatronymic()!= null && !((Singer)e).getPatronymic().toLowerCase().contains(obj.getPatronymic().toLowerCase()))
+                return true;
+            if (obj.getVoice()!= null)
+                if(!((Singer)e).getVoice().toLowerCase().contains(obj.getVoice().toLowerCase()))
+                    return true;
+                else return false;
+            return true;                       
+        });
+        resultList.addAll(list);
+        if (resultList.isEmpty()) return new Result(ResultStatuses.NOTFOUND, obj.toString());
+        return new Result(ResultStatuses.OK, list);
+    }
+    
+    
+    private Result findOpera(Opera obj){
+        Result result = getAllRecords(obj);
+        List<Generic> list = new ArrayList();
+        if (!result.getStatus().equals(ResultStatuses.OK)){
+            return new Result(result.getStatus(), result.getMessage());
+        }
+        list.addAll(result.getList());
+        List<Generic> resultList = new ArrayList<Generic>();
+        list.removeIf( e ->{
+            if (obj.getTitle() != null)
+                if(!((Opera)e).getTitle().toLowerCase().contains(obj.getTitle().toLowerCase()))
+                    return true;
+                else return false;
+            return true;                       
+        });
+        resultList.addAll(list);
+        if (resultList.isEmpty()) return new Result(ResultStatuses.NOTFOUND, obj.toString());
+        return new Result(ResultStatuses.OK, list);
+    }
+    
+    private Result findNote(Note obj){
+        Result result = getAllRecords(obj);
+        List<Generic> list = new ArrayList();
+        if (!result.getStatus().equals(ResultStatuses.OK)){
+            return new Result(result.getStatus(), result.getMessage());
+        }
+        list.addAll(result.getList());
+        List<Generic> resultList = new ArrayList<Generic>();
+        list.removeIf( e ->{
+            if (obj.getObjectType()!= null)
+                if(!((Note)e).getObjectType().toUpperCase().equals(obj.getObjectType().toUpperCase()))
+                    return true;
+                else return false;
+            return true;                       
+        });
+        resultList.addAll(list);
+        if (resultList.isEmpty()) return new Result(ResultStatuses.NOTFOUND, obj.toString());
+        return new Result(ResultStatuses.OK, list);
     }
 }

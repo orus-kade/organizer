@@ -52,8 +52,8 @@ public class Singer extends Human {
   @CsvBindByPosition (position = 7) 
   private String voice;
   
-  private List<Long> aries;
-  private List<Long> notes;
+  private List<Long> aries = new ArrayList<Long>();
+  private List<Long> notes = new ArrayList<Long>();
 
   public Singer () {
       this.type = SINGER;
@@ -77,7 +77,8 @@ public class Singer extends Human {
     }
 
     public void setAries(List<Long> aries) {
-        this.aries = aries;
+        this.aries.clear();
+        this.aries.addAll(aries);
     }   
 
     public List<Long> getNotes() {
@@ -85,10 +86,9 @@ public class Singer extends Human {
     }
 
     public void setNotes(List<Long> notes) {
-        this.notes = notes;
-    }
-
-    
+        this.notes.clear();
+        this.notes.addAll(notes);
+    }   
     
     @Override
     public long getId() {
@@ -169,7 +169,5 @@ public class Singer extends Human {
     @Override
     public String toString() {
         return "Singer{" + "id=" + id + ", type=" + type + ", name=" + name + ", surname=" + surname + ", patronymic=" + patronymic + ", biography=" + biography + ", birthDate=" + birthDate + ", deathDate=" + deathDate + ", voice=" + voice + ", aries=" + aries + ", notes=" + notes +'}';
-    }
-        
-    
+    }    
 }

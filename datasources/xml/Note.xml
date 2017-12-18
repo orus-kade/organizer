@@ -17,7 +17,7 @@
       </generic>
       <generic class="ru.sfedu.organizer.model.Note" id="4">
          <description>desc</description>
-         <objectId>55</objectId>
+         <objectId>5</objectId>
          <objectType>ARIA</objectType>
       </generic>
       <generic class="ru.sfedu.organizer.model.Note" id="5">

@@ -29,8 +29,8 @@ public class Opera extends Generic{
   @CsvBindByPosition (position = 3)
   private long librettoId;
   
-  private List<Long> aries;
-  private List<Long> notes;
+  private List<Long> aries = new ArrayList<Long>();
+  private List<Long> notes = new ArrayList<Long>();
   
   public Opera () {
       this.type = OPERA;
@@ -70,7 +70,8 @@ public class Opera extends Generic{
     }
 
     public void setAries(List<Long> aries) {
-        this.aries = aries;
+        this.aries.clear();
+        this.aries.addAll(aries);
     }
 
     public List<Long> getNotes() {
@@ -78,7 +79,8 @@ public class Opera extends Generic{
     }
 
     public void setNotes(List<Long> notes) {
-        this.notes = notes;
+        this.notes.clear();
+        this.notes.addAll(notes);
     }
 
     

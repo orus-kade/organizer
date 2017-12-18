@@ -5,6 +5,7 @@
  */
 package ru.sfedu.organizer.api;
 
+import java.util.ArrayList;
 import java.util.List;
 import org.simpleframework.xml.ElementList;
 import ru.sfedu.organizer.model.Generic;
@@ -16,13 +17,13 @@ import ru.sfedu.organizer.model.Generic;
 public class XmlListEntity {
     
     @ElementList
-    private List<Generic> list;
+    private List<Generic> list = new ArrayList<Generic>();
 
     public XmlListEntity() {
     }
 
     public XmlListEntity(List<Generic> list) {
-        this.list = list;
+        this.list.addAll(list);
     }
         
     public List<Generic> getList() {
@@ -30,7 +31,8 @@ public class XmlListEntity {
     }
 
     public void setList(List<Generic> list) {
-        this.list = list;
+        this.list.clear();
+        this.list.addAll(list);
     }
     
     

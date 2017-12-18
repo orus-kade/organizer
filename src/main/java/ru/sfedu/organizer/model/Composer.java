@@ -46,8 +46,8 @@ public class Composer extends Human {
   @CsvBindByPosition (position = 6)   
   private long deathDate;  
 
-  private List<Long> aries;
-  private List<Long> notes;
+  private List<Long> aries = new ArrayList<Long>();
+  private List<Long> notes = new ArrayList<Long>();
   
   //
   // Constructors
@@ -66,7 +66,8 @@ public class Composer extends Human {
     }
 
     public void setAries(List<Long> aries) {
-        this.aries = aries;
+        this.aries.clear();
+        this.aries.addAll(aries);
     }
 
     public List<Long> getNotes() {
@@ -74,7 +75,8 @@ public class Composer extends Human {
     }
 
     public void setNotes(List<Long> notes) {
-        this.notes = notes;
+        this.notes.clear();
+        this.notes.addAll(notes);
     }
 
 

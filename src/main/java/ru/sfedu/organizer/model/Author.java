@@ -42,9 +42,9 @@ public class Author extends Human {
   private long deathDate;   
   
 
-  private List<Long> aries;
-  private List<Long> librettos;
-  private List<Long> notes;
+  private List<Long> aries = new ArrayList<Long>();
+  private List<Long> librettos = new ArrayList<Long>();
+  private List<Long> notes = new ArrayList<Long>();
   
 
   public Author () {
@@ -61,7 +61,8 @@ public class Author extends Human {
     }
 
     public void setAries(List<Long> aries) {
-        this.aries = aries;
+        this.aries.clear();
+        this.aries.addAll(aries);
     }
 
     public List<Long> getLibrettos() {
@@ -69,7 +70,8 @@ public class Author extends Human {
     }
 
     public void setLibrettos(List<Long> librettos) {
-        this.librettos = librettos;
+        this.librettos.clear();
+        this.librettos.addAll(librettos);
     }
 
     public List<Long> getNotes() {
@@ -77,7 +79,8 @@ public class Author extends Human {
     }
 
     public void setNotes(List<Long> notes) {
-        this.notes = notes;
+        this.notes.clear();
+        this.notes.addAll(notes);
     }
   
     

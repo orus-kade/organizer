@@ -55,4 +55,122 @@ public class DbDataProviderTest {
     }
     
     
+    @Test
+    public void testGetById(){
+        try {
+            DbDataProvider provider = new DbDataProvider();
+            Generic obj = new Note(6);
+            Result result = provider.getRecordById(obj);
+            System.out.println(result.getStatus());
+            if (result.getStatus().equals(ResultStatuses.OK)){
+                System.out.println(result.getList().get(0));
+            }
+            else
+                System.err.println(result.getMessage());
+        } catch (IOException ex) {
+            Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Test
+    public void testGetAll(){
+        try {
+            DbDataProvider provider = new DbDataProvider();
+            Generic obj = new Aria();
+            Result result = provider.getAllRecords(obj);
+            System.out.println(result.getStatus());
+            if (result.getStatus().equals(ResultStatuses.OK)){
+                result.getList().stream().forEach(System.out::println);
+            }
+            else
+                System.err.println(result.getMessage());
+        } catch (IOException ex) {
+            Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Test
+    public void testAdd(){
+        try {
+            DbDataProvider provider = new DbDataProvider();
+            Note obj = new Note();
+            obj.setDescription("descqqq");
+            obj.setObjectId(3);
+            obj.setObjectType(Types.OPERA.toString());
+            Result result = provider.addRecord(obj);
+            System.out.println(result.getStatus());
+            if (result.getStatus().equals(ResultStatuses.OK)){
+                result = provider.getAllRecords(obj);
+                result.getList().stream().forEach(System.out::println);
+            }
+            else
+                System.err.println(result.getMessage());
+        } catch (IOException ex) {
+            Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Test
+    public void testEdit(){
+        try {
+            DbDataProvider provider = new DbDataProvider();
+            Note obj = new Note(6);
+            obj.setObjectId(3);
+            obj.setDescription("descqqq");
+            obj.setObjectType(Types.LIBRETTO.toString());
+            Result result = provider.editRecord(obj);
+            System.out.println(result.getStatus());
+            if (result.getStatus().equals(ResultStatuses.OK)){
+                result = provider.getAllRecords(obj);
+                result.getList().stream().forEach(System.out::println);
+            }
+            else
+                System.err.println(result.getMessage());
+        } catch (IOException ex) {
+            Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Test
+    public void testDelete(){
+        try {
+            DbDataProvider provider = new DbDataProvider();
+            Note obj = new Note();
+            Result result = provider.getAllRecords(obj);
+            System.out.println(result.getStatus());
+            if (result.getStatus().equals(ResultStatuses.OK)){
+                result.getList().stream().forEach(System.out::println);
+            }
+            else
+                System.err.println(result.getMessage());
+        } catch (IOException ex) {
+            Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    @Test
+    public void testFind() {
+        try {
+            //Generic obj = new Aria();
+            //Generic obj = new Author();
+            //Generic obj = new Composer();
+            //Generic obj = new Libretto();
+            //Generic obj = new Note();
+            //Generic obj = new Opera();
+            //Generic obj = new Singer();
+            //obj.setId(1);
+            Aria obj = new Aria();
+            obj.setTitle("ti");
+            obj.setText("2");
+            DbDataProvider instance = new DbDataProvider();
+            Result result = instance.findRecord(obj);
+            System.out.println(result.getStatus());
+            System.out.println(result.getMessage());
+            if (result.getStatus().equals(ResultStatuses.OK))
+                result.getList().stream().forEach(r -> System.out.println(r));
+        } catch (IOException ex) {
+            Logger.getLogger(DbDataProviderTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
 }

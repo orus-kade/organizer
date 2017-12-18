@@ -26,8 +26,8 @@ public class Libretto extends Generic{
   @CsvBindByPosition (position = 2)
   private long operaId;
   
-  private List<Long> authors;
-  private List<Long> notes;
+  private List<Long> authors = new ArrayList<Long>();
+  private List<Long> notes = new ArrayList<Long>();
   
   public Libretto () {
       this.type = LIBRETTO;
@@ -51,7 +51,8 @@ public class Libretto extends Generic{
     }
 
     public void setAuthors(List<Long> authors) {
-        this.authors = authors;
+        this.authors.clear();
+        this.authors.addAll(authors);
     }
 
     public List<Long> getNotes() {
@@ -59,7 +60,8 @@ public class Libretto extends Generic{
     }
 
     public void setNotes(List<Long> notes) {
-        this.notes = notes;
+        this.notes.clear();
+        this.notes.addAll(notes);
     }
 
     

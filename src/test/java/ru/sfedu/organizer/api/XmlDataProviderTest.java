@@ -70,7 +70,7 @@ public class XmlDataProviderTest {
     @Test
     public void testGetAll(){
         XmlDataProvider provider = new XmlDataProvider();
-        Generic obj = new Opera();
+        Generic obj = new Aria();
         Result result = provider.getAllRecords(obj);
         System.out.println(result.getStatus());
         if (result.getStatus().equals(ResultStatuses.OK)){
@@ -125,6 +125,27 @@ public class XmlDataProviderTest {
         }    
         else
             System.err.println(result.getMessage());
+    }
+    
+    @Test
+    public void testFind() {
+        //Generic obj = new Aria();
+        //Generic obj = new Author();
+        //Generic obj = new Composer();
+        //Generic obj = new Libretto();
+        //Generic obj = new Note();
+        //Generic obj = new Opera();
+        //Generic obj = new Singer();
+        //obj.setId(1);
+        Aria obj = new Aria();
+        obj.setTitle("ti");
+        obj.setText("e");
+        XmlDataProvider instance = new XmlDataProvider();
+        Result result = instance.findRecord(obj);
+        System.out.println(result.getStatus());
+        System.out.println(result.getMessage());
+        if (result.getStatus().equals(ResultStatuses.OK))
+            result.getList().stream().forEach(r -> System.out.println(r));
     }
 }
 

@@ -9,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
-import java.util.logging.Level;
 
 import org.apache.log4j.Logger;
 import static ru.sfedu.organizer.Constants.*;
@@ -52,16 +51,23 @@ public class DbDataProvider implements IDataProvider<Generic>{
                     return new Result(ResultStatuses.ERROR);
                 }
                 else {
+                    sql = "select max(id) from " + getTableName(obj) + ";";
+                    ResultSet set = statement.executeQuery(sql);
+                    set.next();
+                    long id = set.getLong(1);                    
+                    obj.setId(id);
+                    List<Generic> resultList = new ArrayList<Generic>();
+                    resultList.add(obj);
                     connection.close();
-                    return new Result(ResultStatuses.OK);
+                    return new Result(ResultStatuses.OK, resultList);
                 }  
             } catch (SQLException ex) {
                 connection.close();
-                log.error(ex.getMessage());
+                log.error(ex);
                 return new Result(ResultStatuses.ERROR);
             }
         } catch (IOException | SQLException  ex) {
-            log.error(ex.getMessage());
+            log.error(ex);
             return new Result(ResultStatuses.ERROR, ex.getMessage());
         }        
     }
@@ -79,7 +85,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
             try{
                 Types.valueOf(note.getObjectType());
             } catch(IllegalArgumentException ex){
-                log.error(ex.getMessage());
+                log.error(ex);
                 return new Result(ResultStatuses.ERROR, ex.getMessage());
             } 
             Generic object = null;
@@ -125,12 +131,12 @@ public class DbDataProvider implements IDataProvider<Generic>{
                 }                
                 else return new Result(ResultStatuses.OK);
             } catch (SQLException ex) {
-                log.error(ex.getMessage());
+                log.error(ex);
                 connection.close();
                 return new Result(ResultStatuses.ERROR, ex.getMessage());
             }
         } catch (IOException  | SQLException ex) {
-            log.error(ex.getMessage());
+            log.error(ex);
             return new Result(ResultStatuses.ERROR, ex.getMessage());
         } 
     }
@@ -154,12 +160,12 @@ public class DbDataProvider implements IDataProvider<Generic>{
                 }                
                 else return new Result(ResultStatuses.OK);
             } catch (SQLException ex) {
-                log.error(ex.getMessage());
+                log.error(ex);
                 connection.close();
                 return new Result(ResultStatuses.ERROR, ex.getMessage());
             }
         } catch (IOException | SQLException ex) {
-            log.error(ex.getMessage());
+            log.error(ex);
             return new Result(ResultStatuses.ERROR, ex.getMessage());
         } 
     }
@@ -198,12 +204,12 @@ public class DbDataProvider implements IDataProvider<Generic>{
                 if (list.isEmpty()) return new Result(ResultStatuses.NOTFOUND, "Can't find object " + obj.getType() + " with id = " + obj.getId());
                 return new Result(ResultStatuses.OK, list);
             } catch (SQLException ex) {
-                log.error(ex.getMessage());
+                log.error(ex);
                 connection.close();
                 return new Result(ResultStatuses.ERROR, ex.getMessage());
             }
         } catch (IOException | SQLException ex) {
-            log.error(ex.getMessage());
+            log.error(ex);
             return new Result(ResultStatuses.ERROR, ex.getMessage());
         }
 
@@ -219,7 +225,9 @@ public class DbDataProvider implements IDataProvider<Generic>{
             list.add(aria);
         }
         if (!check && !list.isEmpty()){
-            list = getRelationsAria(list, connection);
+            List<Generic> listWithRelations = new ArrayList<Generic>();
+            listWithRelations.addAll(getRelationsAria(list, connection));
+            return listWithRelations;
         }
         return list;
     }
@@ -242,7 +250,9 @@ public class DbDataProvider implements IDataProvider<Generic>{
             list.add(author);
         }
         if (!check  && !list.isEmpty()){
-            list = getRelationsAuthor(list, connection);
+            List<Generic> listWithRelations = new ArrayList<Generic>();
+            listWithRelations.addAll(getRelationsAria(list, connection));
+            return listWithRelations;
         }
         return list;
     }
@@ -265,7 +275,9 @@ public class DbDataProvider implements IDataProvider<Generic>{
             list.add(composer);
         }
         if (!check && !list.isEmpty()){
-            list = getRelationsComposer(list, connection);
+            List<Generic> listWithRelations = new ArrayList<Generic>();
+            listWithRelations.addAll(getRelationsAria(list, connection));
+            return listWithRelations;
         }
         return list;
     }
@@ -279,7 +291,9 @@ public class DbDataProvider implements IDataProvider<Generic>{
             list.add(libretto);
         }
         if (!check && !list.isEmpty()){
-            list = getRelationsLibretto(list, connection);
+            List<Generic> listWithRelations = new ArrayList<Generic>();
+            listWithRelations.addAll(getRelationsAria(list, connection));
+            return listWithRelations;
         }
         return list;
     }
@@ -294,7 +308,9 @@ public class DbDataProvider implements IDataProvider<Generic>{
             list.add(opera);
         }
         if (!check && !list.isEmpty()){
-            list = getRelationsOpera(list, connection);
+            List<Generic> listWithRelations = new ArrayList<Generic>();
+            listWithRelations.addAll(getRelationsAria(list, connection));
+            return listWithRelations;
         }
         return list;
     }
@@ -330,7 +346,9 @@ public class DbDataProvider implements IDataProvider<Generic>{
             list.add(singer);
         }
         if (!check && !list.isEmpty()){
-            list = getRelationsSinger(list, connection);
+            List<Generic> listWithRelations = new ArrayList<Generic>();
+            listWithRelations.addAll(getRelationsAria(list, connection));
+            return listWithRelations;
         }
         return list;
     }
@@ -707,7 +725,8 @@ public class DbDataProvider implements IDataProvider<Generic>{
                         break;
                     case COMPOSER : result = findComposer((Composer)obj);
                         break;
-                    case LIBRETTO : result = new Result(ResultStatuses.WARNING, "Unsupported type");
+                    case LIBRETTO : //result = findLibretto((Libretto)obj);
+                        result = new Result(ResultStatuses.WARNING, "Unsupported type");
                         break;
                     case OPERA : result = findOpera((Opera)obj);
                         break;

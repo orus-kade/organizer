@@ -35,10 +35,10 @@ public class Aria extends Generic{
   private long operaId;
   
   
-  private List<Long> composers;
-  private List<Long> authors;
-  private List<Long> singers; 
-  private List<Long> notes;
+  private List<Long> composers = new ArrayList<Long>();
+  private List<Long> authors = new ArrayList<Long>();
+  private List<Long> singers = new ArrayList<Long>(); 
+  private List<Long> notes = new ArrayList<Long>();
 
   public Aria () { 
       this.type = ARIA;
@@ -79,7 +79,8 @@ public class Aria extends Generic{
     }
 
     public void setComposers(List<Long> composers) {
-        this.composers = composers;
+        this.composers.clear();
+        this.composers.addAll(composers);
     }
 
     public List<Long> getAuthors() {
@@ -87,7 +88,8 @@ public class Aria extends Generic{
     }
 
     public void setAuthors(List<Long> authors) {
-        this.authors = authors;
+        this.authors.clear();
+        this.authors.addAll(authors);
     }
 
     public List<Long> getSingers() {
@@ -95,7 +97,8 @@ public class Aria extends Generic{
     }
 
     public void setSingers(List<Long> singers) {
-        this.singers = singers;
+        this.singers.clear();
+        this.singers.addAll(singers);
     }
 
     public List<Long> getNotes() {
@@ -103,7 +106,8 @@ public class Aria extends Generic{
     }
 
     public void setNotes(List<Long> notes) {
-        this.notes = notes;
+        this.notes.clear();
+        this.notes.addAll(notes);
     }    
     
     @Override

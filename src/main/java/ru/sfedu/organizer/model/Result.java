@@ -64,6 +64,7 @@ public class Result {
     }
 
     public void setList(List<Generic> list) {
+        this.list.clear();
         this.list.addAll(list);
     }
     

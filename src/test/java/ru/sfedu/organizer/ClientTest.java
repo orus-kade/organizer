@@ -23,7 +23,7 @@ import static ru.sfedu.organizer.Constants.*;
 import ru.sfedu.organizer.api.CsvDataProvider;
 import ru.sfedu.organizer.model.*;
 import static ru.sfedu.organizer.utils.ConfigurationUtil.getConfigurationEntry;
-import ru.sfedu.organizer.utils.Generator;
+import ru.sfedu.organizer.utils.MyGenerator;
 
 /**
  *
@@ -56,42 +56,20 @@ public class ClientTest {
         c.logBasicSystemInfo();
     }
       
-//    @Test 
-//    public void ee(){
-//        
-// 
-//        System.out.println("------ Проверка подключения к PostgreSQL ------");
-// 
-//        Connection connection = null;
-//        Statement statement = null;
-//        try {
-//            connection = DriverManager.getConnection(
-//                    "jdbc:postgresql://localhost:5432/organizer", "organizer_user", "music5");
-//        } catch (SQLException ex) {
-//            Logger.getLogger(Client.class.getName()).log(
-//                    Level.SEVERE, null, ex);
-//        }
-// 
-//        if (null != connection) {
-//            System.out.println("------ Подключение установлено ------");
-//            System.out.println("Executing statement...");
-//            try {
-//                statement = connection.createStatement();
-//                String sql;
-//                sql = "SELECT * FROM t1";
-//                ResultSet resultSet = statement.executeQuery(sql);
-//                while (resultSet.next()){
-//                    int id = resultSet.getInt("id");
-//                    String str = resultSet.getString("str");
-//                    System.out.println("id: " + id + " str: " + str);
-//                }
-//            } catch (SQLException ex) {
-//                Logger.getLogger(ClientTest.class.getName()).log(Level.SEVERE, null, ex);
-//            }   
-//        } else {
-//            System.out.println("------ Подключение НЕ установлено ------");
-//        }
-//    }
+    @Test 
+    public void ee(){
+        String str = "Hello world";
+//        int index1 = str.indexOf('l'); // 2
+//        int index2 = str.indexOf("wo"); //6
+//        int index4 = str.indexOf("Wo"); //6
+//        int index3 = str.lastIndexOf('l'); //9
+//        System.out.println(index1);
+//        System.out.println(index2);
+//        System.out.println(index3);
+//        System.out.println(index4);
+        System.out.println(str.contains("w7"));
+        
+    }
     
     @Test
     public void eqe(){
