@@ -158,7 +158,7 @@ public class Composer extends Human {
 
     @Override
     public String toString() {
-        return "Composer{" + "id=" + id + ", type=" + type + ", name=" + name + ", surname=" + surname + ", patronymic=" + patronymic + ", biography=" + biography + ", birthDate=" + birthDate + ", deathDate=" + deathDate + ", aries=" + aries + ", notes=" + notes +'}';
+        return "Composer{" + "id=" + id + ", type=" + type + ", name=" + name + ", surname=" + surname + ", patronymic=" + patronymic + ", biography=" + biography + ", birthDate=" + new Date(birthDate) + ", deathDate=" + new Date(deathDate) + ", aries=" + aries + ", notes=" + notes +'}';
     }
     
     

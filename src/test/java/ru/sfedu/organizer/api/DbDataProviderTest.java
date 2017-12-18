@@ -43,15 +43,15 @@ public class DbDataProviderTest {
                 switch (type){
                     case ARIA : result = provider.getAllRecords(new Aria());
                         break;
-                    case COMPOSER : result = provider.getAllRecords(new Aria());
+                    case COMPOSER : result = provider.getAllRecords(new Composer());
                         break;
-                    case LIBRETTO : result = provider.getAllRecords(new Aria());
+                    case LIBRETTO : result = provider.getAllRecords(new Libretto());
                         break;
-                    case OPERA : result = provider.getAllRecords(new Aria());
+                    case OPERA : result = provider.getAllRecords(new Opera());
                         break;
-                    case SINGER : result = provider.getAllRecords(new Aria());
+                    case SINGER : result = provider.getAllRecords(new Singer());
                         break;
-                    case AUTHOR : result = provider.getAllRecords(new Aria());
+                    case AUTHOR : result = provider.getAllRecords(new Author());
                         break;     
                 }
                 if (result.getStatus().equals(ResultStatuses.OK)){
@@ -84,15 +84,15 @@ public class DbDataProviderTest {
                 switch (type){
                     case ARIA : result = provider.getAllRecords(new Aria());
                         break;
-                    case COMPOSER : result = provider.getAllRecords(new Aria());
+                    case COMPOSER : result = provider.getAllRecords(new Composer());
                         break;
-                    case LIBRETTO : result = provider.getAllRecords(new Aria());
+                    case LIBRETTO : result = provider.getAllRecords(new Libretto());
                         break;
-                    case OPERA : result = provider.getAllRecords(new Aria());
+                    case OPERA : result = provider.getAllRecords(new Opera());
                         break;
-                    case SINGER : result = provider.getAllRecords(new Aria());
+                    case SINGER : result = provider.getAllRecords(new Singer());
                         break;
-                    case AUTHOR : result = provider.getAllRecords(new Aria());
+                    case AUTHOR : result = provider.getAllRecords(new Author());
                         break;     
                 }
                 if (result.getStatus().equals(ResultStatuses.OK)){

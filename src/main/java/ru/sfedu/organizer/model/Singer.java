@@ -168,6 +168,6 @@ public class Singer extends Human {
 
     @Override
     public String toString() {
-        return "Singer{" + "id=" + id + ", type=" + type + ", name=" + name + ", surname=" + surname + ", patronymic=" + patronymic + ", biography=" + biography + ", birthDate=" + birthDate + ", deathDate=" + deathDate + ", voice=" + voice + ", aries=" + aries + ", notes=" + notes +'}';
+        return "Singer{" + "id=" + id + ", type=" + type + ", name=" + name + ", surname=" + surname + ", patronymic=" + patronymic + ", biography=" + biography + ", birthDate=" + new Date(birthDate) + ", deathDate=" + new Date(deathDate) + ", voice=" + voice + ", aries=" + aries + ", notes=" + notes +'}';
     }    
 }

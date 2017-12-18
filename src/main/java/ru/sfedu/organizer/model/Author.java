@@ -161,7 +161,7 @@ public class Author extends Human {
 
     @Override
     public String toString() {
-        return "Author{" + "id=" + id + ", type=" + type + ", name=" + name + ", surname=" + surname + ", patronymic=" + patronymic + ", biography=" + biography + ", birthDate=" + birthDate + ", deathDate=" + deathDate + ", aries=" + aries + ", librettos=" + librettos + ", notes=" + notes + '}';
+        return "Author{" + "id=" + id + ", type=" + type + ", name=" + name + ", surname=" + surname + ", patronymic=" + patronymic + ", biography=" + biography + ", birthDate=" + new Date(birthDate) + ", deathDate=" + new Date(deathDate) + ", aries=" + aries + ", librettos=" + librettos + ", notes=" + notes + '}';
     }
  
 }
