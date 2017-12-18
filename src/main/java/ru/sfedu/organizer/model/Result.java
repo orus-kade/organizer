@@ -12,10 +12,10 @@ public class Result {
     
     private ResultStatuses status;
     private String message;
-    private List<Generic> list = null; 
+    private List<Generic> list = new ArrayList<Generic>(); 
     
     public Result(List<Generic> list){
-        this.list = list;
+        this.list.addAll(list);
     }
 
     public Result() {
@@ -28,7 +28,7 @@ public class Result {
     
     
     public Result(ResultStatuses status, String message, List<Generic> list) {
-        this.list = list;
+        this.list.addAll(list);
         this.status = status;
         this.message = message;
     }   
@@ -39,7 +39,7 @@ public class Result {
     }    
 
     public Result(ResultStatuses status, List<Generic> list) {
-        this.list = list;
+        this.list.addAll(list);
         this.status = status;
     }
     
@@ -64,7 +64,7 @@ public class Result {
     }
 
     public void setList(List<Generic> list) {
-        this.list = list;
+        this.list.addAll(list);
     }
     
 }

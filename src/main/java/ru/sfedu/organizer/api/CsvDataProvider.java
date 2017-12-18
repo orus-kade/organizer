@@ -30,9 +30,10 @@ public class CsvDataProvider implements IDataProvider{
                     .withQuoteChar('\'')
                     .withSeparator(';')
                     .build();         
-            List<Generic> list = csvToBean.parse();
+            List<Generic> list = new ArrayList<Generic>();
+            list.addAll(csvToBean.parse());
             reader.close();
-            if (list != null){
+            if (!list.isEmpty()){
                 long lastId = list.stream().max(Comparator.comparingLong(e -> e.getId())).get().getId(); 
                 obj.setId(lastId+1); 
             }
@@ -106,7 +107,8 @@ public class CsvDataProvider implements IDataProvider{
                     .withQuoteChar('\'')
                     .withSeparator(';')
                     .build();         
-            List<Generic> list = csvToBean.parse();
+            List<Generic> list = new ArrayList<Generic>();
+            list.addAll(csvToBean.parse());
             reader.close();  
             if (!list.removeIf(e -> e.getId() == obj.getId())){
                 Result result = new Result(ResultStatuses.ERROR, "Object " + obj + " not found");
@@ -144,7 +146,8 @@ public class CsvDataProvider implements IDataProvider{
                     .withQuoteChar('\'')
                     .withSeparator(';')
                     .build();         
-            List<Generic> list = csvToBean.parse();
+            List<Generic> list = new ArrayList<Generic>();
+            list.adaAll(csvToBean.parse());
             reader.close(); 
             if (!list.removeIf(e -> e.getId() == obj.getId())){
                 Result result = new Result(ResultStatuses.ERROR, "Object " + obj + " not found");
@@ -180,7 +183,6 @@ public class CsvDataProvider implements IDataProvider{
             Reader reader;
             reader = new FileReader(getFileName(obj));  
             CsvFilter filter = new CsvFilter(obj.getId());
-            ColumnPositionMappingStrategy st = new ColumnPositionMappingStrategy();
             CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
                     .withType(getClass(obj))
                     .withEscapeChar('\\')
@@ -188,7 +190,8 @@ public class CsvDataProvider implements IDataProvider{
                     .withSeparator(';')
                     .withFilter(filter)
                     .build();         
-            List<Generic> list = csvToBean.parse();
+            List<Generic> list = new ArrayList<Generic>();
+            list.addAll(csvToBean.parse());
             reader.close();
             if (list.isEmpty()){
                 Result result = new Result(ResultStatuses.NOTFOUND, "Can't find object "+obj.getType()+" with id = "+obj.getId());
@@ -196,10 +199,10 @@ public class CsvDataProvider implements IDataProvider{
                 return result;
             }
             if (check){
-                Result result = new Result(ResultStatuses.OK, "Object exsists", list);
+                Result result = new Result(ResultStatuses.OK, list);
                 return result;
             }
-            Result result = new Result(ResultStatuses.OK, "Success");
+            Result result = new Result(ResultStatuses.OK);
             list.stream().forEach(g -> {
                 try {
                     g = getRelations(g);
@@ -283,101 +286,124 @@ public class CsvDataProvider implements IDataProvider{
     }
     
     private Generic getRelationsAria(Generic obj) throws IOException{
-        Reader reader;  
-            reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_AUTHOR));
-            CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
-                    .withType(Relation.class)
-                    .withEscapeChar('\\')
-                    .withQuoteChar('\'')
-                    .withSeparator(';')
-                    .build();
-            List<Relation> relations = csvToBean.parse();
-            reader.close();
-            List<Long> list = relations.stream()
-                    .filter(r -> r.getId1() == obj.getId())
-                    .collect(ArrayList<Long>::new,
-                            (a, r) ->  a.add(r.getId2()),
-                            (a1, a2) -> a1.addAll(a2));
-            Aria aria = (Aria)obj;
+        Reader reader; 
+        Aria aria = (Aria)obj;
+        reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_AUTHOR));
+        CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
+            .withType(Relation.class)
+            .withEscapeChar('\\')
+            .withQuoteChar('\'')
+            .withSeparator(';')
+            .build();
+        List<Relation> relations = new ArrayList<Relation>();
+        relations.addAll(csvToBean.parse());
+        reader.close();
+        List<Long> list = new ArrayList<Long>();
+        if (!relations.isEmpty()){
+            list.addAll(relations.stream()
+                            .filter(r -> r.getId1() == obj.getId())
+                            .collect(ArrayList<Long>::new,
+                                    (a, r) ->  a.add(r.getId2()),
+                                    (a1, a2) -> a1.addAll(a2)));
             aria.setAuthors(list);
-            
-            reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_COMPOSER));
-            csvToBean = new CsvToBeanBuilder(reader)
-                    .withType(Relation.class)
-                    .withEscapeChar('\\')
-                    .withQuoteChar('\'')
-                    .withSeparator(';')
-                    .build();
-            relations = csvToBean.parse();
-            list = relations.stream()
-                    .filter(r -> r.getId1() == obj.getId())
-                    .collect(ArrayList<Long>::new,
-                            (a, r) ->  a.add(r.getId2()),
-                            (a1, a2) -> a1.addAll(a2));
+        }
+          
+        reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_COMPOSER));
+        csvToBean = new CsvToBeanBuilder(reader)
+            .withType(Relation.class)
+            .withEscapeChar('\\')
+            .withQuoteChar('\'')
+            .withSeparator(';')
+            .build();
+        relations.clear();
+        relations.addAll(csvToBean.parse());
+        list.clear();
+        if (!relations.isEmpty()){
+            list.addAll(relations.stream()
+                            .filter(r -> r.getId1() == obj.getId())
+                            .collect(ArrayList<Long>::new,
+                                    (a, r) ->  a.add(r.getId2()),
+                                    (a1, a2) -> a1.addAll(a2)));
             aria.setComposers(list); 
+        }
             
-            reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
-            csvToBean = new CsvToBeanBuilder(reader)
-                    .withType(Relation.class)
-                    .withEscapeChar('\\')
-                    .withQuoteChar('\'')
-                    .withSeparator(';')
-                    .build();
-            relations = csvToBean.parse();
-            list = relations.stream()
-                    .filter(r -> r.getId1() == obj.getId())
-                    .collect(ArrayList<Long>::new,
-                            (a, r) ->  a.add(r.getId2()),
-                            (a1, a2) -> a1.addAll(a2));
-            aria.setSingers(list); 
+        reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
+        csvToBean = new CsvToBeanBuilder(reader)
+            .withType(Relation.class)
+            .withEscapeChar('\\')
+            .withQuoteChar('\'')
+            .withSeparator(';')
+            .build();
+        relations.clear();
+        relations.addAll(csvToBean.parse());
+        list.clear();
+        if (!relations.isEmpty()){
+            list.addAll(relations.stream()
+                            .filter(r -> r.getId1() == obj.getId())
+                            .collect(ArrayList<Long>::new,
+                                    (a, r) ->  a.add(r.getId2()),
+                                    (a1, a2) -> a1.addAll(a2)));
+            aria.setSingers(list);
+        }
             
-            Optional<List<Generic>> notes = Optional.ofNullable(getAllRecords(new Note()).getList());
-            if(notes.isPresent()){
-                list = notes.get().stream()
+        Result resultNotes = getAllRecords(new Note());            
+        if (!resultNotes.getStatus().equals(ResultStatuses.OK)){
+            log.warn(resultNotes.getStatus() + " " + resultNotes.getMessage());
+        }
+        else{
+            list.clear();
+            list.addAll(resultNotes.getList().stream()
                         .filter(e -> (obj.getId() == ((Note)e).getObjectId() && ((Note)e).getObjectType().equals(obj.getType().toString())))
                         .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId()),
-                            (a1, a2) -> a1.addAll(a2));
-                aria.setNotes(list); 
-            }            
-            return aria;
+                            (a1, a2) -> a1.addAll(a2)));
+            aria.setNotes(list); 
+        }           
+        return aria;
     }
     
     private Generic getRelationsComposer(Generic obj) throws IOException{        
         Reader reader;  
-            reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_COMPOSER));
-            CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
-                    .withType(Relation.class)
-                    .withEscapeChar('\\')
-                    .withQuoteChar('\'')
-                    .withSeparator(';')
-                    .build();
-            List<Relation> relations = csvToBean.parse();
-            reader.close();
-            if (relations.isEmpty()) return obj;
-            List<Long> list = relations.stream()
+        Composer composer = (Composer)obj;
+        reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_COMPOSER));
+        CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
+            .withType(Relation.class)
+            .withEscapeChar('\\')
+            .withQuoteChar('\'')
+            .withSeparator(';')
+            .build();
+        List<Relation> relations = new ArrayList<Relation>();
+        relations.addAll(csvToBean.parse());
+        reader.close();
+        List<Long> list = new ArrayList<Long>();
+        if (!relations.isEmpty()){
+            list.addAll(relations.stream()
                     .filter(r -> r.getId2() == obj.getId())
                     .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId1()),
-                            (a1, a2) -> a1.addAll(a2));
-            Composer composer = (Composer)obj;
+                            (a1, a2) -> a1.addAll(a2)));
             composer.setAries(list);
+        }
             
-            Optional<List<Generic>> notes = Optional.ofNullable(getAllRecords(new Note()).getList());
-            if(notes.isPresent()){
-                list = notes.get().stream()
+        Result resultNotes = getAllRecords(new Note());            
+        if (!resultNotes.getStatus().equals(ResultStatuses.OK)){
+            log.warn(resultNotes.getStatus() + " " + resultNotes.getMessage());
+        }
+        else{
+            list.clear();
+            list.addAll(resultNotes.getList().stream()
                         .filter(e -> (obj.getId() == ((Note)e).getObjectId() && ((Note)e).getObjectType().equals(obj.getType().toString())))
                         .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId()),
-                            (a1, a2) -> a1.addAll(a2));
-                composer.setNotes(list); 
-            }
-            
-            return composer;
+                            (a1, a2) -> a1.addAll(a2)));
+            composer.setNotes(list); 
+        }     
+        return composer;
     }
         
     private Generic getRelationsLibretto(Generic obj) throws IOException{
             Reader reader;  
+            Libretto libretto = (Libretto)obj;
             reader = new FileReader(getConfigurationEntry(CSV_PATH_AUTHOR_LIBRETTO));
             CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
                     .withType(Relation.class)
@@ -385,71 +411,86 @@ public class CsvDataProvider implements IDataProvider{
                     .withQuoteChar('\'')
                     .withSeparator(';')
                     .build();
-            List<Relation> relations = csvToBean.parse();
+            List<Relation> relations = new ArrayList<Relation>();
+            relations.addAll(csvToBean.parse());
             reader.close();
-            if (relations.isEmpty()) return obj;
-            List<Long> list = relations.stream()
+            List<Long> list = new ArrayList<Long>();
+            if (!relations.isEmpty()){
+                list.addAll(relations.stream()
                     .filter(r -> r.getId2() == obj.getId())
                     .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId1()),
-                            (a1, a2) -> a1.addAll(a2));
-            Libretto libretto = (Libretto)obj;
-            libretto.setAuthors(list);
+                            (a1, a2) -> a1.addAll(a2)));            
+                libretto.setAuthors(list);
+            }
             
-            Optional<List<Generic>> notes = Optional.ofNullable(getAllRecords(new Note()).getList());
-            if(notes.isPresent()){
-                list = notes.get().stream()
+        Result resultNotes = getAllRecords(new Note());            
+        if (!resultNotes.getStatus().equals(ResultStatuses.OK)){
+            log.warn(resultNotes.getStatus() + " " + resultNotes.getMessage());
+        }
+        else{
+            list.clear();
+            list.addAll(resultNotes.getList().stream()
                         .filter(e -> (obj.getId() == ((Note)e).getObjectId() && ((Note)e).getObjectType().equals(obj.getType().toString())))
                         .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId()),
-                            (a1, a2) -> a1.addAll(a2));
-                libretto.setNotes(list); 
-            }
-            return libretto;
+                            (a1, a2) -> a1.addAll(a2)));
+            libretto.setNotes(list); 
+        }
+        return libretto;
     }    
             
     private Generic getRelationsOpera(Generic obj) throws IOException{        
         Reader reader;  
-            reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA));
-            CsvToBean<Aria> csvToBean = new CsvToBeanBuilder(reader)
-                    .withType(Aria.class)
-                    .withEscapeChar('\\')
-                    .withQuoteChar('\'')
-                    .withSeparator(';')
-                    .build();
-            List<Aria> aries = csvToBean.parse();
-            reader.close();
-            if (aries.isEmpty()) return obj;
-            List<Long> list = aries.stream()
+        Opera opera = (Opera)obj;
+        reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA));
+        CsvToBean<Aria> csvToBean = new CsvToBeanBuilder(reader)
+            .withType(Aria.class)
+            .withEscapeChar('\\')
+            .withQuoteChar('\'')
+            .withSeparator(';')
+            .build();
+        List<Aria> aries = new ArrayList<Aria>();
+        aries.addAll(csvToBean.parse());
+        reader.close();
+        List<Long> list = new ArrayList<Long>();
+        if (!aries.isEmpty()){
+            list.addAll(aries.stream()
                     .filter(r -> r.getOperaId() == obj.getId())
                     .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId()),
-                            (a1, a2) -> a1.addAll(a2));
-            Opera opera = (Opera)obj;
+                            (a1, a2) -> a1.addAll(a2)));           
             opera.setAries(list);
+        }
             
-            Optional<List<Generic>> notes = Optional.ofNullable(getAllRecords(new Note()).getList());
-            if(notes.isPresent()){
-                list = notes.get().stream()
+        Result resultNotes = getAllRecords(new Note());            
+        if (!resultNotes.getStatus().equals(ResultStatuses.OK)){
+            log.warn(resultNotes.getStatus() + " " + resultNotes.getMessage());
+        }
+        else{
+            list.clear();
+            list.addAll(resultNotes.getList().stream()
                         .filter(e -> (obj.getId() == ((Note)e).getObjectId() && ((Note)e).getObjectType().equals(obj.getType().toString())))
                         .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId()),
-                            (a1, a2) -> a1.addAll(a2));
-                opera.setNotes(list); 
-            }
-            return opera;
+                            (a1, a2) -> a1.addAll(a2)));
+            opera.setNotes(list); 
+        }
+        return opera;
     }
                 
     private Generic getRelationsSinger(Generic obj) throws IOException{
-            Reader reader;  
-            reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
-            CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
-                    .withType(Relation.class)
-                    .withEscapeChar('\\')
-                    .withQuoteChar('\'')
-                    .withSeparator(';')
-                    .build();
-            List<Relation> relations = csvToBean.parse();
+        Reader reader; 
+        Singer singer = (Singer)obj;
+        reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
+        CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
+            .withType(Relation.class)
+            .withEscapeChar('\\')
+            .withQuoteChar('\'')
+            .withSeparator(';')
+            .build();
+        List<Relation> relations = new ArrayList<Relation>();
+                csvToBean.parse();
             reader.close();
             if (relations.isEmpty()) return obj;
             List<Long> list = relations.stream()
@@ -457,7 +498,7 @@ public class CsvDataProvider implements IDataProvider{
                     .collect(ArrayList<Long>::new,
                             (a, r) ->  a.add(r.getId1()),
                             (a1, a2) -> a1.addAll(a2));
-            Singer singer = (Singer)obj;
+            
             singer.setAries(list);
             Optional<List<Generic>> notes = Optional.ofNullable(getAllRecords(new Note()).getList());
             if(notes.isPresent()){
@@ -562,27 +603,37 @@ public class CsvDataProvider implements IDataProvider{
                 return new Result(ResultStatuses.ERROR, "Object type is null");
             }  
             Result result = new Result();
-//            switch (type.get()){
-//                case ARIA : result = findAria((Aria)obj);
-//                    break;
-//                case COMPOSER : result = findComposer((Composer)obj);
-//                    break;
-//                case LIBRETTO : result = findLibretto((Libretto)obj);
-//                    break;
-//                case OPERA : result = findOpera((Opera)obj);
-//                    break;
-//                case SINGER : result = findSinger((Singer)obj);
-//                    break;
-//                case AUTHOR : result = findAuthor((Author)obj);
-//                    break;    
-//                case NOTE: result = findNote((Note)obj);  
-//                    break; 
-//            }
+            switch (type.get()){
+                case ARIA : result = findAria((Aria)obj);
+                    break;
+                case COMPOSER : result = findComposer((Composer)obj);
+                    break;
+                case LIBRETTO : result = findLibretto((Libretto)obj);
+                    break;
+                case OPERA : result = findOpera((Opera)obj);
+                    break;
+                case SINGER : result = findSinger((Singer)obj);
+                    break;
+                case AUTHOR : result = findAuthor((Author)obj);
+                    break;    
+                case NOTE: result = findNote((Note)obj);  
+                    break; 
+            }
             return result;
         }
     }
     
-//    private Result findAria(Aria obj){
-//        
-//    }
+    private Result findAria(Aria obj){
+        Result result = getAllRecords(obj);
+        List<Generic> list = new ArrayList();
+        if (!result.getStatus().equals(ResultStatuses.OK)){
+            return new Result(result.getStatus(), result.getMessage());
+        }
+        Optional<List<Generic>> list = Optional.ofNullable(result.getList());
+        if (!list.isPresent()) return new Result(ResultStatuses.NOTFOUND);
+        List<Generic> resultList = new ArrayList<Generic>();
+        resultList.addAll(list.get().removeIf( e ->{
+            
+        }));
+    }
 }
