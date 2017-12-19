@@ -33,12 +33,14 @@ public class CsvDataProvider implements IDataProvider{
             List<Generic> list = new ArrayList<Generic>();
             list.addAll(csvToBean.parse());
             reader.close();
+                        
             if (!list.isEmpty()){
                 long lastId = list.stream().max(Comparator.comparingLong(e -> e.getId())).get().getId(); 
                 obj.setId(lastId+1); 
             }
             else 
                 obj.setId(1);
+            
             list.add(obj);
             Writer writer;
             writer = new FileWriter(getFileName(obj));              

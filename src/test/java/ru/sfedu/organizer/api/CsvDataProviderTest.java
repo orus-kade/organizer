@@ -1,14 +1,11 @@
 
 package ru.sfedu.organizer.api;
 
-import javax.swing.text.html.HTML;
-import org.apache.log4j.Logger;
+
 import org.junit.Assert;
-import org.junit.FixMethodOrder;
 import ru.sfedu.organizer.model.ResultStatuses;
 import ru.sfedu.organizer.model.Result;
 import org.junit.Test;
-import org.junit.runners.MethodSorters;
 import ru.sfedu.organizer.model.*;
 import static ru.sfedu.organizer.utils.MyGenerator.generateType;
 

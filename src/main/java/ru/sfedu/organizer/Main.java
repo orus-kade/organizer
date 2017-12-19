@@ -97,11 +97,11 @@ public class Main {
                                     break;
                                 case LIBRETTO : obj = new Libretto();;
                                     break;
-                                case OPERA : obj = new Aria();
+                                case OPERA : obj = new Opera();
                                     break;
-                                case SINGER : obj = new Aria();
+                                case SINGER : obj = new Singer();
                                     break;
-                                case AUTHOR : obj = new Aria();
+                                case AUTHOR : obj = new Author();
                                     break;
                                 case NOTE : obj = new Note();
                                     break;
@@ -139,7 +139,7 @@ public class Main {
                                 }
                                 if(obj.getType().equals(Types.OPERA)){
                                     if (line.hasOption("title")){
-                                        ((Aria)obj).setTitle(line.getOptionValue("title"));
+                                        ((Opera)obj).setTitle(line.getOptionValue("title"));
                                     }
                                 }
                                 Result result = provider.findRecord(obj);
@@ -155,7 +155,7 @@ public class Main {
                     }
                     else log.info("Type is required!");
                 }                
-            else System.out.println("ololo");            
+            else log.info("ololo");            
             }            
         } catch( ParseException exp ) {
             System.out.println( "Unexpected exception:" + exp.getMessage() );
