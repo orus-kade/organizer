@@ -51,6 +51,11 @@ public class MyGenerator {
 //        return date;
 //    }
 
+    /**
+     *
+     * @return
+     */
+
     public static Types generateType(){
         int num = 0;
         num = Math.round((float)Math.random() * 5);
@@ -66,16 +71,31 @@ public class MyGenerator {
     return type;
     }
     
+    /**
+     *
+     * @return
+     */
     public static long generateId(){
         return (new Date()).getTime();
     }
     
+    /**
+     *
+     * @param provider
+     * @param id
+     * @return
+     */
     public static Note generateNote(IDataProvider provider, long id){
         Note note = generateNote(provider);
         note.setId(id);
         return note;
     }
     
+    /**
+     *
+     * @param provider
+     * @return
+     */
     public static Note generateNote(IDataProvider provider){
         Note note = new Note();
         Types type;
@@ -106,6 +126,10 @@ public class MyGenerator {
         return note;
     }
     
+    /**
+     *
+     * @return
+     */
     public static String generateDescription(){
         List<String> words = new ArrayList<String>();
         words.addAll(Arrays.asList(new String[]{"may", "the", "force", "be", "with", "you", "always"}));

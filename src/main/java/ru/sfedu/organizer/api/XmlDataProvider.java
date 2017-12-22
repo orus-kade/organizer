@@ -23,6 +23,12 @@ import static ru.sfedu.organizer.utils.ConfigurationUtil.getConfigurationEntry;
  */
 public class XmlDataProvider implements IDataProvider{    
     private static final Logger log = Logger.getLogger(XmlDataProvider.class);
+
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public Result addRecord(Note obj) {
         Result r = checkNote(obj);        
@@ -61,6 +67,11 @@ public class XmlDataProvider implements IDataProvider{
         }
     }    
     
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public Result editRecord(Note obj) {
         Result r = checkNote(obj);        
@@ -88,6 +99,11 @@ public class XmlDataProvider implements IDataProvider{
         }    
     }
 
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public Result deleteRecord(Note obj) {
         try {
@@ -112,11 +128,22 @@ public class XmlDataProvider implements IDataProvider{
         }
     }
     
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public Result getRecordById(Generic obj) {
         return getRecordById(obj, false);
     }
     
+    /**
+     *
+     * @param obj
+     * @param check
+     * @return
+     */
     public Result getRecordById(Generic obj, boolean check) {
         try {
             XmlListEntity readObj = new XmlListEntity();
@@ -154,6 +181,11 @@ public class XmlDataProvider implements IDataProvider{
         }
     }
 
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public Result getAllRecords(Generic obj) {
         try {
@@ -471,6 +503,11 @@ public class XmlDataProvider implements IDataProvider{
         return result;
     }
 
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public Result findRecord(Generic obj) {
         Optional<Generic> object = Optional.ofNullable(obj);

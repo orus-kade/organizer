@@ -27,12 +27,21 @@ public class DbDataProvider implements IDataProvider<Generic>{
     String url;
     String pass;
     
+    /**
+     *
+     * @throws IOException
+     */
     public DbDataProvider() throws IOException{
             this.user = getConfigurationEntry(DB_USER);
             this.url = getConfigurationEntry(DB_URL);
             this.pass = getConfigurationEntry(DB_PASS);
     }
     
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public Result addRecord(Note obj) {
         Result r = checkNote(obj);  
@@ -113,7 +122,11 @@ public class DbDataProvider implements IDataProvider<Generic>{
         return result;
     }
        
-    
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public Result editRecord(Note obj) {
         Result r = checkNote(obj);  
@@ -146,6 +159,11 @@ public class DbDataProvider implements IDataProvider<Generic>{
         } 
     }
 
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public Result deleteRecord(Note obj) {
         Result r = checkNote(obj);  
@@ -175,11 +193,22 @@ public class DbDataProvider implements IDataProvider<Generic>{
         } 
     }
 
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public Result getRecordById(Generic obj) {
         return getRecordById(obj, false);
     }    
     
+    /**
+     *
+     * @param obj
+     * @param check
+     * @return
+     */
     public Result getRecordById(Generic obj, boolean check) {
         try {
             Connection connection = initConnection();   
@@ -640,6 +669,11 @@ public class DbDataProvider implements IDataProvider<Generic>{
             return list;
     }
     
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public Result getAllRecords(Generic obj) {
         try {
@@ -681,6 +715,11 @@ public class DbDataProvider implements IDataProvider<Generic>{
         }
     }
     
+    /**
+     *
+     * @return
+     * @throws SQLException
+     */
     public Connection initConnection() throws SQLException{
         Connection connection = null;
             connection  = DriverManager.getConnection(url, user, pass);
@@ -710,6 +749,11 @@ public class DbDataProvider implements IDataProvider<Generic>{
         return tname;
     }
 
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public Result findRecord(Generic obj) {
         Optional<Generic> object = Optional.ofNullable(obj);

@@ -23,9 +23,16 @@ public class DbDataProviderTest {
     private static Note note;
     private static DbDataProvider provider;
     
+    /**
+     *
+     */
     public DbDataProviderTest() {
     }
     
+    /**
+     *
+     * @throws IOException
+     */
     @BeforeClass
     public static void test() throws IOException {
         provider = new DbDataProvider();
@@ -33,6 +40,9 @@ public class DbDataProviderTest {
         System.out.println("Generated note : " + note);
     }
     
+    /**
+     *
+     */
     @Test 
     public void aTestAdd(){
         System.out.println("ru.sfedu.organizer.api.DbDataProviderTest.aTestAdd");
@@ -50,6 +60,9 @@ public class DbDataProviderTest {
         }
     }
     
+    /**
+     *
+     */
     @Test
     public void bTestEdit(){        
         System.out.println("ru.sfedu.organizer.api.DbDataProviderTest.bTestEdit");
@@ -71,6 +84,9 @@ public class DbDataProviderTest {
         } 
     }
     
+    /**
+     *
+     */
     @Test 
     public void cTestDelete(){
         System.out.println("ru.sfedu.organizer.api.DbDataProviderTest.cTestDelete");

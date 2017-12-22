@@ -32,6 +32,10 @@ public class Main {
         log.info("Test INFO logging.");
     }
     
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args) {        
         log.debug("Main[0]: starting application.........");        
         //logBasicSystemInfo();

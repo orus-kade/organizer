@@ -12,11 +12,18 @@ import ru.sfedu.organizer.model.*;
 import static ru.sfedu.organizer.model.Types.*;
 import static ru.sfedu.organizer.utils.ConfigurationUtil.*;
 
-
-
+/**
+ *
+ * @author sterie
+ */
 public class CsvDataProvider implements IDataProvider{
     private static final Logger log = Logger.getLogger(CsvDataProvider.class);
     
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public Result addRecord(Note obj) {
         Result r = checkNote(obj);        
@@ -112,6 +119,11 @@ public class CsvDataProvider implements IDataProvider{
         return result;
     }
 
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public Result editRecord(Note obj) {        
         Result r = checkNote(obj);
@@ -153,6 +165,11 @@ public class CsvDataProvider implements IDataProvider{
         } 
     }
 
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public Result deleteRecord(Note obj) {
         try {
@@ -191,6 +208,11 @@ public class CsvDataProvider implements IDataProvider{
         }        
     }
     
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public Result getRecordById(Generic obj) {
         return getRecordById(obj, false);
@@ -593,7 +615,12 @@ public class CsvDataProvider implements IDataProvider{
         return author;
     }
 
-   @Override
+    /**
+     *
+     * @param obj
+     * @return
+     */
+    @Override
     public Result getAllRecords(Generic obj) {
        try {
             Reader reader;
@@ -632,6 +659,11 @@ public class CsvDataProvider implements IDataProvider{
         } 
     }
 
+    /**
+     *
+     * @param obj
+     * @return
+     */
     @Override
     public Result findRecord(Generic obj) {
         Optional<Generic> object = Optional.ofNullable(obj);

@@ -40,86 +40,161 @@ public class Aria extends Generic{
   private List<Long> singers = new ArrayList<Long>(); 
   private List<Long> notes = new ArrayList<Long>();
 
-  public Aria () { 
+    /**
+     *
+     */
+    public Aria () { 
       this.type = ARIA;
       
   };
   
-  public Aria (long id) { 
+    /**
+     *
+     * @param id
+     */
+    public Aria (long id) { 
       this.id = id;
       this.type = ARIA;
   };
 
+    /**
+     *
+     * @return
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     *
+     * @param title
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getText() {
         return text;
     }
 
+    /**
+     *
+     * @param text
+     */
     public void setText(String text) {
         this.text = text;
     }
 
+    /**
+     *
+     * @return
+     */
     public long getOperaId() {
         return operaId;
     }
 
+    /**
+     *
+     * @param operaId
+     */
     public void setOperaId(long operaId) {
         this.operaId = operaId;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Long> getComposers() {
         return composers;
     }
 
+    /**
+     *
+     * @param composers
+     */
     public void setComposers(List<Long> composers) {
         this.composers.clear();
         this.composers.addAll(composers);
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Long> getAuthors() {
         return authors;
     }
 
+    /**
+     *
+     * @param authors
+     */
     public void setAuthors(List<Long> authors) {
         this.authors.clear();
         this.authors.addAll(authors);
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Long> getSingers() {
         return singers;
     }
 
+    /**
+     *
+     * @param singers
+     */
     public void setSingers(List<Long> singers) {
         this.singers.clear();
         this.singers.addAll(singers);
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Long> getNotes() {
         return notes;
     }
 
+    /**
+     *
+     * @param notes
+     */
     public void setNotes(List<Long> notes) {
         this.notes.clear();
         this.notes.addAll(notes);
     }    
     
+    /**
+     *
+     * @return
+     */
     @Override
     public long getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     */
     @Override
     public void setId(long id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Types getType() {
         return type;

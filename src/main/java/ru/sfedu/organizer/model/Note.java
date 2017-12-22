@@ -31,50 +31,92 @@ public class Note extends Generic{
   @CsvBindByPosition (position = 3)
   private String objectType;  
 
-  public Note () {
+    /**
+     *
+     */
+    public Note () {
       this.type = NOTE;
   };
   
-  public Note (long id) {
+    /**
+     *
+     * @param id
+     */
+    public Note (long id) {
       this.id = id;
       this.type = NOTE;
   };
 
+    /**
+     *
+     * @return
+     */
     public long getObjectId() {
         return objectId;
     }
 
+    /**
+     *
+     * @param objectId
+     */
     public void setObjectId(long objectId) {
         this.objectId = objectId;
     }
 
+    /**
+     *
+     * @return
+     */
     public String getObjectType() {
         return objectType;
     }
 
+    /**
+     *
+     * @param objectType
+     */
     public void setObjectType(String objectType) {
         this.objectType = objectType;
     }
 
-  
+    /**
+     *
+     * @return
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     *
+     * @param description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public long getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     */
     @Override
     public void setId(long id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Types getType() {
         return type;

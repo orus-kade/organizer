@@ -29,63 +29,110 @@ public class Libretto extends Generic{
   private List<Long> authors = new ArrayList<Long>();
   private List<Long> notes = new ArrayList<Long>();
   
-  public Libretto () {
+    /**
+     *
+     */
+    public Libretto () {
       this.type = LIBRETTO;
   };
   
-  public Libretto (long id) {
+    /**
+     *
+     * @param id
+     */
+    public Libretto (long id) {
       this.id = id;
       this.type = LIBRETTO;
   };
 
+    /**
+     *
+     * @return
+     */
     public long getOperaId() {
         return operaId;
     }
 
+    /**
+     *
+     * @param operaId
+     */
     public void setOperaId(long operaId) {
         this.operaId = operaId;
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Long> getAuthors() {
         return authors;
     }
 
+    /**
+     *
+     * @param authors
+     */
     public void setAuthors(List<Long> authors) {
         this.authors.clear();
         this.authors.addAll(authors);
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Long> getNotes() {
         return notes;
     }
 
+    /**
+     *
+     * @param notes
+     */
     public void setNotes(List<Long> notes) {
         this.notes.clear();
         this.notes.addAll(notes);
     }
 
-    
-
+    /**
+     *
+     * @return
+     */
     public String getText() {
         return text;
     }
 
+    /**
+     *
+     * @param text
+     */
     public void setText(String text) {
         this.text = text;
     }
 
-   
-
+    /**
+     *
+     * @return
+     */
     @Override
     public long getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     */
     @Override
     public void setId(long id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Types getType() {
         return type;

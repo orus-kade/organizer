@@ -18,17 +18,32 @@ public class XmlListRelations {
     @ElementList
     private List<Relation> list;
 
+    /**
+     *
+     */
     public XmlListRelations() {
     }
 
+    /**
+     *
+     * @param list
+     */
     public XmlListRelations(List<Relation> list) {
         this.list = list;
     }
         
+    /**
+     *
+     * @return
+     */
     public List<Relation> getList() {
         return list;
     }
 
+    /**
+     *
+     * @param list
+     */
     public void setList(List<Relation> list) {
         this.list = list;
     }

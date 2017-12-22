@@ -10,8 +10,24 @@ package ru.sfedu.organizer.model;
  * @author orus-kade
  */
 public enum ResultStatuses {
+
+    /**
+     *
+     */
     OK,
+
+    /**
+     *
+     */
     ERROR,
+
+    /**
+     *
+     */
     WARNING,
+
+    /**
+     *
+     */
     NOTFOUND
 }

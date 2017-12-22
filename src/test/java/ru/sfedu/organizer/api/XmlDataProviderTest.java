@@ -21,15 +21,24 @@ public class XmlDataProviderTest {
     private static Note note;
     private static final XmlDataProvider provider = new XmlDataProvider();
     
+    /**
+     *
+     */
     public XmlDataProviderTest() {
     }
     
+    /**
+     *
+     */
     @BeforeClass
     public static void test() {
         note = generateNote(provider, generateId());
         System.out.println("Generated note : " + note);
     }
     
+    /**
+     *
+     */
     @Test 
     public void aTestAdd(){
         System.out.println("ru.sfedu.organizer.api.XmlDataProviderTest.aTestAdd");
@@ -47,6 +56,9 @@ public class XmlDataProviderTest {
         }
     }
     
+    /**
+     *
+     */
     @Test
     public void bTestEdit(){        
         System.out.println("ru.sfedu.organizer.api.XmlDataProviderTest.bTestEdit");
@@ -68,6 +80,9 @@ public class XmlDataProviderTest {
         } 
     }
     
+    /**
+     *
+     */
     @Test 
     public void cTestDelete(){
         System.out.println("ru.sfedu.organizer.api.XmlDataProviderTest.cTestDelete");

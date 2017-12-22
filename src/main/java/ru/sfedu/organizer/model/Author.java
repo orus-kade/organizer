@@ -7,8 +7,10 @@ import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;
 import static ru.sfedu.organizer.model.Types.*;
     
-
-
+/**
+ *
+ * @author sterie
+ */
 public class Author extends Human {
     
   @Attribute  
@@ -46,114 +48,203 @@ public class Author extends Human {
   private List<Long> librettos = new ArrayList<Long>();
   private List<Long> notes = new ArrayList<Long>();
   
-
-  public Author () {
+    /**
+     *
+     */
+    public Author () {
       this.type = AUTHOR;
   };
   
-  public Author (long id) {
+    /**
+     *
+     * @param id
+     */
+    public Author (long id) {
       this.id = id;
       this.type = AUTHOR;
   };
 
+    /**
+     *
+     * @return
+     */
     public List<Long> getAries() {
         return aries;
     }
 
+    /**
+     *
+     * @param aries
+     */
     public void setAries(List<Long> aries) {
         this.aries.clear();
         this.aries.addAll(aries);
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Long> getLibrettos() {
         return librettos;
     }
 
+    /**
+     *
+     * @param librettos
+     */
     public void setLibrettos(List<Long> librettos) {
         this.librettos.clear();
         this.librettos.addAll(librettos);
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Long> getNotes() {
         return notes;
     }
 
+    /**
+     *
+     * @param notes
+     */
     public void setNotes(List<Long> notes) {
         this.notes.clear();
         this.notes.addAll(notes);
     }
   
-    
-  @Override
+    /**
+     *
+     * @return
+     */
+    @Override
     public long getId() {
         return id;
     }
 
-  @Override
+    /**
+     *
+     * @param id
+     */
+    @Override
     public void setId(long id) {
         this.id = id;
     }
 
-  @Override
+    /**
+     *
+     * @return
+     */
+    @Override
     public Types getType() {
         return type;
     }
 
-  @Override
+    /**
+     *
+     * @return
+     */
+    @Override
     public String getName() {
         return name;
     }
 
-  @Override
+    /**
+     *
+     * @param name
+     */
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
-  @Override
+    /**
+     *
+     * @return
+     */
+    @Override
     public String getBiography() {
         return biography;
     }
 
-  @Override
+    /**
+     *
+     * @param biography
+     */
+    @Override
     public void setBiography(String biography) {
         this.biography = biography;
     }
 
-  @Override
+    /**
+     *
+     * @return
+     */
+    @Override
     public long getBirthDate() {
         return birthDate;
     }
 
-  @Override
+    /**
+     *
+     * @param birthDate
+     */
+    @Override
     public void setBirthDate(long birthDate) {
         this.birthDate = birthDate;
     }
 
-  @Override
+    /**
+     *
+     * @return
+     */
+    @Override
     public long getDeathDate() {
         return deathDate;
     }
 
-  @Override
+    /**
+     *
+     * @param deathDate
+     */
+    @Override
     public void setDeathDate(long deathDate) {
         this.deathDate = deathDate;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getSurname() {
         return this.surname;
     }
 
+    /**
+     *
+     * @param surname
+     */
     @Override
     public void setSurname(String surname) {
         this.surname = surname;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getPatronymic() {
         return this.patronymic;
     }
 
+    /**
+     *
+     * @param patronymic
+     */
     @Override
     public void setPatronymic(String patronymic) {
         this.patronymic = patronymic;

@@ -52,105 +52,187 @@ public class Composer extends Human {
   //
   // Constructors
   //
+
+    /**
+     *
+     */
   public Composer () { 
       this.type = COMPOSER;
   };
   
-   public Composer (long id) {
+    /**
+     *
+     * @param id
+     */
+    public Composer (long id) {
       this.id = id;
       this.type = COMPOSER;
   };
 
+    /**
+     *
+     * @return
+     */
     public List<Long> getAries() {
         return aries;
     }
 
+    /**
+     *
+     * @param aries
+     */
     public void setAries(List<Long> aries) {
         this.aries.clear();
         this.aries.addAll(aries);
     }
 
+    /**
+     *
+     * @return
+     */
     public List<Long> getNotes() {
         return notes;
     }
 
+    /**
+     *
+     * @param notes
+     */
     public void setNotes(List<Long> notes) {
         this.notes.clear();
         this.notes.addAll(notes);
     }
 
-
+    /**
+     *
+     * @return
+     */
     @Override
     public long getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id
+     */
     @Override
     public void setId(long id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public Types getType() {
         return type;
     }
 
-  @Override
+    /**
+     *
+     * @return
+     */
+    @Override
     public String getName() {
         return name;
     }
 
-  @Override
+    /**
+     *
+     * @param name
+     */
+    @Override
     public void setName(String name) {
         this.name = name;
     }
 
-  @Override
+    /**
+     *
+     * @return
+     */
+    @Override
     public String getBiography() {
         return biography;
     }
 
-  @Override
+    /**
+     *
+     * @param biography
+     */
+    @Override
     public void setBiography(String biography) {
         this.biography = biography;
     }
 
-  @Override
+    /**
+     *
+     * @return
+     */
+    @Override
     public long getBirthDate() {
         return birthDate;
     }
 
-  @Override
+    /**
+     *
+     * @param birthDate
+     */
+    @Override
     public void setBirthDate(long birthDate) {
         this.birthDate = birthDate;
     }
 
-  @Override
+    /**
+     *
+     * @return
+     */
+    @Override
     public long getDeathDate() {
         return deathDate;
     }
 
-  @Override
+    /**
+     *
+     * @param deathDate
+     */
+    @Override
     public void setDeathDate(long deathDate) {
         this.deathDate = deathDate;
     }
 
-
+    /**
+     *
+     * @return
+     */
     @Override
     public String getSurname() {
         return this.surname;
     }
 
+    /**
+     *
+     * @param surname
+     */
     @Override
     public void setSurname(String surname) {
         this.surname = surname;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public String getPatronymic() {
         return this.patronymic;
     }
 
+    /**
+     *
+     * @param patronymic
+     */
     @Override
     public void setPatronymic(String patronymic) {
         this.patronymic = patronymic;

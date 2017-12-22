@@ -22,17 +22,24 @@ public class CsvDataProviderTest {
     private static Note note;
     private static final CsvDataProvider provider = new CsvDataProvider();
     
-    
-    
+    /**
+     *
+     */
     public CsvDataProviderTest() {
     }
     
+    /**
+     *
+     */
     @BeforeClass
     public static void test() {
         note = generateNote(provider, generateId());
         System.out.println("Generated note : " + note);
     }
 
+    /**
+     *
+     */
     @Test 
     public void aTestAdd(){
         System.out.println("ru.sfedu.organizer.api.CsvDataProviderTest.aTestAdd");
@@ -50,6 +57,9 @@ public class CsvDataProviderTest {
         }
     }
     
+    /**
+     *
+     */
     @Test
     public void bTestEdit(){        
         System.out.println("ru.sfedu.organizer.api.CsvDataProviderTest.bTestEdit");
@@ -71,6 +81,9 @@ public class CsvDataProviderTest {
         } 
     }
     
+    /**
+     *
+     */
     @Test 
     public void cTestDelete(){
         System.out.println("ru.sfedu.organizer.api.CsvDataProviderTest.cTestDelete");
