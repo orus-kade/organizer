@@ -34,12 +34,20 @@ public class CsvDataProvider implements IDataProvider{
             list.addAll(csvToBean.parse());
             reader.close();
                         
-            if (!list.isEmpty()){
-                long lastId = list.stream().max(Comparator.comparingLong(e -> e.getId())).get().getId(); 
-                obj.setId(lastId+1); 
+//            if (!list.isEmpty()){
+//                long lastId = list.stream().max(Comparator.comparingLong(e -> e.getId())).get().getId(); 
+//                obj.setId(lastId+1); 
+//            }
+//            else 
+//                obj.setId(1);
+
+            if (!list.isEmpty()){   
+                if (list.stream().filter(e -> e.getId() == obj.getId()).count() > 0){
+                    Result result = new Result(ResultStatuses.ERROR, "Object with id = " + obj.getId() + " is already exists!");
+                    log.error(result.getMessage());
+                    return result;                    
+                }
             }
-            else 
-                obj.setId(1);
             
             list.add(obj);
             Writer writer;
@@ -70,8 +78,14 @@ public class CsvDataProvider implements IDataProvider{
             result.setStatus(ResultStatuses.ERROR);
             result.setMessage("Note: Object is null");
             log.error(result.getMessage());
+            return result;
         }
-        else{
+        if (obj.getId() <= 0){
+            result.setStatus(ResultStatuses.ERROR);
+            result.setMessage("Note: imposible id <= 0");
+            log.error(result.getMessage());
+            return result;
+        }
             Note note = (Note)obj;
             try{
                 Types.valueOf(note.getObjectType());
@@ -94,8 +108,7 @@ public class CsvDataProvider implements IDataProvider{
                 case SINGER : object = new Singer(note.getObjectId());
                     break;    
             }        
-            result = getRecordById(object, true);
-        }       
+            result = getRecordById(object, true);     
         return result;
     }
 

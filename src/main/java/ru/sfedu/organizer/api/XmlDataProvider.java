@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Level;
 import org.apache.log4j.Logger;
 
 import org.simpleframework.xml.Serializer;
@@ -34,12 +33,20 @@ public class XmlDataProvider implements IDataProvider{
             XmlListEntity readObj = serializer.read(XmlListEntity.class, file);
             List<Generic> list = new ArrayList<Generic>();
             list.addAll(readObj.getList());          
-            if (!list.isEmpty()){
-               long lastId = list.stream().max(Comparator.comparingLong(e -> e.getId())).get().getId(); 
-               obj.setId(lastId+1); 
+//            if (!list.isEmpty()){
+//               long lastId = list.stream().max(Comparator.comparingLong(e -> e.getId())).get().getId(); 
+//               obj.setId(lastId+1); 
+//            }
+//            else 
+//               obj.setId(1);
+            if (!list.isEmpty()){   
+                if (list.stream().filter(e -> e.getId() == obj.getId()).count() > 0){
+                    Result result = new Result(ResultStatuses.ERROR, "Object with id = " + obj.getId() + " is already exists!");
+                    log.error(result.getMessage());
+                    return result;                    
+                }
             }
-            else 
-               obj.setId(1);
+
             list.add(obj);
             List<Generic> resultList = new ArrayList<Generic>();
             resultList.add(obj);
@@ -433,7 +440,12 @@ public class XmlDataProvider implements IDataProvider{
             log.error(result.getMessage());
             return result;
         }
-        else{
+        if (obj.getId() <= 0){
+            result.setStatus(ResultStatuses.ERROR);
+            result.setMessage("Note: imposible id <= 0");
+            log.error(result.getMessage());
+            return result;
+        }
             try{
                 Types.valueOf(note.getObjectType());
             } catch(IllegalArgumentException ex){
@@ -455,8 +467,7 @@ public class XmlDataProvider implements IDataProvider{
                 case SINGER : object = new Singer(note.getObjectId());
                     break;
             }        
-            result = getRecordById(object, true);
-        }       
+            result = getRecordById(object, true);      
         return result;
     }
 
@@ -500,7 +511,7 @@ public class XmlDataProvider implements IDataProvider{
                     } catch (IOException ex) {
                         log.warn(ex);
                     } catch (Exception ex) {
-                        java.util.logging.Logger.getLogger(XmlDataProvider.class.getName()).log(Level.SEVERE, null, ex);
+                        log.warn(ex);
                     }
                 });
                 result.setList(list);

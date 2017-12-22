@@ -2,7 +2,6 @@ package ru.sfedu.organizer.model;
 
 
 import com.opencsv.bean.CsvBindByPosition;
-import com.opencsv.bean.CsvCustomBindByPosition;
 import java.util.*;
 import org.simpleframework.xml.Attribute;
 import org.simpleframework.xml.Element;

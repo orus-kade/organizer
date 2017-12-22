@@ -41,7 +41,8 @@ public class DbDataProvider implements IDataProvider<Generic>{
             Connection connection = initConnection();
             try{
                 Statement statement = connection.createStatement();
-                String sql = "Insert into " + getTableName(obj) + " values (default, '" +
+                String sql = "Insert into " + getTableName(obj) + " values (" +
+                        obj.getId() + ", '" +
                         obj.getDescription() + "' , " +
                         obj.getObjectId() + ", '" +
                         obj.getObjectType() + "');";
@@ -81,7 +82,12 @@ public class DbDataProvider implements IDataProvider<Generic>{
             log.error(result.getMessage());
             return result;
         }
-        else{
+        if (obj.getId() <= 0){
+            result.setStatus(ResultStatuses.ERROR);
+            result.setMessage("Note: imposible id <= 0");
+            log.error(result.getMessage());
+            return result;
+        }
             try{
                 Types.valueOf(note.getObjectType());
             } catch(IllegalArgumentException ex){
@@ -103,8 +109,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
                 case SINGER : object = new Singer(note.getObjectId());
                     break;
             }        
-            result = getRecordById(object, true);
-        }       
+            result = getRecordById(object, true);    
         return result;
     }
        

@@ -5,7 +5,11 @@ package ru.sfedu.organizer.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import ru.sfedu.organizer.api.IDataProvider;
 import ru.sfedu.organizer.model.*;
 
 /**
@@ -17,9 +21,9 @@ public class MyGenerator {
 //    public String generateString(int length){
 //        return generateString(length, length);
 //    }
-    
-    
-//    public String generateString(int begin, int end){
+//    
+//    
+//    public String generateString(int beginLength, int endLength){
 //        int length = Math.round((float)Math.random() );
 //        
 //    }
@@ -37,8 +41,7 @@ public class MyGenerator {
     }
     
     public static Long generateDateLong(Date begin, Date end){
-        return generateDateLong(begin.getTime(), end.getTime());
-        
+        return generateDateLong(begin.getTime(), end.getTime());        
     }
     
     public static Long generateDateLong(long begin, long end){
@@ -47,13 +50,6 @@ public class MyGenerator {
         long date = Math.round(Math.random() * dif + begin);        
         return date;
     }
-//    public Date generateDate(){
-//        
-//    }
-    
-//    public Long generatLong(){
-//        
-//    } 
 
     public static Types generateType(){
         int num = 0;
@@ -68,5 +64,56 @@ public class MyGenerator {
             case 5 : return Types.SINGER;
         }
     return type;
+    }
+    
+    public static long generateId(){
+        return (new Date()).getTime();
+    }
+    
+    public static Note generateNote(IDataProvider provider, long id){
+        Note note = generateNote(provider);
+        note.setId(id);
+        return note;
+    }
+    
+    public static Note generateNote(IDataProvider provider){
+        Note note = new Note();
+        Types type;
+        while(true){
+            type = generateType();            
+            Result result = null;
+            switch (type){
+                case ARIA : result = provider.getAllRecords(new Aria());
+                    break;
+                case COMPOSER : result = provider.getAllRecords(new Composer());
+                    break;
+                case LIBRETTO : result = provider.getAllRecords(new Libretto());
+                    break;
+                case OPERA : result = provider.getAllRecords(new Opera());
+                    break;
+                case SINGER : result = provider.getAllRecords(new Singer());
+                    break;
+                case AUTHOR : result = provider.getAllRecords(new Author());
+                    break;     
+            }
+            if (result.getStatus().equals(ResultStatuses.OK)){
+                note.setObjectId(result.getList().stream().findAny().get().getId());
+                note.setObjectType(type.toString());
+                note.setDescription(generateDescription());
+                break;
+            }                      
+        }
+        return note;
+    }
+    
+    public static String generateDescription(){
+        List<String> words = new ArrayList<String>();
+        words.addAll(Arrays.asList(new String[]{"may", "the", "force", "be", "with", "you", "always"}));
+        int count = Math.round((float)Math.random()*6 + 1);
+        String txt = "";
+        for(int i = 0; i<count; i++){
+            txt += " " + words.get(Math.round((float)Math.random()*6));
+        }
+        return txt;
     }
 }
