@@ -8,6 +8,17 @@ package ru.sfedu.organizer;
  */
 public class Constants {
     
+    
+    /**
+     *
+     */
+    public static final String SOURCE_DEFAULT = "csv";
+    
+    /**
+     *
+     */
+    public static final String[] SOURCES = {"csv", "db", "xml", "database"};
+    
     /**
      *
      */
