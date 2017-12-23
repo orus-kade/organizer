@@ -2,7 +2,9 @@
 package ru.sfedu.organizer;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
@@ -11,6 +13,7 @@ import ru.sfedu.organizer.api.DbDataProvider;
 import ru.sfedu.organizer.api.IDataProvider;
 import ru.sfedu.organizer.api.XmlDataProvider;
 import ru.sfedu.organizer.model.*;
+import ru.sfedu.organizer.utils.MyGenerator;
 
 
 /**
@@ -47,32 +50,23 @@ public class Main {
     private static void cli(String[] args){
                 
         Options options = new Options();
-        options.addOption("f", "find", false, "find objects");
-        options.addOption("id", true, "id of objects");
+        
         options.addOption("t", "type", true, "type of objects");
+        options.addOption("id", true, "id of objects");        
         options.addOption("ttl", "title", true, "title of objects");
         options.addOption("txt", "text", true, "text of objects");
         options.addOption("n", "name", true, "name of human");
         options.addOption("sn", "surname", true, "surname of objects");
         options.addOption("pat", "patronymic", true, "patronymic of objects");
         options.addOption("v", "voice", true, "voice of singer");
-        options.addOption("desc", "description", true, "note descrption");
-        options.addOption("oid", "objectid", true, "object id");
-        options.addOption("a", "add", false, "add note");
-        options.addOption("e", "edit", false, "edit note");
-        options.addOption("d", "delete", false, "delete note");
-        options.addOption("all", false, "get all");
+        options.addOption("ot", "objectType", true, "object type");
+        options.addOption("desc", "description", false, "note descrption");
+        options.addOption("oid", "objectId", true, "object id");
+        options.addOption("a","all", false, "get all objects");
         options.addOption("h", "help", false, "show help");
-        options.addOption("src", "source", true, "show help");
-        
-        HelpFormatter formatter = new HelpFormatter();
-//        formatter.printHelp(
-//                80,
-//                "Organizer", 
-//                "Options", 
-//                options, 
-//                "-- HELP --" 
-//        );  
+        options.addOption("src", "source", true, "set source");
+        options.addOption("p", "path", true, "set path to file data soucre");
+         
         Scanner scan = new Scanner(System.in);
         try{                
             CommandLine line = new BasicParser().parse(options, args);
@@ -115,13 +109,13 @@ public class Main {
             }
             
             if (line.hasOption("h")){
-                formatter.printHelp(
-                    80,
-                    "Organizer", 
-                    "Options", 
-                    options, 
-                    "-- HELP --" 
-                );
+                log.info("Commands:");
+                log.info("find \t - to find objects");
+                log.info("create \t - to create note");
+                log.info("edit \t - to edit note");
+                log.info("delete \t - to delete note");
+                log.info("help \t - to show help message");
+                log.info("exit \t - to exit application");
             }
             log.info("Enter command");
             while(true){
@@ -147,10 +141,25 @@ public class Main {
 
                     if (arr[0].equals("find")){
                         if (arr.length > 1 && arr[1].equals("help")){
+                            List<Option> optionsFind = new ArrayList<Option>();
+                            optionsFind.add(options.getOption("type"));
+                            optionsFind.add(options.getOption("all"));
+                            optionsFind.add(options.getOption("title"));
+                            optionsFind.add(options.getOption("text"));
+                            optionsFind.add(options.getOption("objectType"));
+                            optionsFind.add(options.getOption("name"));
+                            optionsFind.add(options.getOption("surname"));
+                            optionsFind.add(options.getOption("patronymic"));
                             log.info("Options for command find:");
+                            optionsFind.stream().forEach(e -> {
+                                String str = "-" + e.getOpt() +  ", -" + e.getLongOpt();
+                                if(e.getArgs() > 0) str += "\t<arg>";
+                                else str += "\t";
+                                str += "\t" + e.getDescription();
+                                log.info(str);
+                            });
                         }
                         else {
-                            //log.info("find here");
                             if (line.hasOption("type")){
                                 try{
                                     Types type = Types.valueOf(line.getOptionValue("type").toUpperCase());
@@ -223,111 +232,147 @@ public class Main {
                                 } catch(IllegalArgumentException ex){
                                     log.error(ex);
                                     log.error("Incorrect type!");
-                                }                                 
-
+                                } 
                             }
-                            else log.info("Type is requeded!");
+                            else log.info("-type is requeded!");
                         }                    
                     } 
 
                     if (arr[0].equals("create")){
                         if (arr.length > 1 && arr[1].equals("help")){
-                            log.info("Options for command find:");
+                            List<Option> optionsCreate = new ArrayList<Option>();
+                            optionsCreate.add(options.getOption("objectType"));
+                            optionsCreate.add(options.getOption("objectId"));
+                            optionsCreate.add(options.getOption("description"));
+                            log.info("Options for command create:");
+                            optionsCreate.stream().forEach(e -> {
+                                String str = "-" + e.getOpt() +  ", -" + e.getLongOpt();
+                                if(e.getArgs() > 0) str += "\t<arg>";
+                                else str += "\t";
+                                str += "\t" + e.getDescription();
+                                log.info(str);
+                            });                            
                         }
                         else {
-                            log.info("create here");
+                            if(line.hasOption("objectType") && line.hasOption("objectId") && line.hasOption("description")){
+                                try{
+                                    Types type = Types.valueOf(line.getOptionValue("objectType").toUpperCase());
+                                    Note note = new Note(); 
+                                    note.setId(MyGenerator.generateId());
+                                    note.setObjectType(type.toString());
+                                    note.setObjectId(Long.parseLong(line.getOptionValue("objectId")));
+                                    log.info("Enter description:");
+                                    String desc = scan.nextLine();
+                                    note.setDescription(desc);
+                                    Result result = provider.addRecord(note);
+                                    log.info(result.getStatus());
+                                    if (!result.getStatus().equals(ResultStatuses.OK) && result.getMessage()!=null){
+                                        log.info(result.getMessage());
+                                    }
+                                } catch (IllegalArgumentException ex){
+                                    log.error(ex);
+                                    log.error("Incorrect argument!");
+                                }
+                            }
+                            else 
+                                log.error("-objectType, -objectId and -description are requered!");
                         }                    
                     }
 
                     if (arr[0].equals("edit")){
                         if (arr.length > 1 && arr[1].equals("help")){
-                            log.info("Options for command find:");
+                            List<Option> optionsCreate = new ArrayList<Option>();
+                            optionsCreate.add(options.getOption("id"));
+                            optionsCreate.add(options.getOption("objectType"));
+                            optionsCreate.add(options.getOption("objectId"));
+                            optionsCreate.add(options.getOption("description"));
+                            log.info("Options for command edit:");
+                            optionsCreate.stream().forEach(e -> {
+                                String str = "-" + e.getOpt() +  ", -" + e.getLongOpt();
+                                if(e.getArgs() > 0) str += "\t<arg>";
+                                else str += "\t";
+                                str += "\t" + e.getDescription();
+                                log.info(str);
+                            });  
                         }
                         else {
-                            log.info("edit here");
+                            if (line.hasOption("id")){
+                                if(line.hasOption("desc") || line.hasOption("objecId") || line.hasOption("objectType")){
+                                    try{
+                                        Note note = new Note(Long.parseLong(line.getOptionValue("id")));
+                                        Result result = provider.getRecordById(note);
+                                        if (result.getStatus().equals(ResultStatuses.OK)){
+                                            note = (Note)result.getList().stream().findFirst().get();
+                                            if(line.hasOption("objectType")){
+                                                Types type = Types.valueOf(line.getOptionValue("objectType").toUpperCase());
+                                                note.setObjectType(type.toString());
+                                            }
+                                            if(line.hasOption("objectId"))
+                                                note.setObjectId(Long.parseLong(line.getOptionValue("objectId")));
+                                            if(line.hasOption("desc")){
+                                                log.info("Enter description:");
+                                                String desc = scan.nextLine();
+                                                note.setDescription(desc);
+                                            }
+                                            result = provider.editRecord(note);
+                                            log.info(result.getStatus());
+                                            if (!result.getStatus().equals(ResultStatuses.OK) && result.getMessage()!=null){
+                                                log.error(result.getMessage());
+                                            }
+                                        }  
+                                        else {
+                                            log.error(result.getStatus());
+                                            if (result.getMessage() != null)
+                                                log.error(result.getMessage());
+                                        }
+                                    } catch (IllegalArgumentException ex){
+                                        log.error(ex);
+                                        log.error("Incorrect argument!");
+                                    }
+                                }
+                                else{
+                                    log.error("-description, -objectId or -objectType is requered!");
+                                }
+                            }
+                            else{
+                                log.error("-id is requered!");
+                            }
                         }                    
                     }
 
                     if (arr[0].equals("delete")){
                         if (arr.length > 1 && arr[1].equals("help")){
-                            log.info("Options for command find:");
+                            List<Option> optionsCreate = new ArrayList<Option>();
+                            optionsCreate.add(options.getOption("id"));
+                            log.info("Options for command delete:");
+                            optionsCreate.stream().forEach(e -> {
+                                String str = "-" + e.getOpt() +  ", -" + e.getLongOpt();
+                                if(e.getArgs() > 0) str += "\t<arg>";
+                                else str += "\t";
+                                str += "\t" + e.getDescription();
+                                log.info(str);
+                            }); 
                         }
                         else {
-                            log.info("delete here");
+                            if (line.hasOption("id")){
+                                try{
+                                    Note note = new Note(Long.parseLong(line.getOptionValue("id")));
+                                    Result result = provider.deleteRecord(note);
+                                    log.info(result.getStatus());
+                                    if (!result.getStatus().equals(ResultStatuses.OK) && result.getMessage()!=null){
+                                        log.error(result.getMessage());
+                                    } 
+                                } catch (IllegalArgumentException ex){
+                                    log.error(ex);
+                                    log.error("Incorrect argument!");
+                                }
+                            }
+                            else{
+                                log.error("-id is requered!");
+                            }
                         }                    
                     }                
-                    log.info("Enter command");
-//                if (line.hasOption( "find" )) {
-//                    if (line.hasOption("type")){
-//                        try{
-//                            Types type = Types.valueOf(line.getOptionValue("type").toUpperCase());
-//                            Generic obj = new Aria();
-//                            switch (type){
-//                                case ARIA : obj = new Aria();
-//                                    break;
-//                                case COMPOSER : obj = new Composer();
-//                                    break;
-//                                case LIBRETTO : obj = new Libretto();;
-//                                    break;
-//                                case OPERA : obj = new Opera();
-//                                    break;
-//                                case SINGER : obj = new Singer();
-//                                    break;
-//                                case AUTHOR : obj = new Author();
-//                                    break;
-//                                case NOTE : obj = new Note();
-//                                    break;
-//                            }
-//                            if (line.hasOption("all")){
-//                                Result result = provider.getAllRecords(obj);
-//                                log.info(result.getStatus()); 
-//                                if (result.getStatus().equals(ResultStatuses.OK)){
-//                                    log.info(obj.getType());
-//                                    result.getList().stream().forEach(e -> log.info(e));
-//                                }
-//                            }
-//                            else{
-//                                if(obj.getType().equals(Types.AUTHOR) || obj.getType().equals(Types.COMPOSER) || obj.getType().equals(Types.SINGER)){
-//                                    if(line.hasOption("name")){
-//                                        ((Human)obj).setName(line.getOptionValue("name"));
-//                                    }
-//                                    if(line.hasOption("surname")){
-//                                        ((Human)obj).setSurname(line.getOptionValue("surname"));
-//                                    }
-//                                    if(line.hasOption("patronymic")){
-//                                        ((Human)obj).setPatronymic(line.getOptionValue("patronymic"));
-//                                    }
-//                                    if(line.hasOption("voice") && obj.getType().equals(Types.SINGER)){
-//                                        ((Singer)obj).setVoice(line.getOptionValue("voice"));
-//                                    }
-//                                }
-//                                if(obj.getType().equals(Types.ARIA)){
-//                                    if (line.hasOption("title")){
-//                                        ((Aria)obj).setTitle(line.getOptionValue("title"));
-//                                    }
-//                                    if (line.hasOption("text")){
-//                                        ((Aria)obj).setText(line.getOptionValue("text"));
-//                                    }
-//                                }
-//                                if(obj.getType().equals(Types.OPERA)){
-//                                    if (line.hasOption("title")){
-//                                        ((Opera)obj).setTitle(line.getOptionValue("title"));
-//                                    }
-//                                }
-//                                Result result = provider.findRecord(obj);
-//                                log.info(result.getStatus()); 
-//                                if (result.getStatus().equals(ResultStatuses.OK)){
-//                                    log.info(obj.getType());
-//                                    result.getList().stream().forEach(e -> log.info(e));
-//                                }
-//                            }
-//                        } catch(IllegalArgumentException ex){
-//                            log.info(ex);
-//                        }                
-//                    }
-//                    else log.info("Type is required!");
-//                }                
-//                else log.info("ololo");   
+                    log.info("Enter command"); 
                 } catch( ParseException exp ){
                     log.error( "Unexpected exception:" + exp.getMessage() );
                 }
