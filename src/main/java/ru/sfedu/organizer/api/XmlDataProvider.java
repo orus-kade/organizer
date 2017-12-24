@@ -577,14 +577,16 @@ public class XmlDataProvider implements IDataProvider{
         }
         list.addAll(result.getList());
         List<Generic> resultList = new ArrayList<Generic>();
-        list.removeIf( e ->{  
-            if (obj.getText() != null && !((Aria)e).getText().toLowerCase().contains(obj.getText().toLowerCase()))
-                return true;
+        list.removeIf( e ->{
+            if (((Aria)e).getText() != null)
+                if (obj.getText() != null && !((Aria)e).getText().toLowerCase().contains(obj.getText().toLowerCase()))
+                    return true;            
             return false;                       
         });
         list.removeIf( e ->{
-            if (obj.getTitle() != null && !((Aria)e).getTitle().toLowerCase().contains(obj.getTitle().toLowerCase()))
-                return true;
+            if (((Aria)e).getTitle() != null)
+                if (obj.getTitle() != null && !((Aria)e).getTitle().toLowerCase().contains(obj.getTitle().toLowerCase()))
+                    return true;
             return false;
         });
         
@@ -602,18 +604,21 @@ public class XmlDataProvider implements IDataProvider{
         list.addAll(result.getList());
         List<Generic> resultList = new ArrayList<Generic>();
         list.removeIf( e ->{
-            if (obj.getName()!= null && !((Composer)e).getName().toLowerCase().contains(obj.getName().toLowerCase()))
-                return true;
+            if (((Composer)e).getName() != null)
+                if (obj.getName()!= null && !((Composer)e).getName().toLowerCase().contains(obj.getName().toLowerCase()))
+                    return true;
             return false;
         });
         list.removeIf( e ->{
-            if (obj.getSurname()!= null && !((Composer)e).getSurname().toLowerCase().contains(obj.getSurname().toLowerCase()))
-                return true;
+            if (((Composer)e).getSurname() != null)
+                if (obj.getSurname()!= null && !((Composer)e).getSurname().toLowerCase().contains(obj.getSurname().toLowerCase()))
+                    return true;
             return false;
         });
         list.removeIf( e ->{
-            if (obj.getPatronymic()!= null && !((Composer)e).getPatronymic().toLowerCase().contains(obj.getPatronymic().toLowerCase()))
-                return true;                  
+            if (((Composer)e).getPatronymic() != null)
+                if (obj.getPatronymic()!= null && !((Composer)e).getPatronymic().toLowerCase().contains(obj.getPatronymic().toLowerCase()))
+                    return true;                  
             return false;                       
         });
         resultList.addAll(list);
@@ -630,18 +635,21 @@ public class XmlDataProvider implements IDataProvider{
         list.addAll(result.getList());
         List<Generic> resultList = new ArrayList<Generic>();
         list.removeIf( e ->{
-            if (obj.getName()!= null && !((Author)e).getName().toLowerCase().contains(obj.getName().toLowerCase()))
-                return true;
+            if (((Author)e).getName() != null)
+                if (obj.getName()!= null && !((Author)e).getName().toLowerCase().contains(obj.getName().toLowerCase()))
+                    return true;
             return false;                       
         });
         list.removeIf( e ->{
-            if (obj.getSurname()!= null && !((Author)e).getSurname().toLowerCase().contains(obj.getSurname().toLowerCase()))
-                return true;
+            if (((Author)e).getSurname() != null)
+                if (obj.getSurname()!= null && !((Author)e).getSurname().toLowerCase().contains(obj.getSurname().toLowerCase()))
+                    return true;
             return false;                       
         });
         list.removeIf( e ->{
-            if (obj.getPatronymic()!= null && !((Author)e).getPatronymic().toLowerCase().contains(obj.getPatronymic().toLowerCase()))
-                return true;
+            if (((Author)e).getPatronymic() != null)
+                if (obj.getPatronymic()!= null && !((Author)e).getPatronymic().toLowerCase().contains(obj.getPatronymic().toLowerCase()))
+                    return true;
             return false;                       
         });
         resultList.addAll(list);
@@ -658,23 +666,27 @@ public class XmlDataProvider implements IDataProvider{
         list.addAll(result.getList());
         List<Generic> resultList = new ArrayList<Generic>();
         list.removeIf( e ->{
-            if (obj.getName()!= null && !((Singer)e).getName().toLowerCase().contains(obj.getName().toLowerCase()))
-                return true;
+            if (((Singer)e).getName() != null)
+                if (obj.getName()!= null && !((Singer)e).getName().toLowerCase().contains(obj.getName().toLowerCase()))
+                    return true;
             return false;
         });
         list.removeIf( e ->{
-            if (obj.getSurname()!= null && !((Singer)e).getSurname().toLowerCase().contains(obj.getSurname().toLowerCase()))
-                return true;
+            if (((Singer)e).getSurname() != null)
+                if (obj.getSurname()!= null && !((Singer)e).getSurname().toLowerCase().contains(obj.getSurname().toLowerCase()))
+                    return true;
             return false;
         });
         list.removeIf( e ->{
-            if (obj.getPatronymic()!= null && !((Singer)e).getPatronymic().toLowerCase().contains(obj.getPatronymic().toLowerCase()))
-                return true;
+            if (((Singer)e).getPatronymic() != null)
+                if (obj.getPatronymic()!= null && !((Singer)e).getPatronymic().toLowerCase().contains(obj.getPatronymic().toLowerCase()))
+                    return true;
             return false;
         });
         list.removeIf( e ->{
-            if (obj.getVoice()!= null && !((Singer)e).getVoice().toLowerCase().contains(obj.getVoice().toLowerCase()))
-                return true;
+            if (((Singer)e).getVoice() != null)
+                if (obj.getVoice()!= null && !((Singer)e).getVoice().toLowerCase().contains(obj.getVoice().toLowerCase()))
+                    return true;
             return false;                       
         });
         resultList.addAll(list);
@@ -692,8 +704,9 @@ public class XmlDataProvider implements IDataProvider{
         list.addAll(result.getList());
         List<Generic> resultList = new ArrayList<Generic>();
         list.removeIf( e ->{
-            if (obj.getTitle() != null && !((Opera)e).getTitle().toLowerCase().contains(obj.getTitle().toLowerCase()))
-                return true;
+            if (((Opera)e).getTitle() != null)
+                if (obj.getTitle() != null && !((Opera)e).getTitle().toLowerCase().contains(obj.getTitle().toLowerCase()))
+                    return true;
             return false;                       
         });
         resultList.addAll(list);
@@ -710,8 +723,9 @@ public class XmlDataProvider implements IDataProvider{
         list.addAll(result.getList());
         List<Generic> resultList = new ArrayList<Generic>();
         list.removeIf( e ->{
-            if (obj.getObjectType()!= null && !((Note)e).getObjectType().toUpperCase().equals(obj.getObjectType().toUpperCase()))
-                return true;
+            if (((Note)e).getObjectType() != null)
+                if (obj.getObjectType()!= null && !((Note)e).getObjectType().toUpperCase().equals(obj.getObjectType().toUpperCase()))
+                    return true;
             return false;                     
         });
         resultList.addAll(list);
