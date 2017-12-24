@@ -23,6 +23,7 @@ public class ConfigurationUtil {
 
     /**
      * Hides default constructor
+     * @param path
      */
 //    public ConfigurationUtil() {
 //        String path = System.getProperty(FILE_PATH);      

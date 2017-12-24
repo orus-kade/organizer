@@ -8,7 +8,10 @@ package ru.sfedu.organizer;
  */
 public class Constants {
     
-    public static String FILE_PATH = "my.app.file.path" ;
+    /**
+     *
+     */
+    public static String FILE_PATH = "organizer.file.path" ;
     /**
      *
      */
@@ -78,6 +81,11 @@ public class Constants {
      *
      */
     public static final String CSV_PATH_AUTHOR_LIBRETTO = "csv_author_libretto";
+    
+    /**
+     *
+     */
+    public static final String XML_PATH = "xml_path";
     
     /**
      *

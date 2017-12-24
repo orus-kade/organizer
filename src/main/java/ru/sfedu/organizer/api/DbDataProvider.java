@@ -806,17 +806,19 @@ public class DbDataProvider implements IDataProvider<Generic>{
             List<String> conditions = new ArrayList<String>();
             String query = "Select * from " + getTableName(obj) + " ";
             if (obj.getTitle() != null) conditions.add(" title LIKE '%" + obj.getTitle() + "%' ");
-            if (obj.getText()!= null) conditions.add(" title LIKE '%" + obj.getText()+ "%' ");
+            if (obj.getText()!= null) conditions.add(" text LIKE '%" + obj.getText()+ "%' ");
             if (!conditions.isEmpty()){
                 query += " where " + String.join(" AND ", conditions.toArray(new String[conditions.size()]));
+            }
+            else{
+                query += ";";
+            }
                 Statement stmt = connection.createStatement();
                 ResultSet resultSet = stmt.executeQuery(query);
                 List<Generic> list = new ArrayList<Generic>();
                 list.addAll(getAria(resultSet, connection, false)); 
                 if (list.isEmpty()) return new Result(ResultStatuses.NOTFOUND);
                 return new Result(ResultStatuses.OK, list);
-            }
-            return new Result(ResultStatuses.NOTFOUND);
         } catch (IOException ex) {
             log.error(ex.getMessage());
             connection.close();
@@ -829,19 +831,21 @@ public class DbDataProvider implements IDataProvider<Generic>{
         try{
             List<String> conditions = new ArrayList<String>();
             String query = "Select * from " + getTableName(obj) + " ";
-            if (obj.getName()!= null) conditions.add(" title LIKE '%" + obj.getName() + "%' ");
-            if (obj.getSurname()!= null) conditions.add(" title LIKE '%" + obj.getSurname()+ "%' ");
-            if (obj.getPatronymic()!= null) conditions.add(" title LIKE '%" + obj.getPatronymic()+ "%' ");            
+            if (obj.getName()!= null) conditions.add(" name LIKE '%" + obj.getName() + "%' ");
+            if (obj.getSurname()!= null) conditions.add(" surname LIKE '%" + obj.getSurname()+ "%' ");
+            if (obj.getPatronymic()!= null) conditions.add(" patronymic LIKE '%" + obj.getPatronymic()+ "%' ");            
             if (!conditions.isEmpty()){
                 query += " where " + String.join(" AND ", conditions.toArray(new String[conditions.size()]));
+            }
+            else{
+                query += ";";
+            }
                 Statement stmt = connection.createStatement();
                 ResultSet resultSet = stmt.executeQuery(query);
                 List<Generic> list = new ArrayList<Generic>();
                 list.addAll(getComposer(resultSet, connection, false)); 
                 if (list.isEmpty()) return new Result(ResultStatuses.NOTFOUND);
                 return new Result(ResultStatuses.OK, list);
-            }
-            return new Result(ResultStatuses.NOTFOUND);
         } catch (IOException ex) {
             log.error(ex.getMessage());
             connection.close();
@@ -854,19 +858,21 @@ public class DbDataProvider implements IDataProvider<Generic>{
         try{
             List<String> conditions = new ArrayList<String>();
             String query = "Select * from " + getTableName(obj) + " ";
-            if (obj.getName()!= null) conditions.add(" title LIKE '%" + obj.getName() + "%' ");
-            if (obj.getSurname()!= null) conditions.add(" title LIKE '%" + obj.getSurname()+ "%' ");
-            if (obj.getPatronymic()!= null) conditions.add(" title LIKE '%" + obj.getPatronymic()+ "%' ");            
+            if (obj.getName()!= null) conditions.add(" name LIKE '%" + obj.getName() + "%' ");
+            if (obj.getSurname()!= null) conditions.add(" surname LIKE '%" + obj.getSurname()+ "%' ");
+            if (obj.getPatronymic()!= null) conditions.add(" patronymic LIKE '%" + obj.getPatronymic()+ "%' ");            
             if (!conditions.isEmpty()){
                 query += " where " + String.join(" AND ", conditions.toArray(new String[conditions.size()]));
+            }
+            else{
+                query += ";";
+            }
                 Statement stmt = connection.createStatement();
                 ResultSet resultSet = stmt.executeQuery(query);
                 List<Generic> list = new ArrayList<Generic>();
                 list.addAll(getAuthor(resultSet, connection, false)); 
                 if (list.isEmpty()) return new Result(ResultStatuses.NOTFOUND);
                 return new Result(ResultStatuses.OK, list);
-            }
-            return new Result(ResultStatuses.NOTFOUND);
         } catch (IOException ex) {
             log.error(ex.getMessage());
             connection.close();
@@ -879,20 +885,22 @@ public class DbDataProvider implements IDataProvider<Generic>{
         try{
             List<String> conditions = new ArrayList<String>();
             String query = "Select * from " + getTableName(obj) + " ";
-            if (obj.getName()!= null) conditions.add(" title LIKE '%" + obj.getName() + "%' ");
-            if (obj.getSurname()!= null) conditions.add(" title LIKE '%" + obj.getSurname()+ "%' ");
-            if (obj.getPatronymic()!= null) conditions.add(" title LIKE '%" + obj.getPatronymic()+ "%' "); 
-            if (obj.getVoice()!= null) conditions.add(" title LIKE '%" + obj.getVoice()+ "%' ");   
+            if (obj.getName()!= null) conditions.add(" name LIKE '%" + obj.getName() + "%' ");
+            if (obj.getSurname()!= null) conditions.add(" surname LIKE '%" + obj.getSurname()+ "%' ");
+            if (obj.getPatronymic()!= null) conditions.add(" patronymic LIKE '%" + obj.getPatronymic()+ "%' "); 
+            if (obj.getVoice()!= null) conditions.add(" voice LIKE '%" + obj.getVoice()+ "%' ");   
             if (!conditions.isEmpty()){
                 query += " where " + String.join(" AND ", conditions.toArray(new String[conditions.size()]));
+            }
+            else{
+                query += ";";
+            }
                 Statement stmt = connection.createStatement();
                 ResultSet resultSet = stmt.executeQuery(query);
                 List<Generic> list = new ArrayList<Generic>();
                 list.addAll(getSinger(resultSet, connection, false)); 
                 if (list.isEmpty()) return new Result(ResultStatuses.NOTFOUND);
                 return new Result(ResultStatuses.OK, list);
-            }
-            return new Result(ResultStatuses.NOTFOUND);
         } catch (IOException ex) {
             log.error(ex.getMessage());
             connection.close();
@@ -909,14 +917,16 @@ public class DbDataProvider implements IDataProvider<Generic>{
 
             if (!conditions.isEmpty()){
                 query += " where " + String.join(" AND ", conditions.toArray(new String[conditions.size()]));
+            }
+            else{
+                query += ";";
+            }
                 Statement stmt = connection.createStatement();
                 ResultSet resultSet = stmt.executeQuery(query);
                 List<Generic> list = new ArrayList<Generic>();
-                list.addAll(getAria(resultSet, connection, false)); 
+                list.addAll(getOpera(resultSet, connection, false)); 
                 if (list.isEmpty()) return new Result(ResultStatuses.NOTFOUND);
                 return new Result(ResultStatuses.OK, list);
-            }
-            return new Result(ResultStatuses.NOTFOUND);
         } catch (IOException ex) {
             log.error(ex.getMessage());
             connection.close();
@@ -929,18 +939,20 @@ public class DbDataProvider implements IDataProvider<Generic>{
         try{
             List<String> conditions = new ArrayList<String>();
             String query = "Select * from " + getTableName(obj) + " ";
-            if (obj.getObjectType()!= null) conditions.add(" title LIKE '%" + obj.getObjectType()+ "%' ");
+            if (obj.getObjectType()!= null) conditions.add(" objectType LIKE '%" + obj.getObjectType()+ "%' ");
             
-            if (!conditions.isEmpty()){
+           if (!conditions.isEmpty()){
                 query += " where " + String.join(" AND ", conditions.toArray(new String[conditions.size()]));
+            }
+            else{
+                query += ";";
+            }
                 Statement stmt = connection.createStatement();
                 ResultSet resultSet = stmt.executeQuery(query);
                 List<Generic> list = new ArrayList<Generic>();
-                list.addAll(getAria(resultSet, connection, false)); 
+                list.addAll(getNote(resultSet)); 
                 if (list.isEmpty()) return new Result(ResultStatuses.NOTFOUND);
                 return new Result(ResultStatuses.OK, list);
-            }
-            return new Result(ResultStatuses.NOTFOUND);
         } catch (IOException ex) {
             log.error(ex.getMessage());
             connection.close();

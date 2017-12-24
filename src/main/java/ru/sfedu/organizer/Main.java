@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Scanner;
 import org.apache.commons.cli.*;
 import org.apache.log4j.Logger;
+import static ru.sfedu.organizer.Constants.FILE_PATH;
 import ru.sfedu.organizer.api.CsvDataProvider;
 import ru.sfedu.organizer.api.DbDataProvider;
 import ru.sfedu.organizer.api.IDataProvider;
@@ -70,9 +71,9 @@ public class Main {
         try{                
             CommandLine line = new BasicParser().parse(options, args);
                         
-            log.info(System.getProperty("FILE_PATH"));
+            log.info(System.getProperty(FILE_PATH));
             
-            IDataProvider provider = new CsvDataProvider(System.getProperty("FILE_PATH"));
+            IDataProvider provider = new CsvDataProvider(System.getProperty(FILE_PATH));
             String source;
             if(line.hasOption("src")){
                 source = line.getOptionValue("src");
@@ -83,11 +84,11 @@ public class Main {
             if (Arrays.asList(Constants.SOURCES).contains(source)){
                 try{
                     switch(source){
-                        case "csv" : provider = new CsvDataProvider(System.getProperty("FILE_PATH"));
+                        case "csv" : provider = new CsvDataProvider(System.getProperty(FILE_PATH));
                             break;
-                        case "xml" : provider = new XmlDataProvider(System.getProperty("FILE_PATH"));
+                        case "xml" : provider = new XmlDataProvider(System.getProperty(FILE_PATH));
                             break;
-                        case "db" :  provider = new DbDataProvider(System.getProperty("FILE_PATH"));
+                        case "db" :  provider = new DbDataProvider(System.getProperty(FILE_PATH));
                         case "database":
                             break;
                     }
@@ -101,14 +102,15 @@ public class Main {
                     }
                     source = defaultSource;
                     switch(source){
-                        case "cvs" : provider = new CsvDataProvider(System.getProperty("FILE_PATH"));
+                        case "cvs" : provider = new CsvDataProvider(System.getProperty(FILE_PATH));
                             break;
-                        case "xml" : provider = new XmlDataProvider(System.getProperty("FILE_PATH"));
+                        case "xml" : provider = new XmlDataProvider(System.getProperty(FILE_PATH));
                             break;
                     }
                     log.info("Source wa changed from \"database\" to default source \"" + defaultSource + "\"");
                 }
             }
+            log.info("Current source : " + source);
             
             if (line.hasOption("h")){
                 log.info("Commands:");
@@ -143,7 +145,7 @@ public class Main {
                         log.info("help \t - to show help message");
                         log.info("exit \t - to exit application");
                     }
-
+                    
                     if (arr[0].equals("find")){
                         if (arr.length > 1 && arr[1].equals("help")){
                             List<Option> optionsFind = new ArrayList<Option>();
@@ -199,7 +201,7 @@ public class Main {
                                                 ((Aria)obj).setTitle(line.getOptionValue("title"));
                                             }
                                             if (line.hasOption("text")){
-                                                ((Aria)obj).setTitle(line.getOptionValue("title"));
+                                                ((Aria)obj).setText(line.getOptionValue("text"));
                                             }
                                         }
                                         if (type.equals(Types.OPERA)){
@@ -227,6 +229,7 @@ public class Main {
                                                 ((Singer)obj).setVoice(line.getOptionValue("voice"));
                                             }
                                         }
+                                        //log.info(obj);
                                         Result result = provider.findRecord(obj);
                                         log.info(result.getStatus()); 
                                         if (result.getStatus().equals(ResultStatuses.OK)){

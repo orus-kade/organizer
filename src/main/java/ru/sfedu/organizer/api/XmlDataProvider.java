@@ -28,6 +28,10 @@ public class XmlDataProvider implements IDataProvider{
 
     private ConfigurationUtil config;
 
+    /**
+     *
+     * @param path
+     */
     public XmlDataProvider(String path) {
         this.config = new ConfigurationUtil(path);
     }
@@ -229,19 +233,19 @@ public class XmlDataProvider implements IDataProvider{
         Types type = obj.getType();
         String file = null;
         switch (type){
-            case ARIA : file = config.getConfigurationEntry(XML_PATH_ARIA);
+            case ARIA : file = config.getConfigurationEntry(XML_PATH) + config.getConfigurationEntry(XML_PATH_ARIA);
                 break;
-            case COMPOSER : file = config.getConfigurationEntry(XML_PATH_COMPOSER);
+            case COMPOSER : file = config.getConfigurationEntry(XML_PATH) + config.getConfigurationEntry(XML_PATH_COMPOSER);
                 break;
-            case LIBRETTO : file = config.getConfigurationEntry(XML_PATH_LIBRETTO);
+            case LIBRETTO : file = config.getConfigurationEntry(XML_PATH) + config.getConfigurationEntry(XML_PATH_LIBRETTO);
                 break;
-            case OPERA : file = config.getConfigurationEntry(XML_PATH_OPERA); 
+            case OPERA : file = config.getConfigurationEntry(XML_PATH) + config.getConfigurationEntry(XML_PATH_OPERA); 
                 break;
-            case SINGER : file = config.getConfigurationEntry(XML_PATH_SINGER);
+            case SINGER : file = config.getConfigurationEntry(XML_PATH) + config.getConfigurationEntry(XML_PATH_SINGER);
                 break;
-            case AUTHOR : file = config.getConfigurationEntry(XML_PATH_AUTHOR);
+            case AUTHOR : file = config.getConfigurationEntry(XML_PATH) + config.getConfigurationEntry(XML_PATH_AUTHOR);
                 break; 
-            case NOTE: file = config.getConfigurationEntry(XML_PATH_NOTE);
+            case NOTE: file = config.getConfigurationEntry(XML_PATH) + config.getConfigurationEntry(XML_PATH_NOTE);
                 break; 
         }
         return file;
@@ -270,7 +274,7 @@ public class XmlDataProvider implements IDataProvider{
     private Generic getRelationsAria(Generic obj) throws  Exception{
         Serializer serializer = new Persister();
         Aria object = (Aria)obj;
-        File file = new File(config.getConfigurationEntry(XML_PATH_ARIA_AUTHOR));
+        File file = new File(config.getConfigurationEntry(XML_PATH) + config.getConfigurationEntry(XML_PATH_ARIA_AUTHOR));
         XmlListRelations xmlList = serializer.read(XmlListRelations.class, file);
         List<Long> list = new ArrayList<Long>();
         list.addAll(xmlList.getList().stream()
@@ -280,7 +284,7 @@ public class XmlDataProvider implements IDataProvider{
                             (a1, a2) -> a1.addAll(a2)));
         object.setAuthors(list);
                    
-        file = new File(config.getConfigurationEntry(XML_PATH_ARIA_COMPOSER));
+        file = new File(config.getConfigurationEntry(XML_PATH) + config.getConfigurationEntry(XML_PATH_ARIA_COMPOSER));
         xmlList = serializer.read(XmlListRelations.class, file);
         list.clear();
         list.addAll(xmlList.getList().stream()
@@ -290,7 +294,7 @@ public class XmlDataProvider implements IDataProvider{
                             (a1, a2) -> a1.addAll(a2)));
         object.setComposers(list); 
             
-        file = new File(config.getConfigurationEntry(XML_PATH_ARIA_SINGER));
+        file = new File(config.getConfigurationEntry(XML_PATH) + config.getConfigurationEntry(XML_PATH_ARIA_SINGER));
         xmlList = serializer.read(XmlListRelations.class, file);
         list.clear();
         list.addAll(xmlList.getList().stream()
@@ -319,7 +323,7 @@ public class XmlDataProvider implements IDataProvider{
     private Generic getRelationsAuthor(Generic obj) throws  Exception{
         Serializer serializer = new Persister();
         Author object = (Author)obj;
-        File file = new File(config.getConfigurationEntry(XML_PATH_ARIA_AUTHOR));
+        File file = new File(config.getConfigurationEntry(XML_PATH) + config.getConfigurationEntry(XML_PATH_ARIA_AUTHOR));
         XmlListRelations xmlList = serializer.read(XmlListRelations.class, file);
         List<Long> list = new ArrayList<Long>();
         list.addAll(xmlList.getList().stream()
@@ -329,7 +333,7 @@ public class XmlDataProvider implements IDataProvider{
                             (a1, a2) -> a1.addAll(a2)));        
         object.setAries(list);
             
-        file = new File(config.getConfigurationEntry(XML_PATH_AUTHOR_LIBRETTO));
+        file = new File(config.getConfigurationEntry(XML_PATH) + config.getConfigurationEntry(XML_PATH_AUTHOR_LIBRETTO));
         xmlList = serializer.read(XmlListRelations.class, file);
         list.clear();
         list.addAll(xmlList.getList().stream()
@@ -358,7 +362,7 @@ public class XmlDataProvider implements IDataProvider{
     private Generic getRelationsComposer(Generic obj) throws  Exception{
         Serializer serializer = new Persister();
         Composer object = (Composer)obj;
-        File file = new File(config.getConfigurationEntry(XML_PATH_ARIA_COMPOSER));
+        File file = new File(config.getConfigurationEntry(XML_PATH) + config.getConfigurationEntry(XML_PATH_ARIA_COMPOSER));
         XmlListRelations xmlList = serializer.read(XmlListRelations.class, file);
         List<Long> list = new ArrayList<Long>();
         list.addAll(xmlList.getList().stream()
@@ -387,7 +391,7 @@ public class XmlDataProvider implements IDataProvider{
     private Generic getRelationsLibretto(Generic obj) throws  Exception{
         Serializer serializer = new Persister();
         Libretto object = (Libretto)obj;
-        File file = new File(config.getConfigurationEntry(XML_PATH_AUTHOR_LIBRETTO));
+        File file = new File(config.getConfigurationEntry(XML_PATH) + config.getConfigurationEntry(XML_PATH_AUTHOR_LIBRETTO));
         XmlListRelations xmlList = serializer.read(XmlListRelations.class, file);
         List<Long> list = new ArrayList<Long>();
         list.addAll(xmlList.getList().stream()
@@ -416,7 +420,7 @@ public class XmlDataProvider implements IDataProvider{
     private Generic getRelationsOpera(Generic obj) throws  Exception{
         Serializer serializer = new Persister();
         Opera object = (Opera)obj;
-        File file = new File(config.getConfigurationEntry(XML_PATH_ARIA));
+        File file = new File(config.getConfigurationEntry(XML_PATH) + config.getConfigurationEntry(XML_PATH_ARIA));
         XmlListEntity xmlList = serializer.read(XmlListEntity.class, file);
         List<Long> list = new ArrayList<Long>();
         list.addAll(xmlList.getList().stream()
@@ -445,7 +449,7 @@ public class XmlDataProvider implements IDataProvider{
     private Generic getRelationsSinger(Generic obj) throws  Exception{
         Serializer serializer = new Persister();
         Singer object = (Singer)obj;
-        File file = new File(config.getConfigurationEntry(XML_PATH_ARIA_SINGER));
+        File file = new File(config.getConfigurationEntry(XML_PATH) + config.getConfigurationEntry(XML_PATH_ARIA_SINGER));
         XmlListRelations xmlList = serializer.read(XmlListRelations.class, file);
         List<Long> list = new ArrayList<Long>();
         list.addAll(xmlList.getList().stream()
@@ -573,15 +577,17 @@ public class XmlDataProvider implements IDataProvider{
         }
         list.addAll(result.getList());
         List<Generic> resultList = new ArrayList<Generic>();
+        list.removeIf( e ->{  
+            if (obj.getText() != null && !((Aria)e).getText().toLowerCase().contains(obj.getText().toLowerCase()))
+                return true;
+            return false;                       
+        });
         list.removeIf( e ->{
             if (obj.getTitle() != null && !((Aria)e).getTitle().toLowerCase().contains(obj.getTitle().toLowerCase()))
-                return true;                
-            if (obj.getText() != null)
-                if(!((Aria)e).getText().toLowerCase().contains(obj.getText().toLowerCase()))
-                    return true;
-                else return false;
-            return true;                       
+                return true;
+            return false;
         });
+        
         resultList.addAll(list);
         if (resultList.isEmpty()) return new Result(ResultStatuses.NOTFOUND, obj.toString());
         return new Result(ResultStatuses.OK, list);
@@ -598,13 +604,17 @@ public class XmlDataProvider implements IDataProvider{
         list.removeIf( e ->{
             if (obj.getName()!= null && !((Composer)e).getName().toLowerCase().contains(obj.getName().toLowerCase()))
                 return true;
+            return false;
+        });
+        list.removeIf( e ->{
             if (obj.getSurname()!= null && !((Composer)e).getSurname().toLowerCase().contains(obj.getSurname().toLowerCase()))
                 return true;
-            if (obj.getPatronymic()!= null)
-                if(!((Composer)e).getPatronymic().toLowerCase().contains(obj.getPatronymic().toLowerCase()))
-                    return true;
-                else return false;                    
-            return true;                       
+            return false;
+        });
+        list.removeIf( e ->{
+            if (obj.getPatronymic()!= null && !((Composer)e).getPatronymic().toLowerCase().contains(obj.getPatronymic().toLowerCase()))
+                return true;                  
+            return false;                       
         });
         resultList.addAll(list);
         if (resultList.isEmpty()) return new Result(ResultStatuses.NOTFOUND, obj.toString());
@@ -622,13 +632,17 @@ public class XmlDataProvider implements IDataProvider{
         list.removeIf( e ->{
             if (obj.getName()!= null && !((Author)e).getName().toLowerCase().contains(obj.getName().toLowerCase()))
                 return true;
+            return false;                       
+        });
+        list.removeIf( e ->{
             if (obj.getSurname()!= null && !((Author)e).getSurname().toLowerCase().contains(obj.getSurname().toLowerCase()))
                 return true;
-            if (obj.getPatronymic()!= null)
-                if(!((Author)e).getPatronymic().toLowerCase().contains(obj.getPatronymic().toLowerCase()))
-                    return true;
-                else return false;
-            return true;                       
+            return false;                       
+        });
+        list.removeIf( e ->{
+            if (obj.getPatronymic()!= null && !((Author)e).getPatronymic().toLowerCase().contains(obj.getPatronymic().toLowerCase()))
+                return true;
+            return false;                       
         });
         resultList.addAll(list);
         if (resultList.isEmpty()) return new Result(ResultStatuses.NOTFOUND, obj.toString());
@@ -646,15 +660,22 @@ public class XmlDataProvider implements IDataProvider{
         list.removeIf( e ->{
             if (obj.getName()!= null && !((Singer)e).getName().toLowerCase().contains(obj.getName().toLowerCase()))
                 return true;
+            return false;
+        });
+        list.removeIf( e ->{
             if (obj.getSurname()!= null && !((Singer)e).getSurname().toLowerCase().contains(obj.getSurname().toLowerCase()))
                 return true;
+            return false;
+        });
+        list.removeIf( e ->{
             if (obj.getPatronymic()!= null && !((Singer)e).getPatronymic().toLowerCase().contains(obj.getPatronymic().toLowerCase()))
                 return true;
-            if (obj.getVoice()!= null)
-                if(!((Singer)e).getVoice().toLowerCase().contains(obj.getVoice().toLowerCase()))
-                    return true;
-                else return false;
-            return true;                       
+            return false;
+        });
+        list.removeIf( e ->{
+            if (obj.getVoice()!= null && !((Singer)e).getVoice().toLowerCase().contains(obj.getVoice().toLowerCase()))
+                return true;
+            return false;                       
         });
         resultList.addAll(list);
         if (resultList.isEmpty()) return new Result(ResultStatuses.NOTFOUND, obj.toString());
@@ -671,11 +692,9 @@ public class XmlDataProvider implements IDataProvider{
         list.addAll(result.getList());
         List<Generic> resultList = new ArrayList<Generic>();
         list.removeIf( e ->{
-            if (obj.getTitle() != null)
-                if(!((Opera)e).getTitle().toLowerCase().contains(obj.getTitle().toLowerCase()))
-                    return true;
-                else return false;
-            return true;                       
+            if (obj.getTitle() != null && !((Opera)e).getTitle().toLowerCase().contains(obj.getTitle().toLowerCase()))
+                return true;
+            return false;                       
         });
         resultList.addAll(list);
         if (resultList.isEmpty()) return new Result(ResultStatuses.NOTFOUND, obj.toString());
@@ -691,11 +710,9 @@ public class XmlDataProvider implements IDataProvider{
         list.addAll(result.getList());
         List<Generic> resultList = new ArrayList<Generic>();
         list.removeIf( e ->{
-            if (obj.getObjectType()!= null)
-                if(!((Note)e).getObjectType().toUpperCase().equals(obj.getObjectType().toUpperCase()))
-                    return true;
-                else return false;
-            return true;                       
+            if (obj.getObjectType()!= null && !((Note)e).getObjectType().toUpperCase().equals(obj.getObjectType().toUpperCase()))
+                return true;
+            return false;                     
         });
         resultList.addAll(list);
         if (resultList.isEmpty()) return new Result(ResultStatuses.NOTFOUND, obj.toString());
