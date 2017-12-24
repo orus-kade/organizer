@@ -5,6 +5,9 @@ import java.io.InputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.util.Properties;
+import org.apache.log4j.Logger;
+import static ru.sfedu.organizer.Constants.FILE_PATH;
+import ru.sfedu.organizer.api.DbDataProvider;
 
 /**
  * Configuration utility. Allows to get configuration properties from the
@@ -13,18 +16,36 @@ import java.util.Properties;
  * @author Boris Jmailov
  */
 public class ConfigurationUtil {
-
-    private static final String DEFAULT_CONFIG_PATH = "./src/main/resources/enviroment.properties";
+    private static final Logger log = Logger.getLogger(ConfigurationUtil.class);
+    private static final String DEFAULT_CONFIG_PATH = "enviroment.properties";
+    private String configPath;
     private static final Properties configuration = new Properties();
 
     /**
      * Hides default constructor
      */
-    public ConfigurationUtil() {
-    }
+//    public ConfigurationUtil() {
+//        String path = System.getProperty(FILE_PATH);      
+//        if (path != null){
+//            configPath = path + "\\enviroment.properties";
+//        }
+//        else {
+//            configPath = DEFAULT_CONFIG_PATH;
+//        }
+//    }
+    
+    public ConfigurationUtil(String path) {       
+        if (path != null){
+            configPath = path + "\\enviroment.properties";
+        }
+        else {
+            configPath = DEFAULT_CONFIG_PATH;
+        }
+    }   
+   
 
     
-    private static Properties getConfiguration() throws IOException {
+    private Properties getConfiguration() throws IOException {
         if(configuration.isEmpty()){
             loadConfiguration();
         }
@@ -35,8 +56,8 @@ public class ConfigurationUtil {
      * Loads configuration from <code>DEFAULT_CONFIG_PATH</code>
      * @throws IOException In case of the configuration file read failure
      */
-    private static void loadConfiguration() throws IOException{
-        File file = new File(DEFAULT_CONFIG_PATH);
+    private void loadConfiguration() throws IOException{
+        File file = new File(configPath);
         InputStream in = new FileInputStream(file);
         //InputStream in = DEFAULT_CONFIG_PATH.getClass().getResourceAsStream(DEFAULT_CONFIG_PATH);
         try {
@@ -53,7 +74,7 @@ public class ConfigurationUtil {
      * @return Entry value by key
      * @throws IOException In case of the configuration file read failure
      */
-    public static String getConfigurationEntry(String key) throws IOException{
+    public String getConfigurationEntry(String key) throws IOException{
         return getConfiguration().getProperty(key);
     }
     

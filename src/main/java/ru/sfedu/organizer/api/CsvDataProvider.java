@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import static ru.sfedu.organizer.Constants.*;
 import ru.sfedu.organizer.model.*;
 import static ru.sfedu.organizer.model.Types.*;
+import ru.sfedu.organizer.utils.ConfigurationUtil;
 import static ru.sfedu.organizer.utils.ConfigurationUtil.*;
 
 /**
@@ -18,6 +19,13 @@ import static ru.sfedu.organizer.utils.ConfigurationUtil.*;
  */
 public class CsvDataProvider implements IDataProvider{
     private static final Logger log = Logger.getLogger(CsvDataProvider.class);
+    //private final ConfigurationUtil config = new ConfigurationUtil();
+    private ConfigurationUtil config;
+
+    public CsvDataProvider(String path) {
+        this.config = new ConfigurationUtil(path);
+    }
+    
     
     /**
      *
@@ -264,20 +272,21 @@ public class CsvDataProvider implements IDataProvider{
     private String getFileName(Generic obj) throws IOException {
         Types type = obj.getType();
         String file = null;
+        //if ()
         switch (type){
-            case ARIA : file = getConfigurationEntry(CSV_PATH_ARIA);
+            case ARIA : file = config.getConfigurationEntry(CSV_PATH_ARIA);
                 break;
-            case COMPOSER : file = getConfigurationEntry(CSV_PATH_COMPOSER);
+            case COMPOSER : file = config.getConfigurationEntry(CSV_PATH_COMPOSER);
                 break;
-            case LIBRETTO : file = getConfigurationEntry(CSV_PATH_LIBRETTO);
+            case LIBRETTO : file = config.getConfigurationEntry(CSV_PATH_LIBRETTO);
                 break;
-            case OPERA : file = getConfigurationEntry(CSV_PATH_OPERA); 
+            case OPERA : file = config.getConfigurationEntry(CSV_PATH_OPERA); 
                 break;
-            case SINGER : file = getConfigurationEntry(CSV_PATH_SINGER);
+            case SINGER : file = config.getConfigurationEntry(CSV_PATH_SINGER);
                 break;
-            case AUTHOR : file = getConfigurationEntry(CSV_PATH_AUTHOR);
+            case AUTHOR : file = config.getConfigurationEntry(CSV_PATH_AUTHOR);
                 break; 
-            case NOTE: file = getConfigurationEntry(CSV_PATH_NOTE);
+            case NOTE: file = config.getConfigurationEntry(CSV_PATH_NOTE);
                 break; 
         }
         return file;
@@ -328,7 +337,7 @@ public class CsvDataProvider implements IDataProvider{
     private Generic getRelationsAria(Generic obj) throws IOException{
         Reader reader; 
         Aria aria = (Aria)obj;
-        reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_AUTHOR));
+        reader = new FileReader(config.getConfigurationEntry(CSV_PATH_ARIA_AUTHOR));
         CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
             .withType(Relation.class)
             .withEscapeChar('\\')
@@ -348,7 +357,7 @@ public class CsvDataProvider implements IDataProvider{
             aria.setAuthors(list);
         }
           
-        reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_COMPOSER));
+        reader = new FileReader(config.getConfigurationEntry(CSV_PATH_ARIA_COMPOSER));
         csvToBean = new CsvToBeanBuilder(reader)
             .withType(Relation.class)
             .withEscapeChar('\\')
@@ -367,7 +376,7 @@ public class CsvDataProvider implements IDataProvider{
             aria.setComposers(list); 
         }
             
-        reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
+        reader = new FileReader(config.getConfigurationEntry(CSV_PATH_ARIA_SINGER));
         csvToBean = new CsvToBeanBuilder(reader)
             .withType(Relation.class)
             .withEscapeChar('\\')
@@ -405,7 +414,7 @@ public class CsvDataProvider implements IDataProvider{
     private Generic getRelationsComposer(Generic obj) throws IOException{        
         Reader reader;  
         Composer composer = (Composer)obj;
-        reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_COMPOSER));
+        reader = new FileReader(config.getConfigurationEntry(CSV_PATH_ARIA_COMPOSER));
         CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
             .withType(Relation.class)
             .withEscapeChar('\\')
@@ -444,7 +453,7 @@ public class CsvDataProvider implements IDataProvider{
     private Generic getRelationsLibretto(Generic obj) throws IOException{
             Reader reader;  
             Libretto libretto = (Libretto)obj;
-            reader = new FileReader(getConfigurationEntry(CSV_PATH_AUTHOR_LIBRETTO));
+            reader = new FileReader(config.getConfigurationEntry(CSV_PATH_AUTHOR_LIBRETTO));
             CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
                     .withType(Relation.class)
                     .withEscapeChar('\\')
@@ -483,7 +492,7 @@ public class CsvDataProvider implements IDataProvider{
     private Generic getRelationsOpera(Generic obj) throws IOException{        
         Reader reader;  
         Opera opera = (Opera)obj;
-        reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA));
+        reader = new FileReader(config.getConfigurationEntry(CSV_PATH_ARIA));
         CsvToBean<Aria> csvToBean = new CsvToBeanBuilder(reader)
             .withType(Aria.class)
             .withEscapeChar('\\')
@@ -522,7 +531,7 @@ public class CsvDataProvider implements IDataProvider{
     private Generic getRelationsSinger(Generic obj) throws IOException{
         Reader reader; 
         Singer singer = (Singer)obj;
-        reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_SINGER));
+        reader = new FileReader(config.getConfigurationEntry(CSV_PATH_ARIA_SINGER));
         CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
             .withType(Relation.class)
             .withEscapeChar('\\')
@@ -561,7 +570,7 @@ public class CsvDataProvider implements IDataProvider{
     private Generic getRelationsAuthor(Generic obj) throws IOException{
         Reader reader;  
         Author author = (Author)obj;
-        reader = new FileReader(getConfigurationEntry(CSV_PATH_ARIA_AUTHOR));
+        reader = new FileReader(config.getConfigurationEntry(CSV_PATH_ARIA_AUTHOR));
         CsvToBean<Relation> csvToBean = new CsvToBeanBuilder(reader)
             .withType(Relation.class)
             .withEscapeChar('\\')
@@ -580,7 +589,7 @@ public class CsvDataProvider implements IDataProvider{
             author.setAries(list);
         }            
             
-        reader = new FileReader(getConfigurationEntry(CSV_PATH_AUTHOR_LIBRETTO));
+        reader = new FileReader(config.getConfigurationEntry(CSV_PATH_AUTHOR_LIBRETTO));
         csvToBean = new CsvToBeanBuilder(reader)
             .withType(Relation.class)
             .withEscapeChar('\\')

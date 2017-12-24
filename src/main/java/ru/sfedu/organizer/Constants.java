@@ -8,7 +8,7 @@ package ru.sfedu.organizer;
  */
 public class Constants {
     
-    
+    public static String FILE_PATH = "my.app.file.path" ;
     /**
      *
      */

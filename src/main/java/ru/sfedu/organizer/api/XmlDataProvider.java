@@ -15,7 +15,8 @@ import org.simpleframework.xml.Serializer;
 import org.simpleframework.xml.core.Persister;
 import static ru.sfedu.organizer.Constants.*;
 import ru.sfedu.organizer.model.*;
-import static ru.sfedu.organizer.utils.ConfigurationUtil.getConfigurationEntry;
+import ru.sfedu.organizer.utils.ConfigurationUtil;
+
 
 /**
  *
@@ -23,7 +24,14 @@ import static ru.sfedu.organizer.utils.ConfigurationUtil.getConfigurationEntry;
  */
 public class XmlDataProvider implements IDataProvider{    
     private static final Logger log = Logger.getLogger(XmlDataProvider.class);
+    //private final ConfigurationUtil config = new ConfigurationUtil();  
 
+    private ConfigurationUtil config;
+
+    public XmlDataProvider(String path) {
+        this.config = new ConfigurationUtil(path);
+    }
+    
     /**
      *
      * @param obj
@@ -221,19 +229,19 @@ public class XmlDataProvider implements IDataProvider{
         Types type = obj.getType();
         String file = null;
         switch (type){
-            case ARIA : file = getConfigurationEntry(XML_PATH_ARIA);
+            case ARIA : file = config.getConfigurationEntry(XML_PATH_ARIA);
                 break;
-            case COMPOSER : file = getConfigurationEntry(XML_PATH_COMPOSER);
+            case COMPOSER : file = config.getConfigurationEntry(XML_PATH_COMPOSER);
                 break;
-            case LIBRETTO : file = getConfigurationEntry(XML_PATH_LIBRETTO);
+            case LIBRETTO : file = config.getConfigurationEntry(XML_PATH_LIBRETTO);
                 break;
-            case OPERA : file = getConfigurationEntry(XML_PATH_OPERA); 
+            case OPERA : file = config.getConfigurationEntry(XML_PATH_OPERA); 
                 break;
-            case SINGER : file = getConfigurationEntry(XML_PATH_SINGER);
+            case SINGER : file = config.getConfigurationEntry(XML_PATH_SINGER);
                 break;
-            case AUTHOR : file = getConfigurationEntry(XML_PATH_AUTHOR);
+            case AUTHOR : file = config.getConfigurationEntry(XML_PATH_AUTHOR);
                 break; 
-            case NOTE: file = getConfigurationEntry(XML_PATH_NOTE);
+            case NOTE: file = config.getConfigurationEntry(XML_PATH_NOTE);
                 break; 
         }
         return file;
@@ -262,7 +270,7 @@ public class XmlDataProvider implements IDataProvider{
     private Generic getRelationsAria(Generic obj) throws  Exception{
         Serializer serializer = new Persister();
         Aria object = (Aria)obj;
-        File file = new File(getConfigurationEntry(XML_PATH_ARIA_AUTHOR));
+        File file = new File(config.getConfigurationEntry(XML_PATH_ARIA_AUTHOR));
         XmlListRelations xmlList = serializer.read(XmlListRelations.class, file);
         List<Long> list = new ArrayList<Long>();
         list.addAll(xmlList.getList().stream()
@@ -272,7 +280,7 @@ public class XmlDataProvider implements IDataProvider{
                             (a1, a2) -> a1.addAll(a2)));
         object.setAuthors(list);
                    
-        file = new File(getConfigurationEntry(XML_PATH_ARIA_COMPOSER));
+        file = new File(config.getConfigurationEntry(XML_PATH_ARIA_COMPOSER));
         xmlList = serializer.read(XmlListRelations.class, file);
         list.clear();
         list.addAll(xmlList.getList().stream()
@@ -282,7 +290,7 @@ public class XmlDataProvider implements IDataProvider{
                             (a1, a2) -> a1.addAll(a2)));
         object.setComposers(list); 
             
-        file = new File(getConfigurationEntry(XML_PATH_ARIA_SINGER));
+        file = new File(config.getConfigurationEntry(XML_PATH_ARIA_SINGER));
         xmlList = serializer.read(XmlListRelations.class, file);
         list.clear();
         list.addAll(xmlList.getList().stream()
@@ -311,7 +319,7 @@ public class XmlDataProvider implements IDataProvider{
     private Generic getRelationsAuthor(Generic obj) throws  Exception{
         Serializer serializer = new Persister();
         Author object = (Author)obj;
-        File file = new File(getConfigurationEntry(XML_PATH_ARIA_AUTHOR));
+        File file = new File(config.getConfigurationEntry(XML_PATH_ARIA_AUTHOR));
         XmlListRelations xmlList = serializer.read(XmlListRelations.class, file);
         List<Long> list = new ArrayList<Long>();
         list.addAll(xmlList.getList().stream()
@@ -321,7 +329,7 @@ public class XmlDataProvider implements IDataProvider{
                             (a1, a2) -> a1.addAll(a2)));        
         object.setAries(list);
             
-        file = new File(getConfigurationEntry(XML_PATH_AUTHOR_LIBRETTO));
+        file = new File(config.getConfigurationEntry(XML_PATH_AUTHOR_LIBRETTO));
         xmlList = serializer.read(XmlListRelations.class, file);
         list.clear();
         list.addAll(xmlList.getList().stream()
@@ -350,7 +358,7 @@ public class XmlDataProvider implements IDataProvider{
     private Generic getRelationsComposer(Generic obj) throws  Exception{
         Serializer serializer = new Persister();
         Composer object = (Composer)obj;
-        File file = new File(getConfigurationEntry(XML_PATH_ARIA_COMPOSER));
+        File file = new File(config.getConfigurationEntry(XML_PATH_ARIA_COMPOSER));
         XmlListRelations xmlList = serializer.read(XmlListRelations.class, file);
         List<Long> list = new ArrayList<Long>();
         list.addAll(xmlList.getList().stream()
@@ -379,7 +387,7 @@ public class XmlDataProvider implements IDataProvider{
     private Generic getRelationsLibretto(Generic obj) throws  Exception{
         Serializer serializer = new Persister();
         Libretto object = (Libretto)obj;
-        File file = new File(getConfigurationEntry(XML_PATH_AUTHOR_LIBRETTO));
+        File file = new File(config.getConfigurationEntry(XML_PATH_AUTHOR_LIBRETTO));
         XmlListRelations xmlList = serializer.read(XmlListRelations.class, file);
         List<Long> list = new ArrayList<Long>();
         list.addAll(xmlList.getList().stream()
@@ -408,7 +416,7 @@ public class XmlDataProvider implements IDataProvider{
     private Generic getRelationsOpera(Generic obj) throws  Exception{
         Serializer serializer = new Persister();
         Opera object = (Opera)obj;
-        File file = new File(getConfigurationEntry(XML_PATH_ARIA));
+        File file = new File(config.getConfigurationEntry(XML_PATH_ARIA));
         XmlListEntity xmlList = serializer.read(XmlListEntity.class, file);
         List<Long> list = new ArrayList<Long>();
         list.addAll(xmlList.getList().stream()
@@ -437,7 +445,7 @@ public class XmlDataProvider implements IDataProvider{
     private Generic getRelationsSinger(Generic obj) throws  Exception{
         Serializer serializer = new Persister();
         Singer object = (Singer)obj;
-        File file = new File(getConfigurationEntry(XML_PATH_ARIA_SINGER));
+        File file = new File(config.getConfigurationEntry(XML_PATH_ARIA_SINGER));
         XmlListRelations xmlList = serializer.read(XmlListRelations.class, file);
         List<Long> list = new ArrayList<Long>();
         list.addAll(xmlList.getList().stream()

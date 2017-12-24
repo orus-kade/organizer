@@ -13,7 +13,8 @@ import java.util.*;
 import org.apache.log4j.Logger;
 import static ru.sfedu.organizer.Constants.*;
 import ru.sfedu.organizer.model.*;
-import static ru.sfedu.organizer.utils.ConfigurationUtil.getConfigurationEntry;
+import ru.sfedu.organizer.utils.ConfigurationUtil;
+
 
 
 /**
@@ -22,6 +23,9 @@ import static ru.sfedu.organizer.utils.ConfigurationUtil.getConfigurationEntry;
  */
 public class DbDataProvider implements IDataProvider<Generic>{
     private static final Logger log = Logger.getLogger(DbDataProvider.class);
+    //private final ConfigurationUtil config = new ConfigurationUtil();
+    
+    private ConfigurationUtil config;
     
     String user;
     String url;
@@ -29,12 +33,14 @@ public class DbDataProvider implements IDataProvider<Generic>{
     
     /**
      *
+     * @param path
      * @throws IOException
      */
-    public DbDataProvider() throws IOException{
-            this.user = getConfigurationEntry(DB_USER);
-            this.url = getConfigurationEntry(DB_URL);
-            this.pass = getConfigurationEntry(DB_PASS);
+    public DbDataProvider(String path) throws IOException{
+            this.config = new ConfigurationUtil(path);
+            this.user = config.getConfigurationEntry(DB_USER);
+            this.url = config.getConfigurationEntry(DB_URL);
+            this.pass = config.getConfigurationEntry(DB_PASS);            
     }
     
     /**
@@ -388,7 +394,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
     }
     
     private List<Generic> getRelationsAria(List<Generic> list, Connection connection) throws IOException, SQLException{                   
-            String sql = "select * from " + getConfigurationEntry(DB_TABLE_ARIA_AUTHOR) + ";";
+            String sql = "select * from " + config.getConfigurationEntry(DB_TABLE_ARIA_AUTHOR) + ";";
             List<Relation> allRelations = new ArrayList<Relation>();
             Statement stmt = connection.createStatement();            
             ResultSet relations = stmt.executeQuery(sql);
@@ -407,7 +413,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
                     ((Aria)e).setAuthors(relationList);
             });
             
-            sql = "select * from " + getConfigurationEntry(DB_TABLE_ARIA_COMPOSER) + ";";          
+            sql = "select * from " + config.getConfigurationEntry(DB_TABLE_ARIA_COMPOSER) + ";";          
             relations = stmt.executeQuery(sql);  
             allRelations.clear();
             while(relations.next()){
@@ -424,7 +430,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
                     ((Aria)e).setComposers(relationList);
             });
             
-            sql = "select * from " + getConfigurationEntry(DB_TABLE_ARIA_SINGER) + ";";          
+            sql = "select * from " + config.getConfigurationEntry(DB_TABLE_ARIA_SINGER) + ";";          
             relations = stmt.executeQuery(sql);
             allRelations.clear();            
             while(relations.next()){
@@ -441,8 +447,8 @@ public class DbDataProvider implements IDataProvider<Generic>{
                     ((Aria)e).setComposers(relationList);
             });
             
-            sql = "select t.id, n.id from " + getConfigurationEntry(DB_TABLE_ARIA )
-                    + " t join " + getConfigurationEntry(DB_TABLE_NOTE) + " n on t.id = n.objectId;";          
+            sql = "select t.id, n.id from " + config.getConfigurationEntry(DB_TABLE_ARIA )
+                    + " t join " + config.getConfigurationEntry(DB_TABLE_NOTE) + " n on t.id = n.objectId;";          
             relations = stmt.executeQuery(sql);
             allRelations.clear();            
             while(relations.next()){
@@ -462,7 +468,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
     }
     
     private List<Generic> getRelationsAuthor(List<Generic> list, Connection connection) throws IOException, SQLException{                   
-            String sql = "select * from " + getConfigurationEntry(DB_TABLE_ARIA_AUTHOR) + ";";
+            String sql = "select * from " + config.getConfigurationEntry(DB_TABLE_ARIA_AUTHOR) + ";";
             List<Relation> allRelations = new ArrayList<Relation>();
             Statement stmt = connection.createStatement();            
             ResultSet relations = stmt.executeQuery(sql);
@@ -480,7 +486,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
                     ((Author)e).setAries(relationList);
             });
             
-            sql = "select * from " + getConfigurationEntry(DB_TABLE_AUTHOR_LIBRETTO) + ";";          
+            sql = "select * from " + config.getConfigurationEntry(DB_TABLE_AUTHOR_LIBRETTO) + ";";          
             relations = stmt.executeQuery(sql);
             allRelations.clear();            
             while(relations.next()){
@@ -497,8 +503,8 @@ public class DbDataProvider implements IDataProvider<Generic>{
                     ((Author)e).setLibrettos(relationList);
             });
             
-            sql = "select t.id, n.id from " + getConfigurationEntry(DB_TABLE_AUTHOR)
-                    + " t join " + getConfigurationEntry(DB_TABLE_NOTE) + " n on t.id = n.objectId;";          
+            sql = "select t.id, n.id from " + config.getConfigurationEntry(DB_TABLE_AUTHOR)
+                    + " t join " + config.getConfigurationEntry(DB_TABLE_NOTE) + " n on t.id = n.objectId;";          
             relations = stmt.executeQuery(sql);
             allRelations.clear();            
             while(relations.next()){
@@ -518,7 +524,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
     }
     
     private List<Generic> getRelationsComposer(List<Generic> list, Connection connection) throws IOException, SQLException{                   
-            String sql = "select * from " + getConfigurationEntry(DB_TABLE_ARIA_COMPOSER) + ";";
+            String sql = "select * from " + config.getConfigurationEntry(DB_TABLE_ARIA_COMPOSER) + ";";
             List<Relation> allRelations = new ArrayList<Relation>();
             Statement stmt = connection.createStatement();   
             ResultSet relations = stmt.executeQuery(sql);
@@ -535,8 +541,8 @@ public class DbDataProvider implements IDataProvider<Generic>{
                                     (a1, a2) -> a1.addAll(a2)));                            
                     ((Composer)e).setAries(relationList);
             });
-            sql = "select t.id, n.id from " + getConfigurationEntry(DB_TABLE_COMPOSER)
-                    + " t join " + getConfigurationEntry(DB_TABLE_NOTE) + " n on t.id = n.objectId;";          
+            sql = "select t.id, n.id from " + config.getConfigurationEntry(DB_TABLE_COMPOSER)
+                    + " t join " + config.getConfigurationEntry(DB_TABLE_NOTE) + " n on t.id = n.objectId;";          
             relations = stmt.executeQuery(sql);
             allRelations.clear();            
             while(relations.next()){
@@ -556,7 +562,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
     }   
     
     private List<Generic> getRelationsLibretto(List<Generic> list, Connection connection) throws IOException, SQLException{                   
-            String sql = "select * from " + getConfigurationEntry(DB_TABLE_AUTHOR_LIBRETTO) + ";";
+            String sql = "select * from " + config.getConfigurationEntry(DB_TABLE_AUTHOR_LIBRETTO) + ";";
             List<Relation> allRelations = new ArrayList<Relation>();
             Statement stmt = connection.createStatement();            
             ResultSet relations = stmt.executeQuery(sql);
@@ -573,8 +579,8 @@ public class DbDataProvider implements IDataProvider<Generic>{
                                     (a1, a2) -> a1.addAll(a2)));                            
                     ((Libretto)e).setAuthors(relationList);
             });
-            sql = "select t.id, n.id from " + getConfigurationEntry(DB_TABLE_LIBRETTO)
-                    + " t join " + getConfigurationEntry(DB_TABLE_NOTE) + " n on t.id = n.objectId;";          
+            sql = "select t.id, n.id from " + config.getConfigurationEntry(DB_TABLE_LIBRETTO)
+                    + " t join " + config.getConfigurationEntry(DB_TABLE_NOTE) + " n on t.id = n.objectId;";          
             relations = stmt.executeQuery(sql);
             allRelations.clear();            
             while(relations.next()){
@@ -594,7 +600,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
     }
     
     private List<Generic> getRelationsOpera(List<Generic> list, Connection connection) throws IOException, SQLException{                   
-            String sql = "select id, operaid from " + getConfigurationEntry(DB_TABLE_ARIA) + ";";
+            String sql = "select id, operaid from " + config.getConfigurationEntry(DB_TABLE_ARIA) + ";";
             List<Relation> allRelations = new ArrayList<Relation>();
             Statement stmt = connection.createStatement();            
             ResultSet relations = stmt.executeQuery(sql);
@@ -611,8 +617,8 @@ public class DbDataProvider implements IDataProvider<Generic>{
                                     (a1, a2) -> a1.addAll(a2)));                            
                     ((Opera)e).setAries(relationList);
             });
-            sql = "select t.id, n.id from " + getConfigurationEntry(DB_TABLE_OPERA)
-                    + " t join " + getConfigurationEntry(DB_TABLE_NOTE) + " n on t.id = n.objectId;";          
+            sql = "select t.id, n.id from " + config.getConfigurationEntry(DB_TABLE_OPERA)
+                    + " t join " + config.getConfigurationEntry(DB_TABLE_NOTE) + " n on t.id = n.objectId;";          
             relations = stmt.executeQuery(sql);
             allRelations.clear();            
             while(relations.next()){
@@ -632,7 +638,7 @@ public class DbDataProvider implements IDataProvider<Generic>{
     }
     
     private List<Generic> getRelationsSinger(List<Generic> list, Connection connection) throws IOException, SQLException{                   
-            String sql = "select * from " + getConfigurationEntry(DB_TABLE_ARIA_SINGER) + ";";
+            String sql = "select * from " + config.getConfigurationEntry(DB_TABLE_ARIA_SINGER) + ";";
             List<Relation> allRelations = new ArrayList<Relation>();
             Statement stmt = connection.createStatement();            
             ResultSet relations = stmt.executeQuery(sql);
@@ -649,8 +655,8 @@ public class DbDataProvider implements IDataProvider<Generic>{
                                     (a1, a2) -> a1.addAll(a2)));                            
                     ((Singer)e).setAries(relationList);
             });
-            sql = "select t.id, n.id from " + getConfigurationEntry(DB_TABLE_SINGER)
-                    + " t join " + getConfigurationEntry(DB_TABLE_NOTE) + " n on t.id = n.objectId;";          
+            sql = "select t.id, n.id from " + config.getConfigurationEntry(DB_TABLE_SINGER)
+                    + " t join " + config.getConfigurationEntry(DB_TABLE_NOTE) + " n on t.id = n.objectId;";          
             relations = stmt.executeQuery(sql);
             allRelations.clear();            
             while(relations.next()){
@@ -731,19 +737,19 @@ public class DbDataProvider implements IDataProvider<Generic>{
         Types type = obj.getType();
         String tname = "";
         switch (type){
-            case ARIA : tname = getConfigurationEntry(DB_TABLE_ARIA);
+            case ARIA : tname = config.getConfigurationEntry(DB_TABLE_ARIA);
                 break;
-            case AUTHOR : tname = getConfigurationEntry(DB_TABLE_AUTHOR);
+            case AUTHOR : tname = config.getConfigurationEntry(DB_TABLE_AUTHOR);
                 break;
-            case COMPOSER : tname = getConfigurationEntry(DB_TABLE_COMPOSER);
+            case COMPOSER : tname = config.getConfigurationEntry(DB_TABLE_COMPOSER);
                 break;
-            case LIBRETTO : tname = getConfigurationEntry(DB_TABLE_LIBRETTO);
+            case LIBRETTO : tname = config.getConfigurationEntry(DB_TABLE_LIBRETTO);
                 break;
-            case OPERA : tname = getConfigurationEntry(DB_TABLE_OPERA);
+            case OPERA : tname = config.getConfigurationEntry(DB_TABLE_OPERA);
                 break;
-            case SINGER : tname = getConfigurationEntry(DB_TABLE_SINGER);
+            case SINGER : tname = config.getConfigurationEntry(DB_TABLE_SINGER);
                 break;
-            case NOTE : tname = getConfigurationEntry(DB_TABLE_NOTE);
+            case NOTE : tname = config.getConfigurationEntry(DB_TABLE_NOTE);
                 break;
         }
         return tname;

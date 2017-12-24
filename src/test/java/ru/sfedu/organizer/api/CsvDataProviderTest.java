@@ -20,7 +20,8 @@ public class CsvDataProviderTest {
     //private static final Logger log = Logger.getLogger(CsvDataProviderTest.class);
     
     private static Note note;
-    private static final CsvDataProvider provider = new CsvDataProvider();
+    private static final CsvDataProvider provider = new CsvDataProvider("./src/main/resources");
+    
     
     /**
      *
@@ -30,11 +31,12 @@ public class CsvDataProviderTest {
     
     /**
      *
-     */
+     */  
     @BeforeClass
     public static void test() {
         note = generateNote(provider, generateId());
         System.out.println("Generated note : " + note);
+        
     }
 
     /**

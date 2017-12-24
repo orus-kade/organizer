@@ -19,7 +19,7 @@ import static ru.sfedu.organizer.utils.MyGenerator.*;
 public class XmlDataProviderTest {
     
     private static Note note;
-    private static final XmlDataProvider provider = new XmlDataProvider();
+    private static final XmlDataProvider provider = new XmlDataProvider("./src/main/resources");
     
     /**
      *

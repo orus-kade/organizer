@@ -35,7 +35,7 @@ public class DbDataProviderTest {
      */
     @BeforeClass
     public static void test() throws IOException {
-        provider = new DbDataProvider();
+        provider = new DbDataProvider("./src/main/resources");
         note = generateNote(provider, generateId());
         System.out.println("Generated note : " + note);
     }

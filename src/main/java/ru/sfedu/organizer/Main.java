@@ -65,12 +65,14 @@ public class Main {
         options.addOption("a","all", false, "get all objects");
         options.addOption("h", "help", false, "show help");
         options.addOption("src", "source", true, "set source");
-        options.addOption("p", "path", true, "set path to file data soucre");
-         
+        
         Scanner scan = new Scanner(System.in);
         try{                
             CommandLine line = new BasicParser().parse(options, args);
-            IDataProvider provider = new CsvDataProvider();
+                        
+            log.info(System.getProperty("FILE_PATH"));
+            
+            IDataProvider provider = new CsvDataProvider(System.getProperty("FILE_PATH"));
             String source;
             if(line.hasOption("src")){
                 source = line.getOptionValue("src");
@@ -81,11 +83,11 @@ public class Main {
             if (Arrays.asList(Constants.SOURCES).contains(source)){
                 try{
                     switch(source){
-                        case "csv" : provider = new CsvDataProvider();
+                        case "csv" : provider = new CsvDataProvider(System.getProperty("FILE_PATH"));
                             break;
-                        case "xml" : provider = new XmlDataProvider();
+                        case "xml" : provider = new XmlDataProvider(System.getProperty("FILE_PATH"));
                             break;
-                        case "db" :  provider = new DbDataProvider();
+                        case "db" :  provider = new DbDataProvider(System.getProperty("FILE_PATH"));
                         case "database":
                             break;
                     }
@@ -99,9 +101,9 @@ public class Main {
                     }
                     source = defaultSource;
                     switch(source){
-                        case "cvs" : provider = new CsvDataProvider();
+                        case "cvs" : provider = new CsvDataProvider(System.getProperty("FILE_PATH"));
                             break;
-                        case "xml" : provider = new XmlDataProvider();
+                        case "xml" : provider = new XmlDataProvider(System.getProperty("FILE_PATH"));
                             break;
                     }
                     log.info("Source wa changed from \"database\" to default source \"" + defaultSource + "\"");
@@ -117,6 +119,9 @@ public class Main {
                 log.info("help \t - to show help message");
                 log.info("exit \t - to exit application");
             }
+            
+            
+            
             log.info("Enter command");
             while(true){
                 try{
