@@ -527,12 +527,15 @@ public class XmlDataProvider implements IDataProvider{
             log.error("Object is null");
             return new Result(ResultStatuses.ERROR, "Object is null");
         }
-        else{
+        else{            
             Optional<Types> type = Optional.ofNullable(obj.getType());
             if (!type.isPresent()){
                 log.error("Object type is null");
                 return new Result(ResultStatuses.ERROR, "Object type is null");
             }  
+            if (obj.getId() > 0){
+                return getRecordById(obj);
+            }
             Result result = new Result();
             switch (type.get()){
                 case ARIA : result = findAria((Aria)obj);

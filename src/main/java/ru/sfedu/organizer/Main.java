@@ -220,6 +220,8 @@ public class Main {
                                         }
                                     }
                                     else {
+                                        if (line.hasOption("id"))
+                                            obj.setId(Long.parseLong(line.getOptionValue("id")));
                                         if (type.equals(Types.ARIA)){
                                             if (line.hasOption("title")){
                                                 ((Aria)obj).setTitle(line.getOptionValue("title"));

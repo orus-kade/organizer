@@ -771,7 +771,10 @@ public class DbDataProvider implements IDataProvider<Generic>{
             if (!type.isPresent()){
                 log.error("Object type is null");
                 return new Result(ResultStatuses.ERROR, "Object type is null");
-            }  
+            }
+            if (obj.getId() > 0){
+                return getRecordById(obj);
+            }
             Result result = new Result();
             try{
                 switch (type.get()){
@@ -939,8 +942,10 @@ public class DbDataProvider implements IDataProvider<Generic>{
             List<String> conditions = new ArrayList<String>();
             String query = "Select * from " + getTableName(obj) + " ";
             if (obj.getObjectType()!= null) conditions.add(" objectType LIKE '%" + obj.getObjectType()+ "%' ");
+            if (obj.getObjectId() > 0) conditions.add(" objectType =" + obj.getObjectId()+ " ");
+            if (obj.getDescription()!= null) conditions.add(" objectDescriptionfin LIKE '%" + obj.getDescription()+ "%' ");
             
-           if (!conditions.isEmpty()){
+            if (!conditions.isEmpty()){
                 query += " where " + String.join(" AND ", conditions.toArray(new String[conditions.size()]));
             }
             else{
