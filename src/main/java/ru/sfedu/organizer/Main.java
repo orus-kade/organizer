@@ -57,8 +57,8 @@ public class Main {
         options.addOption("ttl", "title", true, "title of objects");
         options.addOption("txt", "text", true, "text of objects");
         options.addOption("n", "name", true, "name of human");
-        options.addOption("sn", "surname", true, "surname of objects");
-        options.addOption("pat", "patronymic", true, "patronymic of objects");
+        options.addOption("sn", "surname", true, "surname of human");
+        options.addOption("pat", "patronymic", true, "patronymic of human");
         options.addOption("v", "voice", true, "voice of singer");
         options.addOption("ot", "objectType", true, "object type");
         options.addOption("desc", "description", false, "note descrption");
@@ -70,8 +70,9 @@ public class Main {
         Scanner scan = new Scanner(System.in);
         try{                
             CommandLine line = new BasicParser().parse(options, args);
-                        
-            log.info("Current path" + System.getProperty(FILE_PATH));
+               
+            if (System.getProperty(FILE_PATH) != null ) 
+                log.info("Current path: " + System.getProperty(FILE_PATH));
             
             IDataProvider provider = new CsvDataProvider(System.getProperty(FILE_PATH));
             String source;
@@ -147,6 +148,17 @@ public class Main {
                     }             
 
                     if (arr[0].equals("help")){
+                        List<Option> optionsFind = new ArrayList<Option>();
+                        optionsFind.add(options.getOption("src"));
+                        optionsFind.add(options.getOption("h"));
+                        log.info("Arguments:");
+                        optionsFind.stream().forEach(e -> {
+                            String str = "-" + e.getOpt() +  ", -" + e.getLongOpt();
+                            if(e.getArgs() > 0) str += "\t<arg>";
+                            else str += "\t";
+                            str += "\t" + e.getDescription();
+                            log.info(str);
+                        });
                         log.info("Commands:");
                         log.info("find \t - to find objects");
                         log.info("create \t - to create note");

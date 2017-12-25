@@ -42,24 +42,19 @@ public class CsvDataProvider implements IDataProvider{
         if (!ResultStatuses.OK.equals(r.getStatus())) return r;
         try {
             Reader reader;
-            reader = new FileReader(getFileName(obj));        
+            reader = new FileReader(getFileName(obj));
+//            ColumnPositionMappingStrategy mappingStrategy = new ColumnPositionMappingStrategy();
+ //           mappingStrategy.setColumnMapping(getColumns(obj));
             CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
                     .withType(getClass(obj))
                     .withEscapeChar('\\')
                     .withQuoteChar('\'')
                     .withSeparator(';')
+//                    .withMappingStrategy(mappingStrategy)
                     .build();         
             List<Generic> list = new ArrayList<Generic>();
             list.addAll(csvToBean.parse());
             reader.close();
-                        
-//            if (!list.isEmpty()){
-//                long lastId = list.stream().max(Comparator.comparingLong(e -> e.getId())).get().getId(); 
-//                obj.setId(lastId+1); 
-//            }
-//            else 
-//                obj.setId(1);
-
             if (!list.isEmpty()){   
                 if (list.stream().filter(e -> e.getId() == obj.getId()).count() > 0){
                     Result result = new Result(ResultStatuses.ERROR, "Object with id = " + obj.getId() + " is already exists!");
@@ -75,6 +70,7 @@ public class CsvDataProvider implements IDataProvider{
                     .withEscapechar('\\')
                     .withQuotechar('\'')
                     .withSeparator(';')
+//                    .withMappingStrategy(mappingStrategy)
                     .build();
             beanWriter.write(list);
             writer.close();
@@ -142,12 +138,15 @@ public class CsvDataProvider implements IDataProvider{
         if (!ResultStatuses.OK.equals(r.getStatus())) return r;
         try {    
             Reader reader;
-            reader = new FileReader(getFileName(obj));        
+            reader = new FileReader(getFileName(obj));  
+//           ColumnPositionMappingStrategy mappingStrategy = new ColumnPositionMappingStrategy();
+//            mappingStrategy.setColumnMapping(getColumns(obj));
             CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
                     .withType(getClass(obj))
                     .withEscapeChar('\\')
                     .withQuoteChar('\'')
                     .withSeparator(';')
+//                   .withMappingStrategy(mappingStrategy)
                     .build();         
             List<Generic> list = new ArrayList<Generic>();
             list.addAll(csvToBean.parse());
@@ -164,6 +163,7 @@ public class CsvDataProvider implements IDataProvider{
                     .withEscapechar('\\')
                     .withQuotechar('\'')
                     .withSeparator(';')
+//                    .withMappingStrategy(mappingStrategy)
                     .build();
             beanWriter.write(list);
             writer.close();
@@ -186,12 +186,15 @@ public class CsvDataProvider implements IDataProvider{
     public Result deleteRecord(Note obj) {
         try {
             Reader reader;
-            reader = new FileReader(getFileName(obj));        
+            reader = new FileReader(getFileName(obj));
+//            ColumnPositionMappingStrategy mappingStrategy = new ColumnPositionMappingStrategy();
+//            mappingStrategy.setColumnMapping(getColumns(obj));
             CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
                     .withType(getClass(obj))
                     .withEscapeChar('\\')
                     .withQuoteChar('\'')
                     .withSeparator(';')
+//                    .withMappingStrategy(mappingStrategy)
                     .build();         
             List<Generic> list = new ArrayList<Generic>();
             list.addAll(csvToBean.parse());
@@ -207,6 +210,7 @@ public class CsvDataProvider implements IDataProvider{
                     .withEscapechar('\\')
                     .withQuotechar('\'')
                     .withSeparator(';')
+//                    .withMappingStrategy(mappingStrategy)
                     .build();
             beanWriter.write(list);
             writer.close();
@@ -234,13 +238,16 @@ public class CsvDataProvider implements IDataProvider{
         try {
             Reader reader;
             reader = new FileReader(getFileName(obj));  
-            CsvFilter filter = new CsvFilter(obj.getId());
+            ColumnPositionMappingStrategy mappingStrategy = new ColumnPositionMappingStrategy();
+            mappingStrategy.setColumnMapping(getColumns(obj));
+            CsvFilter filter = new CsvFilter(obj.getId(), mappingStrategy);            
             CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
                     .withType(getClass(obj))
                     .withEscapeChar('\\')
                     .withQuoteChar('\'')
                     .withSeparator(';')
                     .withFilter(filter)
+//                    .withMappingStrategy(mappingStrategy)
                     .build();         
             List<Generic> list = new ArrayList<Generic>();
             list.addAll(csvToBean.parse());
@@ -293,6 +300,28 @@ public class CsvDataProvider implements IDataProvider{
                 break; 
         }
         return file;
+    }
+    
+    private String[] getColumns(Generic obj) throws IOException {
+        Types type = obj.getType();
+        String[] columns = null;
+        switch (type){
+            case ARIA : columns = CSV_HEAD_ARIA;
+                break;
+            case COMPOSER : columns = CSV_HEAD_COMPOSER;
+                break;
+            case LIBRETTO : columns = CSV_HEAD_LIBRETTO;
+                break;
+            case OPERA : columns = CSV_HEAD_OPERA; 
+                break;
+            case SINGER : columns = CSV_HEAD_SINGER;
+                break;
+            case AUTHOR : columns = CSV_HEAD_AUTHOR;
+                break; 
+            case NOTE: columns = CSV_HEAD_NOTE;
+                break; 
+        }
+        return columns;
     }
     
     private Class getClass(Generic obj) {
@@ -637,11 +666,14 @@ public class CsvDataProvider implements IDataProvider{
        try {
             Reader reader;
             reader = new FileReader(getFileName(obj));  
+//            ColumnPositionMappingStrategy mappingStrategy = new ColumnPositionMappingStrategy();
+//            mappingStrategy.setColumnMapping(getColumns(obj));
             CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
                     .withType(getClass(obj))
                     .withEscapeChar('\\')
                     .withQuoteChar('\'')
                     .withSeparator(';')
+//                    .withMappingStrategy(mappingStrategy)
                     .build();         
             List<Generic> list = new ArrayList<Generic>();
             list.addAll(csvToBean.parse());
