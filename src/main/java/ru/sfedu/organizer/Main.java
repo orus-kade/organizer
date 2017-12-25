@@ -71,7 +71,7 @@ public class Main {
         try{                
             CommandLine line = new BasicParser().parse(options, args);
                         
-            log.info(System.getProperty(FILE_PATH));
+            log.info("Current path" + System.getProperty(FILE_PATH));
             
             IDataProvider provider = new CsvDataProvider(System.getProperty(FILE_PATH));
             String source;
@@ -164,6 +164,8 @@ public class Main {
                             optionsFind.add(options.getOption("title"));
                             optionsFind.add(options.getOption("text"));
                             optionsFind.add(options.getOption("objectType"));
+                            optionsFind.add(options.getOption("objectId"));
+                            optionsFind.add(options.getOption("description"));
                             optionsFind.add(options.getOption("name"));
                             optionsFind.add(options.getOption("surname"));
                             optionsFind.add(options.getOption("patronymic"));
@@ -223,6 +225,12 @@ public class Main {
                                             if (line.hasOption("objectType")){
                                                 Types objectType = Types.valueOf(line.getOptionValue("objectType").toUpperCase()); 
                                                 ((Note)obj).setObjectType(objectType.toString());
+                                            }
+                                            if (line.hasOption("objectId")){
+                                                ((Note)obj).setObjectId(Long.parseLong(line.getOptionValue("objectId")));
+                                            }
+                                            if (line.hasOption("description")){
+                                                ((Note)obj).setDescription(line.getOptionValue("description"));
                                             }
                                         }
                                         if (Arrays.asList(new Types[] {Types.AUTHOR, Types.COMPOSER, Types.SINGER}).contains(type)){

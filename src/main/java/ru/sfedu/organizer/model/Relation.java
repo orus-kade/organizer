@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ru.sfedu.organizer.api;
+package ru.sfedu.organizer.model;
 
 import com.opencsv.bean.CsvBindByPosition;
 

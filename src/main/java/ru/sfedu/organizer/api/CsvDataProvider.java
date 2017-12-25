@@ -1,5 +1,6 @@
 
 package ru.sfedu.organizer.api;
+import ru.sfedu.organizer.model.Relation;
 import ru.sfedu.organizer.model.ResultStatuses;
 import ru.sfedu.organizer.model.Result;
 import com.opencsv.bean.*;
@@ -733,11 +734,8 @@ public class CsvDataProvider implements IDataProvider{
         list.removeIf( e ->{
             if (((Aria)e).getText() != null)
                 if (obj.getText() != null && !((Aria)e).getText().toLowerCase().contains(obj.getText().toLowerCase()))
-                    return true;            
-//            return false;                       
-//        });
-//        list.removeIf( e ->{
-//            if (((Aria)e).getTitle() != null)
+                    return true;                               
+            if (((Aria)e).getTitle() != null)
                 if (obj.getTitle() != null && !((Aria)e).getTitle().toLowerCase().contains(obj.getTitle().toLowerCase()))
                     return true;
             return false;
@@ -760,16 +758,10 @@ public class CsvDataProvider implements IDataProvider{
             if (((Composer)e).getName() != null)
                 if (obj.getName()!= null && !((Composer)e).getName().toLowerCase().contains(obj.getName().toLowerCase()))
                     return true;
-//            return false;
-//        });
-//        list.removeIf( e ->{
-//            if (((Composer)e).getSurname() != null)
+            if (((Composer)e).getSurname() != null)
                 if (obj.getSurname()!= null && !((Composer)e).getSurname().toLowerCase().contains(obj.getSurname().toLowerCase()))
                     return true;
-//            return false;
-//        });
-//        list.removeIf( e ->{
-//            if (((Composer)e).getPatronymic() != null)
+            if (((Composer)e).getPatronymic() != null)
                 if (obj.getPatronymic()!= null && !((Composer)e).getPatronymic().toLowerCase().contains(obj.getPatronymic().toLowerCase()))
                     return true;                  
             return false;                       
@@ -791,16 +783,10 @@ public class CsvDataProvider implements IDataProvider{
             if (((Author)e).getName() != null)
                 if (obj.getName()!= null && !((Author)e).getName().toLowerCase().contains(obj.getName().toLowerCase()))
                     return true;
-//            return false;                       
-//        });
-//        list.removeIf( e ->{
-//            if (((Author)e).getSurname() != null)
+            if (((Author)e).getSurname() != null)
                 if (obj.getSurname()!= null && !((Author)e).getSurname().toLowerCase().contains(obj.getSurname().toLowerCase()))
                     return true;
-//            return false;                       
-//        });
-//        list.removeIf( e ->{
-//            if (((Author)e).getPatronymic() != null)
+            if (((Author)e).getPatronymic() != null)
                 if (obj.getPatronymic()!= null && !((Author)e).getPatronymic().toLowerCase().contains(obj.getPatronymic().toLowerCase()))
                     return true;
             return false;                       
@@ -822,22 +808,13 @@ public class CsvDataProvider implements IDataProvider{
             if (((Singer)e).getName() != null)
                 if (obj.getName()!= null && !((Singer)e).getName().toLowerCase().contains(obj.getName().toLowerCase()))
                     return true;
-//            return false;
-//        });
-//        list.removeIf( e ->{
-//            if (((Singer)e).getSurname() != null)
+            if (((Singer)e).getSurname() != null)
                 if (obj.getSurname()!= null && !((Singer)e).getSurname().toLowerCase().contains(obj.getSurname().toLowerCase()))
                     return true;
-//            return false;
-//        });
-//        list.removeIf( e ->{
-//            if (((Singer)e).getPatronymic() != null)
+            if (((Singer)e).getPatronymic() != null)
                 if (obj.getPatronymic()!= null && !((Singer)e).getPatronymic().toLowerCase().contains(obj.getPatronymic().toLowerCase()))
                     return true;
-//            return false;
-//        });
-//        list.removeIf( e ->{
-//            if (((Singer)e).getVoice() != null)
+            if (((Singer)e).getVoice() != null)
                 if (obj.getVoice()!= null && !((Singer)e).getVoice().toLowerCase().contains(obj.getVoice().toLowerCase()))
                     return true;
             return false;                       
@@ -879,6 +856,11 @@ public class CsvDataProvider implements IDataProvider{
             if (((Note)e).getObjectType() != null)
                 if (obj.getObjectType()!= null && !((Note)e).getObjectType().toUpperCase().equals(obj.getObjectType().toUpperCase()))
                     return true;
+            if (((Note)e).getDescription() != null)
+                if (obj.getDescription()!= null && !((Note)e).getDescription().toLowerCase().contains(obj.getDescription().toLowerCase()))  
+                    return true;
+            if (obj.getObjectId()> 0 && ((Note)e).getObjectId() != obj.getObjectId())
+                return true;
             return false;                     
         });
         resultList.addAll(list);

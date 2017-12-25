@@ -2,6 +2,7 @@
 package ru.sfedu.organizer.api;
 
 
+import ru.sfedu.organizer.model.Relation;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -23,8 +24,6 @@ import ru.sfedu.organizer.utils.ConfigurationUtil;
  */
 public class DbDataProvider implements IDataProvider<Generic>{
     private static final Logger log = Logger.getLogger(DbDataProvider.class);
-    //private final ConfigurationUtil config = new ConfigurationUtil();
-    
     private ConfigurationUtil config;
     
     String user;

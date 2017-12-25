@@ -5,6 +5,7 @@
  */
 package ru.sfedu.organizer.api;
 
+import ru.sfedu.organizer.model.Relation;
 import java.util.List;
 import org.simpleframework.xml.ElementList;
 
