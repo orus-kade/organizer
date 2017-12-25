@@ -14,11 +14,11 @@ import static ru.sfedu.organizer.model.Types.*;
 public class Libretto extends Generic{
   
   @Element (required = false) 
-  @CsvBindByName //(position = 1)   
+  @CsvBindByName 
   private String text;  
   
   @Element (required = false)
-  @CsvBindByName //(position = 2)
+  @CsvBindByName 
   private long operaId;
   
   private List<Long> authors = new ArrayList<Long>();

@@ -17,22 +17,16 @@ import static ru.sfedu.organizer.model.Types.*;
  */
 public class Aria extends Generic{
 
-//  @Attribute  
-//  @CsvBindByPosition (position = 0) 
-//  private long id; 
-  
-//  private Types type;
-
   @Element (required = false)
-  @CsvBindByName //(position = 1) 
+  @CsvBindByName 
   private String title;
   
   @Element (required = false)
-  @CsvBindByName //(position = 2) 
+  @CsvBindByName 
   private String text; 
   
   @Element 
-  @CsvBindByName //(position = 3)
+  @CsvBindByName 
   private long operaId;
   
   
@@ -172,32 +166,6 @@ public class Aria extends Generic{
         this.notes.addAll(notes);
     }    
     
-    /**
-     *
-     * @return
-     */
-//    @Override
-//    public long getId() {
-//        return id;
-//    }
-//
-//    /**
-//     *
-//     * @param id
-//     */
-//    @Override
-//    public void setId(long id) {
-//        this.id = id;
-//    }
-//
-//    /**
-//     *
-//     * @return
-//     */
-//    @Override
-//    public Types getType() {
-//        return type;
-//    }
 
     @Override
     public String toString() {

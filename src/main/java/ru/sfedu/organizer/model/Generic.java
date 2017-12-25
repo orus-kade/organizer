@@ -11,7 +11,7 @@ import org.simpleframework.xml.Attribute;
 public class Generic {
     
     @Attribute  
-    @CsvBindByName//(position = 0) 
+    @CsvBindByName
     private long id; 
     
     private Types type;

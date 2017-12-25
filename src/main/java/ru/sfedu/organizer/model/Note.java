@@ -15,15 +15,15 @@ import static ru.sfedu.organizer.model.Types.*;
 public class Note extends Generic{
   
   @Element (required = false)
-  @CsvBindByName //(position = 1)
+  @CsvBindByName 
   private String description;
   
   @Element (required = false)
-  @CsvBindByName //(position = 2)
+  @CsvBindByName
   private long objectId;
   
   @Element (required = false)
-  @CsvBindByName //(position = 3)
+  @CsvBindByName
   private String objectType;  
 
     /**

@@ -10,27 +10,27 @@ import org.simpleframework.xml.Element;
 public class Human  extends Generic{
     
     @Element
-    @CsvBindByName //(position = 1)  
+    @CsvBindByName 
     private String name;
 
     @Element 
-    @CsvBindByName //(position = 2)  
+    @CsvBindByName 
     private String surname;
 
     @Element (required = false)
-    @CsvBindByName //(position = 3)  
+    @CsvBindByName 
     private String patronymic;
 
     @Element (required = false)
-    @CsvBindByName //(position = 4)  
+    @CsvBindByName 
     private String biography;
 
     @Element (required = false)
-    @CsvBindByName //(position = 5)   
+    @CsvBindByName 
     private long birthDate;
 
     @Element (required = false)
-    @CsvBindByName //(position = 6)   
+    @CsvBindByName 
     private long deathDate;   
 
     public Human(long id, Types type) {

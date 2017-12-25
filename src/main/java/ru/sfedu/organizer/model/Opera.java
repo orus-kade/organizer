@@ -16,15 +16,15 @@ import static ru.sfedu.organizer.model.Types.*;
 public class Opera extends Generic{
 
   @Element (required = false)  
-  @CsvBindByName //(position = 1)  
+  @CsvBindByName 
   private String title;
   
   @Element (required = false)
-  @CsvBindByName //(position = 2)
+  @CsvBindByName
   private String history;
   
   @Element (required = false)
-  @CsvBindByName //(position = 3)
+  @CsvBindByName 
   private long librettoId;
   
   private List<Long> aries = new ArrayList<Long>();
