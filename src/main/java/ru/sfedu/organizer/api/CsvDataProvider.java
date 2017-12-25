@@ -734,10 +734,10 @@ public class CsvDataProvider implements IDataProvider{
             if (((Aria)e).getText() != null)
                 if (obj.getText() != null && !((Aria)e).getText().toLowerCase().contains(obj.getText().toLowerCase()))
                     return true;            
-            return false;                       
-        });
-        list.removeIf( e ->{
-            if (((Aria)e).getTitle() != null)
+//            return false;                       
+//        });
+//        list.removeIf( e ->{
+//            if (((Aria)e).getTitle() != null)
                 if (obj.getTitle() != null && !((Aria)e).getTitle().toLowerCase().contains(obj.getTitle().toLowerCase()))
                     return true;
             return false;
@@ -760,16 +760,16 @@ public class CsvDataProvider implements IDataProvider{
             if (((Composer)e).getName() != null)
                 if (obj.getName()!= null && !((Composer)e).getName().toLowerCase().contains(obj.getName().toLowerCase()))
                     return true;
-            return false;
-        });
-        list.removeIf( e ->{
-            if (((Composer)e).getSurname() != null)
+//            return false;
+//        });
+//        list.removeIf( e ->{
+//            if (((Composer)e).getSurname() != null)
                 if (obj.getSurname()!= null && !((Composer)e).getSurname().toLowerCase().contains(obj.getSurname().toLowerCase()))
                     return true;
-            return false;
-        });
-        list.removeIf( e ->{
-            if (((Composer)e).getPatronymic() != null)
+//            return false;
+//        });
+//        list.removeIf( e ->{
+//            if (((Composer)e).getPatronymic() != null)
                 if (obj.getPatronymic()!= null && !((Composer)e).getPatronymic().toLowerCase().contains(obj.getPatronymic().toLowerCase()))
                     return true;                  
             return false;                       
@@ -791,16 +791,16 @@ public class CsvDataProvider implements IDataProvider{
             if (((Author)e).getName() != null)
                 if (obj.getName()!= null && !((Author)e).getName().toLowerCase().contains(obj.getName().toLowerCase()))
                     return true;
-            return false;                       
-        });
-        list.removeIf( e ->{
-            if (((Author)e).getSurname() != null)
+//            return false;                       
+//        });
+//        list.removeIf( e ->{
+//            if (((Author)e).getSurname() != null)
                 if (obj.getSurname()!= null && !((Author)e).getSurname().toLowerCase().contains(obj.getSurname().toLowerCase()))
                     return true;
-            return false;                       
-        });
-        list.removeIf( e ->{
-            if (((Author)e).getPatronymic() != null)
+//            return false;                       
+//        });
+//        list.removeIf( e ->{
+//            if (((Author)e).getPatronymic() != null)
                 if (obj.getPatronymic()!= null && !((Author)e).getPatronymic().toLowerCase().contains(obj.getPatronymic().toLowerCase()))
                     return true;
             return false;                       
@@ -822,22 +822,22 @@ public class CsvDataProvider implements IDataProvider{
             if (((Singer)e).getName() != null)
                 if (obj.getName()!= null && !((Singer)e).getName().toLowerCase().contains(obj.getName().toLowerCase()))
                     return true;
-            return false;
-        });
-        list.removeIf( e ->{
-            if (((Singer)e).getSurname() != null)
+//            return false;
+//        });
+//        list.removeIf( e ->{
+//            if (((Singer)e).getSurname() != null)
                 if (obj.getSurname()!= null && !((Singer)e).getSurname().toLowerCase().contains(obj.getSurname().toLowerCase()))
                     return true;
-            return false;
-        });
-        list.removeIf( e ->{
-            if (((Singer)e).getPatronymic() != null)
+//            return false;
+//        });
+//        list.removeIf( e ->{
+//            if (((Singer)e).getPatronymic() != null)
                 if (obj.getPatronymic()!= null && !((Singer)e).getPatronymic().toLowerCase().contains(obj.getPatronymic().toLowerCase()))
                     return true;
-            return false;
-        });
-        list.removeIf( e ->{
-            if (((Singer)e).getVoice() != null)
+//            return false;
+//        });
+//        list.removeIf( e ->{
+//            if (((Singer)e).getVoice() != null)
                 if (obj.getVoice()!= null && !((Singer)e).getVoice().toLowerCase().contains(obj.getVoice().toLowerCase()))
                     return true;
             return false;                       

@@ -1,5 +1,6 @@
 package ru.sfedu.organizer.model;
 
+import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvCustomBindByPosition;
 import com.opencsv.exceptions.CsvConstraintViolationException;
@@ -16,22 +17,22 @@ import static ru.sfedu.organizer.model.Types.*;
  */
 public class Aria extends Generic{
 
-  @Attribute  
-  @CsvBindByPosition (position = 0) 
-  private long id; 
+//  @Attribute  
+//  @CsvBindByPosition (position = 0) 
+//  private long id; 
   
-  private Types type;
+//  private Types type;
 
   @Element (required = false)
-  @CsvBindByPosition (position = 1) 
+  @CsvBindByName //(position = 1) 
   private String title;
   
   @Element (required = false)
-  @CsvBindByPosition (position = 2) 
+  @CsvBindByName //(position = 2) 
   private String text; 
   
   @Element 
-  @CsvBindByPosition (position = 3)
+  @CsvBindByName //(position = 3)
   private long operaId;
   
   
@@ -44,8 +45,7 @@ public class Aria extends Generic{
      *
      */
     public Aria () { 
-      this.type = ARIA;
-      
+      super(ARIA);       
   };
   
     /**
@@ -53,8 +53,7 @@ public class Aria extends Generic{
      * @param id
      */
     public Aria (long id) { 
-      this.id = id;
-      this.type = ARIA;
+      super(id, ARIA);     
   };
 
     /**
@@ -177,32 +176,32 @@ public class Aria extends Generic{
      *
      * @return
      */
-    @Override
-    public long getId() {
-        return id;
-    }
-
-    /**
-     *
-     * @param id
-     */
-    @Override
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    /**
-     *
-     * @return
-     */
-    @Override
-    public Types getType() {
-        return type;
-    }
+//    @Override
+//    public long getId() {
+//        return id;
+//    }
+//
+//    /**
+//     *
+//     * @param id
+//     */
+//    @Override
+//    public void setId(long id) {
+//        this.id = id;
+//    }
+//
+//    /**
+//     *
+//     * @return
+//     */
+//    @Override
+//    public Types getType() {
+//        return type;
+//    }
 
     @Override
     public String toString() {
-        return "Aria{" + "id=" + id + ", type=" + type + ", title=" + title + ", text=" + text + ", operaId=" + operaId + ", composers=" + composers + ", authors=" + authors + ", singers=" + singers + ", notes=" + notes +'}';
+        return "Aria{" + "id=" + getId() + ", type=" + getType() + ", title=" + title + ", text=" + text + ", operaId=" + operaId + ", composers=" + composers + ", authors=" + authors + ", singers=" + singers + ", notes=" + notes +'}';
     }
     
     

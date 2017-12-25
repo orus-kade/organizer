@@ -1,101 +1,93 @@
 package ru.sfedu.organizer.model;
 
+import com.opencsv.bean.CsvBindByName;
+import com.opencsv.bean.CsvBindByPosition;
+import org.simpleframework.xml.Element;
+
 /**
  * Class Human
  */
-public abstract class Human  extends Generic{
+public class Human  extends Generic{
+    
+    @Element
+    @CsvBindByName //(position = 1)  
+    private String name;
+
+    @Element 
+    @CsvBindByName //(position = 2)  
+    private String surname;
+
+    @Element (required = false)
+    @CsvBindByName //(position = 3)  
+    private String patronymic;
+
+    @Element (required = false)
+    @CsvBindByName //(position = 4)  
+    private String biography;
+
+    @Element (required = false)
+    @CsvBindByName //(position = 5)   
+    private long birthDate;
+
+    @Element (required = false)
+    @CsvBindByName //(position = 6)   
+    private long deathDate;   
+
+    public Human(long id, Types type) {
+        super(id, type);
+    }
+
+    public Human(Types type) {
+        super(type);
+    }   
+    
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getPatronymic() {
+        return patronymic;
+    }
+
+    public void setPatronymic(String patronymic) {
+        this.patronymic = patronymic;
+    }
+
+    public String getBiography() {
+        return biography;
+    }
+
+    public void setBiography(String biography) {
+        this.biography = biography;
+    }
+
+    public long getBirthDate() {
+        return birthDate;
+    }
+
+    public void setBirthDate(long birthDate) {
+        this.birthDate = birthDate;
+    }
+
+    public long getDeathDate() {
+        return deathDate;
+    }
+
+    public void setDeathDate(long deathDate) {
+        this.deathDate = deathDate;
+    }
   
-    /**
-     *
-     * @return
-     */
-    public abstract String getName(); 
-
-    /**
-     *
-     * @param name
-     */
-    public abstract void setName(String name);
     
-    /**
-     *
-     * @return
-     */
-    public abstract String getSurname(); 
-
-    /**
-     *
-     * @param surname
-     */
-    public abstract void setSurname(String surname);
-    
-    /**
-     *
-     * @return
-     */
-    public abstract String getPatronymic(); 
-
-    /**
-     *
-     * @param patronymic
-     */
-    public abstract void setPatronymic(String patronymic);
-
-    /**
-     *
-     * @return
-     */
-    public abstract String getBiography();
-
-    /**
-     *
-     * @param biography
-     */
-    public abstract void setBiography(String biography);
-    
-    /**
-     *
-     * @return
-     */
-    public abstract long getBirthDate();
-
-    /**
-     *
-     * @param birthDate
-     */
-    public abstract void setBirthDate(long birthDate);
-
-    /**
-     *
-     * @return
-     */
-    public abstract long getDeathDate();
-
-    /**
-     *
-     * @param deathDate
-     */
-    public abstract void setDeathDate(long deathDate);
-    
-    /**
-     *
-     * @return
-     */
-    @Override
-    public abstract long getId();
-
-    /**
-     *
-     * @param id
-     */
-    @Override
-    public abstract void setId(long id);
-    
-    /**
-     *
-     * @return
-     */
-    @Override
-    public abstract Types getType();
-
 }

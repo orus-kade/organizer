@@ -1,6 +1,7 @@
 package ru.sfedu.organizer.model;
 
 
+import com.opencsv.bean.CsvBindByName;
 import com.opencsv.bean.CsvBindByPosition;
 import com.opencsv.bean.CsvCustomBindByPosition;
 import java.util.*;
@@ -14,22 +15,16 @@ import static ru.sfedu.organizer.model.Types.*;
  */
 public class Opera extends Generic{
 
-  @Attribute  
-  @CsvBindByPosition (position = 0)
-  private long id;
-  
-  private Types type;
-  
   @Element (required = false)  
-  @CsvBindByPosition (position = 1)  
+  @CsvBindByName //(position = 1)  
   private String title;
   
   @Element (required = false)
-  @CsvBindByPosition (position = 2)
+  @CsvBindByName //(position = 2)
   private String history;
   
   @Element (required = false)
-  @CsvBindByPosition (position = 3)
+  @CsvBindByName //(position = 3)
   private long librettoId;
   
   private List<Long> aries = new ArrayList<Long>();
@@ -39,7 +34,7 @@ public class Opera extends Generic{
      *
      */
     public Opera () {
-      this.type = OPERA;
+      super(OPERA);
   };
   
     /**
@@ -47,8 +42,7 @@ public class Opera extends Generic{
      * @param id
      */
     public Opera (long id) {
-      this.id = id;
-      this.type = OPERA;
+        super(id, OPERA);
   };
   
     /**
@@ -137,33 +131,9 @@ public class Opera extends Generic{
      *
      * @return
      */
-    @Override
-    public long getId() {
-        return id;
-    }
-
-    /**
-     *
-     * @param id
-     */
-    @Override
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    /**
-     *
-     * @return
-     */
-    @Override
-    public Types getType() {
-        return type;
-    }
 
     @Override
     public String toString() {
-        return "Opera{" + "id=" + id + ", type=" + type + ", title=" + title + ", history=" + history + ", librettoId=" + librettoId + ", aries=" + aries + ", notes=" + notes +'}';
+        return "Opera{" + "id=" + getId() + ", type=" + getType() + ", title=" + title + ", history=" + history + ", librettoId=" + librettoId + ", aries=" + aries + ", notes=" + notes +'}';
     }
-    
-    
 }

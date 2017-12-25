@@ -113,13 +113,24 @@ public class Main {
             log.info("Current source : " + source);
             
             if (line.hasOption("h")){
+                List<Option> optionsFind = new ArrayList<Option>();
+                optionsFind.add(options.getOption("src"));
+                optionsFind.add(options.getOption("h"));
+                log.info("Arguments:");
+                optionsFind.stream().forEach(e -> {
+                    String str = "-" + e.getOpt() +  ", -" + e.getLongOpt();
+                    if(e.getArgs() > 0) str += "\t<arg>";
+                    else str += "\t";
+                    str += "\t" + e.getDescription();
+                    log.info(str);
+                });
                 log.info("Commands:");
                 log.info("find \t - to find objects");
                 log.info("create \t - to create note");
                 log.info("edit \t - to edit note");
                 log.info("delete \t - to delete note");
                 log.info("help \t - to show help message");
-                log.info("exit \t - to exit application");
+                log.info("exit \t - to exit application");                
             }
             
             
@@ -136,7 +147,6 @@ public class Main {
                     }             
 
                     if (arr[0].equals("help")){
-                        //System.console().printf("gg");
                         log.info("Commands:");
                         log.info("find \t - to find objects");
                         log.info("create \t - to create note");
