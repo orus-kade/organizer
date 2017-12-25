@@ -19,7 +19,7 @@ import ru.sfedu.organizer.utils.MyGenerator;
 
 /**
  *
- * @author sterie
+ * @author orus-kade
  */
 
 public class Main {
@@ -261,7 +261,6 @@ public class Main {
                                                 ((Singer)obj).setVoice(line.getOptionValue("voice"));
                                             }
                                         }
-                                        //log.info(obj);
                                         Result result = provider.findRecord(obj);
                                         log.info(result.getStatus()); 
                                         if (result.getStatus().equals(ResultStatuses.OK)){

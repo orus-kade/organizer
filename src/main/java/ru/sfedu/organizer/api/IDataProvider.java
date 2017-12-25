@@ -6,50 +6,50 @@ import ru.sfedu.organizer.model.*;
 
 /**
  *
- * @author sterie
+ * @author orus-kade
  * @param <T>
  */
 public interface IDataProvider<T extends Generic> {
 
     /**
      *
-     * @param obj
-     * @return
+     * @param obj to add
+     * @return Result
      */
     public Result addRecord(Note obj);
     
     /**
      *
-     * @param obj
-     * @return
+     * @param obj to edit
+     * @return Result
      */
     public Result editRecord(Note obj);
     
     /**
      *
-     * @param obj
-     * @return
+     * @param obj to delete
+     * @return Result
      */
     public Result deleteRecord(Note obj);
     
     /**
      *
-     * @param obj
-     * @return
+     * @param obj to find by id
+     * @return Result
      */
     public Result getRecordById(T obj);
     
     /**
      *
-     * @param obj
-     * @return
+     * @param obj defines type of objects
+     * @return Result
      */
     public Result getAllRecords(T obj);
     
     /**
      *
-     * @param obj
-     * @return
+     * @param obj with parameters of search. Search by fields that are not null
+     * @return Result
      */
     public Result findRecord(T obj);
    

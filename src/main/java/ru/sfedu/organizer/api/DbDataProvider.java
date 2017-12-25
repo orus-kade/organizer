@@ -32,8 +32,8 @@ public class DbDataProvider implements IDataProvider<Generic>{
     
     /**
      *
-     * @param path
-     * @throws IOException
+     * @param path to working directory
+     * @throws IOException if can not get user or url of driver or password for connection to database
      */
     public DbDataProvider(String path) throws IOException{
             this.config = new ConfigurationUtil(path);
@@ -44,8 +44,8 @@ public class DbDataProvider implements IDataProvider<Generic>{
     
     /**
      *
-     * @param obj
-     * @return
+     * @param obj to add, type Note
+     * @return Result
      */
     @Override
     public Result addRecord(Note obj) {
@@ -129,8 +129,8 @@ public class DbDataProvider implements IDataProvider<Generic>{
        
     /**
      *
-     * @param obj
-     * @return
+     * @param obj to edit, type Note
+     * @return Result
      */
     @Override
     public Result editRecord(Note obj) {
@@ -166,8 +166,8 @@ public class DbDataProvider implements IDataProvider<Generic>{
 
     /**
      *
-     * @param obj
-     * @return
+     * @param obj to delete, type Note
+     * @return Result
      */
     @Override
     public Result deleteRecord(Note obj) {
@@ -200,21 +200,15 @@ public class DbDataProvider implements IDataProvider<Generic>{
 
     /**
      *
-     * @param obj
-     * @return
+     * @param obj to find by id
+     * @return Result
      */
     @Override
     public Result getRecordById(Generic obj) {
         return getRecordById(obj, false);
     }    
     
-    /**
-     *
-     * @param obj
-     * @param check
-     * @return
-     */
-    public Result getRecordById(Generic obj, boolean check) {
+    private Result getRecordById(Generic obj, boolean check) {
         try {
             Connection connection = initConnection();   
             try{
@@ -676,8 +670,8 @@ public class DbDataProvider implements IDataProvider<Generic>{
     
     /**
      *
-     * @param obj
-     * @return
+     * @param obj defies type of objects
+     * @return Result
      */
     @Override
     public Result getAllRecords(Generic obj) {
@@ -722,8 +716,8 @@ public class DbDataProvider implements IDataProvider<Generic>{
     
     /**
      *
-     * @return
-     * @throws SQLException
+     * @return Connection if connection was initialized
+     * @throws SQLException then connection can not be initialized
      */
     public Connection initConnection() throws SQLException{
         Connection connection = null;
@@ -756,8 +750,8 @@ public class DbDataProvider implements IDataProvider<Generic>{
 
     /**
      *
-     * @param obj
-     * @return
+     * @param obj with parameters of search. Search by fields that are not null
+     * @return Result
      */
     @Override
     public Result findRecord(Generic obj) {

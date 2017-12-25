@@ -25,16 +25,7 @@ public class ConfigurationUtil {
      * Hides default constructor
      * @param path
      */
-//    public ConfigurationUtil() {
-//        String path = System.getProperty(FILE_PATH);      
-//        if (path != null){
-//            configPath = path + "\\enviroment.properties";
-//        }
-//        else {
-//            configPath = DEFAULT_CONFIG_PATH;
-//        }
-//    }
-    
+   
     public ConfigurationUtil(String path) {       
         if (path != null){
             configPath = path + "\\enviroment.properties";
@@ -60,7 +51,6 @@ public class ConfigurationUtil {
     private void loadConfiguration() throws IOException{
         File file = new File(configPath);
         InputStream in = new FileInputStream(file);
-        //InputStream in = DEFAULT_CONFIG_PATH.getClass().getResourceAsStream(DEFAULT_CONFIG_PATH);
         try {
             configuration.load(in);
         } catch (IOException ex) {

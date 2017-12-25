@@ -17,7 +17,6 @@ import static ru.sfedu.organizer.utils.MyGenerator.*;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class CsvDataProviderTest {
-    //private static final Logger log = Logger.getLogger(CsvDataProviderTest.class);
     
     private static Note note;
     private static final CsvDataProvider provider = new CsvDataProvider("./src/main/resources");

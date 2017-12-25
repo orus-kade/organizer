@@ -23,14 +23,13 @@ import ru.sfedu.organizer.utils.ConfigurationUtil;
  * @author orus-kade
  */
 public class XmlDataProvider implements IDataProvider{    
-    private static final Logger log = Logger.getLogger(XmlDataProvider.class);
-    //private final ConfigurationUtil config = new ConfigurationUtil();  
+    private static final Logger log = Logger.getLogger(XmlDataProvider.class); 
 
     private ConfigurationUtil config;
 
     /**
      *
-     * @param path
+     * @param path to working directory
      */
     public XmlDataProvider(String path) {
         this.config = new ConfigurationUtil(path);
@@ -38,8 +37,8 @@ public class XmlDataProvider implements IDataProvider{
     
     /**
      *
-     * @param obj
-     * @return
+     * @param obj to add
+     * @return Result
      */
     @Override
     public Result addRecord(Note obj) {
@@ -51,12 +50,6 @@ public class XmlDataProvider implements IDataProvider{
             XmlListEntity readObj = serializer.read(XmlListEntity.class, file);
             List<Generic> list = new ArrayList<Generic>();
             list.addAll(readObj.getList());          
-//            if (!list.isEmpty()){
-//               long lastId = list.stream().max(Comparator.comparingLong(e -> e.getId())).get().getId(); 
-//               obj.setId(lastId+1); 
-//            }
-//            else 
-//               obj.setId(1);
             if (!list.isEmpty()){   
                 if (list.stream().filter(e -> e.getId() == obj.getId()).count() > 0){
                     Result result = new Result(ResultStatuses.ERROR, "Object with id = " + obj.getId() + " is already exists!");
@@ -81,8 +74,8 @@ public class XmlDataProvider implements IDataProvider{
     
     /**
      *
-     * @param obj
-     * @return
+     * @param obj to edit
+     * @return Result
      */
     @Override
     public Result editRecord(Note obj) {
@@ -113,8 +106,8 @@ public class XmlDataProvider implements IDataProvider{
 
     /**
      *
-     * @param obj
-     * @return
+     * @param obj to delete
+     * @return Result
      */
     @Override
     public Result deleteRecord(Note obj) {
@@ -142,8 +135,8 @@ public class XmlDataProvider implements IDataProvider{
     
     /**
      *
-     * @param obj
-     * @return
+     * @param obj to find by id
+     * @return Result
      */
     @Override
     public Result getRecordById(Generic obj) {
@@ -195,8 +188,8 @@ public class XmlDataProvider implements IDataProvider{
 
     /**
      *
-     * @param obj
-     * @return
+     * @param obj defines type of objects
+     * @return Result
      */
     @Override
     public Result getAllRecords(Generic obj) {
@@ -517,8 +510,8 @@ public class XmlDataProvider implements IDataProvider{
 
     /**
      *
-     * @param obj
-     * @return
+     * @param obj with parameters of search. Search by fields that are not null
+     * @return Result
      */
     @Override
     public Result findRecord(Generic obj) {

@@ -18,7 +18,8 @@ public class CsvFilter implements CsvToBeanFilter{
 
     /**
      *
-     * @param id
+     * @param id 
+     * @param mappingStrategy
      */
     public CsvFilter(long id, ColumnPositionMappingStrategy mappingStrategy) {
         this.id = Long.toString(id);

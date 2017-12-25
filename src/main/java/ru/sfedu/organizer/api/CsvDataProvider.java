@@ -15,16 +15,15 @@ import ru.sfedu.organizer.utils.ConfigurationUtil;
 
 /**
  *
- * @author sterie
+ * @author orus-kade
  */
 public class CsvDataProvider implements IDataProvider{
     private static final Logger log = Logger.getLogger(CsvDataProvider.class);
-    //private final ConfigurationUtil config = new ConfigurationUtil();
     private ConfigurationUtil config;
 
     /**
      *
-     * @param path
+     * @param path to working directory
      */
     public CsvDataProvider(String path) {
         this.config = new ConfigurationUtil(path);
@@ -33,8 +32,8 @@ public class CsvDataProvider implements IDataProvider{
     
     /**
      *
-     * @param obj
-     * @return
+     * @param obj to adding, type Note
+     * @return Result
      */
     @Override
     public Result addRecord(Note obj) {
@@ -43,14 +42,11 @@ public class CsvDataProvider implements IDataProvider{
         try {
             Reader reader;
             reader = new FileReader(getFileName(obj));
-//            ColumnPositionMappingStrategy mappingStrategy = new ColumnPositionMappingStrategy();
- //           mappingStrategy.setColumnMapping(getColumns(obj));
             CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
                     .withType(getClass(obj))
                     .withEscapeChar('\\')
                     .withQuoteChar('\'')
                     .withSeparator(';')
-//                    .withMappingStrategy(mappingStrategy)
                     .build();         
             List<Generic> list = new ArrayList<Generic>();
             list.addAll(csvToBean.parse());
@@ -70,7 +66,6 @@ public class CsvDataProvider implements IDataProvider{
                     .withEscapechar('\\')
                     .withQuotechar('\'')
                     .withSeparator(';')
-//                    .withMappingStrategy(mappingStrategy)
                     .build();
             beanWriter.write(list);
             writer.close();
@@ -129,8 +124,8 @@ public class CsvDataProvider implements IDataProvider{
 
     /**
      *
-     * @param obj
-     * @return
+     * @param obj to edit, type Note
+     * @return Result
      */
     @Override
     public Result editRecord(Note obj) {        
@@ -139,14 +134,11 @@ public class CsvDataProvider implements IDataProvider{
         try {    
             Reader reader;
             reader = new FileReader(getFileName(obj));  
-//           ColumnPositionMappingStrategy mappingStrategy = new ColumnPositionMappingStrategy();
-//            mappingStrategy.setColumnMapping(getColumns(obj));
             CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
                     .withType(getClass(obj))
                     .withEscapeChar('\\')
                     .withQuoteChar('\'')
                     .withSeparator(';')
-//                   .withMappingStrategy(mappingStrategy)
                     .build();         
             List<Generic> list = new ArrayList<Generic>();
             list.addAll(csvToBean.parse());
@@ -163,7 +155,6 @@ public class CsvDataProvider implements IDataProvider{
                     .withEscapechar('\\')
                     .withQuotechar('\'')
                     .withSeparator(';')
-//                    .withMappingStrategy(mappingStrategy)
                     .build();
             beanWriter.write(list);
             writer.close();
@@ -179,22 +170,19 @@ public class CsvDataProvider implements IDataProvider{
 
     /**
      *
-     * @param obj
-     * @return
+     * @param obj to delete, type Note
+     * @return result
      */
     @Override
     public Result deleteRecord(Note obj) {
         try {
             Reader reader;
             reader = new FileReader(getFileName(obj));
-//            ColumnPositionMappingStrategy mappingStrategy = new ColumnPositionMappingStrategy();
-//            mappingStrategy.setColumnMapping(getColumns(obj));
             CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
                     .withType(getClass(obj))
                     .withEscapeChar('\\')
                     .withQuoteChar('\'')
                     .withSeparator(';')
-//                    .withMappingStrategy(mappingStrategy)
                     .build();         
             List<Generic> list = new ArrayList<Generic>();
             list.addAll(csvToBean.parse());
@@ -210,7 +198,6 @@ public class CsvDataProvider implements IDataProvider{
                     .withEscapechar('\\')
                     .withQuotechar('\'')
                     .withSeparator(';')
-//                    .withMappingStrategy(mappingStrategy)
                     .build();
             beanWriter.write(list);
             writer.close();
@@ -226,8 +213,8 @@ public class CsvDataProvider implements IDataProvider{
     
     /**
      *
-     * @param obj
-     * @return
+     * @param obj to find by id
+     * @return Result
      */
     @Override
     public Result getRecordById(Generic obj) {
@@ -247,7 +234,6 @@ public class CsvDataProvider implements IDataProvider{
                     .withQuoteChar('\'')
                     .withSeparator(';')
                     .withFilter(filter)
-//                    .withMappingStrategy(mappingStrategy)
                     .build();         
             List<Generic> list = new ArrayList<Generic>();
             list.addAll(csvToBean.parse());
@@ -658,22 +644,19 @@ public class CsvDataProvider implements IDataProvider{
 
     /**
      *
-     * @param obj
-     * @return
+     * @param obj defies type of objects
+     * @return Result
      */
     @Override
     public Result getAllRecords(Generic obj) {
        try {
             Reader reader;
             reader = new FileReader(getFileName(obj));  
-//            ColumnPositionMappingStrategy mappingStrategy = new ColumnPositionMappingStrategy();
-//            mappingStrategy.setColumnMapping(getColumns(obj));
             CsvToBean<Generic> csvToBean = new CsvToBeanBuilder(reader)
                     .withType(getClass(obj))
                     .withEscapeChar('\\')
                     .withQuoteChar('\'')
                     .withSeparator(';')
-//                    .withMappingStrategy(mappingStrategy)
                     .build();         
             List<Generic> list = new ArrayList<Generic>();
             list.addAll(csvToBean.parse());
@@ -705,8 +688,8 @@ public class CsvDataProvider implements IDataProvider{
 
     /**
      *
-     * @param obj
-     * @return
+     * @param obj with parameters of search. Search by fields that are not null
+     * @return Result
      */
     @Override
     public Result findRecord(Generic obj) {

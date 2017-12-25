@@ -9,7 +9,7 @@ package ru.sfedu.organizer;
 public class Constants {
     
     /**
-     *
+     * 
      */
     public static String FILE_PATH = "organizer.file.path" ;
     /**
@@ -82,18 +82,39 @@ public class Constants {
      */
     public static final String CSV_PATH_AUTHOR_LIBRETTO = "csv_author_libretto";
     
+    /**
+     *
+     */
     public static final String[] CSV_HEAD_ARIA = {"ID", "TITLE", "TEXT", "OPERAID"};
             
+    /**
+     *
+     */
     public static final String[] CSV_HEAD_AUTHOR = {"ID", "NAME", "SURNAME", "PATRONYMIC", "BIOGRAPHY", "BIRTHDATE", "DEATHDATE"};
     
+    /**
+     *
+     */
     public static final String[] CSV_HEAD_COMPOSER = {"ID", "NAME", "SURNAME", "PATRONYMIC", "BIOGRAPHY", "BIRTHDATE", "DEATHDATE"};
     
+    /**
+     *
+     */
     public static final String[] CSV_HEAD_LIBRETTO = {"ID", "TEXT", "OPERAID"};
     
+    /**
+     *
+     */
     public static final String[] CSV_HEAD_NOTE = {"DESCRIPTION", "ID", "OBJECTID" ,"OBJECTTYPE"};
     
+    /**
+     *
+     */
     public static final String[] CSV_HEAD_OPERA = {"ID", "TITLE", "HISTORY", "LIBRETTOID"};
     
+    /**
+     *
+     */
     public static final String[] CSV_HEAD_SINGER = {"ID", "NAME", "SURNAME", "PATRONYMIC", "BIOGRAPHY", "BIRTHDATE", "DEATHDATE", "VOICE"};
     /**
      *
