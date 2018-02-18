@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 <!--
 DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 
@@ -39,18 +38,11 @@ made subject to such option by the copyright holder.
 
 Contributor(s):
 -->
-<hibernate-configuration>
-  <session-factory>
-    <property name="hibernate.dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-    <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-    <property name="hibernate.connection.url">jdbc:postgresql://localhost:5432/organizer</property>
-    <property name="hibernate.connection.username">organizer_user</property>
-    <property name="hibernate.connection.password">music5</property>
-    <property name="hibernate.connection.pool_size">1</property>
-    <property name="dialect">org.hibernate.dialect.PostgreSQLDialect</property>
-    <property name="show_sql">true</property>
-    <property name="current_session_context_class">thread</property>
-    <property name="cache.provider_class">org.hibernate.cache.internal.NoCacheProvider</property>
-    <mapping resource="named-queries.hbm.xml"/>
-  </session-factory>
-</hibernate-configuration>
+
+<!DOCTYPE hibernate-mapping PUBLIC
+  "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+  "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <sql-query name = "GET_TABLES">SELECT table_name FROM information_schema.tables where table_schema='public' ORDER BY table_name;</sql-query>
+</hibernate-mapping>
